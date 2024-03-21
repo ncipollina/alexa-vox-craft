@@ -1,0 +1,6 @@
+{
+  "type": "DataStore:UpdateArrayBindingRange",
+  "dataBindingName": "ToDoNotes",
+  "startIndex": "${test}",
+  "endIndex": 5
+}
