@@ -1,5 +1,11 @@
 # AlexaVoxCraft
 
+## Package Version
+| Package                               | Build Status | Nuget                                                                                                                                                        |
+|---------------------------------------| ------------ |--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AlexaVoxCraft.Lambda.AspNetCoreServer | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/alexavoxcraft.lambda.aspnetcoreserver)](https://www.nuget.org/packages/AlexaVoxCraft.Lambda.AspNetCoreServer/) |
+| AlexaVoxCraft.Model                   | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/alexavoxcraft.model)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                                     |
+
 ## Introduction
 
 AlexaVoxCraft is a .NET library for crafting interactive voice experiences with Amazon Alexa using the VoxCraft framework. This repository provides tools and utilities to develop, deploy, and manage Alexa skills in .NET applications.
