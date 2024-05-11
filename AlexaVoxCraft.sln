@@ -60,6 +60,5 @@ Global
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
