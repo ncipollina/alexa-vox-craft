@@ -1,0 +1,13 @@
+name: Build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+permissions: write-all
+jobs:
+  build:
+    uses: ncipollina/devops-templates/.github/workflows/build.yaml@main
+    with:
+      dotnet-version: "8.0.100"
+    secrets: inherit

@@ -1,0 +1,4 @@
+{
+  "type": "SmartMotion:SetWakeWordResponse",
+  "wakeWordResponse": "turnToWakeWord"
+}

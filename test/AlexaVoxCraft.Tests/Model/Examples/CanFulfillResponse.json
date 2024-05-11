@@ -1,0 +1,9 @@
+{
+  "canFulfill": "YES",
+  "slots": {
+    "slotName": {
+      "canUnderstand": "YES",
+      "canFulfill": "NO"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+name: PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+permissions: write-all
+jobs:
+  build:
+    uses: ncipollina/devops-templates/.github/workflows/prbuild.yaml@main
+    with:
+      dotnet-version: "8.0.100"
+    secrets: inherit
