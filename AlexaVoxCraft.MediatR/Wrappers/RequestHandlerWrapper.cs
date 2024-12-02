@@ -1,4 +1,5 @@
-﻿using AlexaVoxCraft.Model.Requests;
+﻿using AlexaVoxCraft.MediatR.Pipeline;
+using AlexaVoxCraft.Model.Requests;
 using AlexaVoxCraft.Model.Requests.Types;
 using AlexaVoxCraft.Model.Responses;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ public class RequestHandlerWrapperImpl<TRequestType> : RequestHandlerWrapper whe
                 }
             }
 
-            var defaultHandler = serviceProvider.GetInstance<IDefaultRequestHandler>();
+            var defaultHandler = serviceProvider.GetService<IDefaultRequestHandler>();
             if (defaultHandler is not null && await defaultHandler.CanHandle(handlerInput, cancellationToken))
             {
                 return await defaultHandler.Handle(handlerInput, cancellationToken);
@@ -41,7 +42,7 @@ public class RequestHandlerWrapperImpl<TRequestType> : RequestHandlerWrapper whe
 
 
         return serviceProvider
-            .GetInstances<IPipelineBehavior>()
+            .GetServices<IPipelineBehavior>()
             .Reverse()
             .Aggregate((RequestHandlerDelegate)Handler,
                 (next, pipeline) => () => pipeline.Handle(handlerInput, cancellationToken, next))();
