@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.MediatR", "AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj", "{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,7 @@ Global
 		{748BDF3D-A384-4319-8E32-0A04736034E3} = {C2B189AA-0578-45AF-9E85-C77A5DB87DF8}
 		{5F1D13A6-D052-42A3-A986-5071E94354A8} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1} = {7756AA98-6912-4579-AB67-979A9FD0EC05}
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{71C503C7-DB61-4A15-A23B-CA7EC0168D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +63,9 @@ Global
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

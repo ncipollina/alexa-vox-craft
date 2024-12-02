@@ -10,5 +10,5 @@ public class DialogConfirmSlot : Directive
 
     [JsonPropertyName("updatedIntent")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Intent UpdatedIntent { get; set; }
+    public Intent? UpdatedIntent { get; set; }
 }

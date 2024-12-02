@@ -6,7 +6,7 @@ public class ResponseBody
 {
     [JsonPropertyName("outputSpeech")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public OutputSpeech OutputSpeech { get; set; }
+    public OutputSpeech? OutputSpeech { get; set; }
     
     [JsonPropertyName("card")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -22,7 +22,7 @@ public class ResponseBody
 
     [JsonPropertyName("directives")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public IList<Directive> Directives { get; set; }
+    public IList<Directive>? Directives { get; set; }
     
     [JsonPropertyName("canFulfillIntent")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
