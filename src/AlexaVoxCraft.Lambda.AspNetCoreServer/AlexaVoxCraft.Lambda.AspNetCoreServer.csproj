@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <TargetFramework>net8.0</TargetFramework>
         <VersionPrefix>1.0.0-alpha</VersionPrefix>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
