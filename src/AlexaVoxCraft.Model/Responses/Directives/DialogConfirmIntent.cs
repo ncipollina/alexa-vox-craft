@@ -7,5 +7,5 @@ public class DialogConfirmIntent : Directive
 {
     [JsonPropertyName("updatedIntent")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Intent UpdatedIntent { get; set; }
+    public Intent? UpdatedIntent { get; set; }
 }

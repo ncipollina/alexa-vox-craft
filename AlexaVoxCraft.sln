@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{07C12036-28B
 		.github\workflows\prbuild.yaml = .github\workflows\prbuild.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Lambda.AspNetCoreServer", "src\AlexaVoxCraft.Lambda.AspNetCoreServer\AlexaVoxCraft.Lambda.AspNetCoreServer.csproj", "{5F1D13A6-D052-42A3-A986-5071E94354A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7756AA98-6912-4579-AB67-979A9FD0EC05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Skill.Function", "samples\Sample.Skill.Function\Sample.Skill.Function.csproj", "{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}"
@@ -29,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		LICENSE = LICENSE
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.MediatR", "AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj", "{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.MediatR.Lambda", "src\AlexaVoxCraft.MediatR.Lambda\AlexaVoxCraft.MediatR.Lambda.csproj", "{B35A9218-4C94-4506-AE28-DA7A908A7FF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,8 +43,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{71C503C7-DB61-4A15-A23B-CA7EC0168D63} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 		{748BDF3D-A384-4319-8E32-0A04736034E3} = {C2B189AA-0578-45AF-9E85-C77A5DB87DF8}
-		{5F1D13A6-D052-42A3-A986-5071E94354A8} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1} = {7756AA98-6912-4579-AB67-979A9FD0EC05}
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
+		{B35A9218-4C94-4506-AE28-DA7A908A7FF6} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{71C503C7-DB61-4A15-A23B-CA7EC0168D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -53,12 +56,16 @@ Global
 		{748BDF3D-A384-4319-8E32-0A04736034E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{748BDF3D-A384-4319-8E32-0A04736034E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{748BDF3D-A384-4319-8E32-0A04736034E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F1D13A6-D052-42A3-A986-5071E94354A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F1D13A6-D052-42A3-A986-5071E94354A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F1D13A6-D052-42A3-A986-5071E94354A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F1D13A6-D052-42A3-A986-5071E94354A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4A4A21-FC62-49BA-A86B-B17F980A1A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35A9218-4C94-4506-AE28-DA7A908A7FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35A9218-4C94-4506-AE28-DA7A908A7FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35A9218-4C94-4506-AE28-DA7A908A7FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35A9218-4C94-4506-AE28-DA7A908A7FF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

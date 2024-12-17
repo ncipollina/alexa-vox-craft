@@ -13,7 +13,7 @@ public class AudioItemStream
     public string Token { get; set; }
         
     [JsonPropertyName("expectedPreviousToken")]
-    public string ExpectedPreviousToken { get; set; }
+    public string? ExpectedPreviousToken { get; set; }
 
     [JsonRequired]
     [JsonPropertyName("offsetInMilliseconds")]
