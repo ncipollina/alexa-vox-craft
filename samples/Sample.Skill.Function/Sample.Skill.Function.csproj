@@ -22,7 +22,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\AlexaVoxCraft.Lambda.AspNetCoreServer\AlexaVoxCraft.Lambda.AspNetCoreServer.csproj" />
       <ProjectReference Include="..\..\src\AlexaVoxCraft.MediatR.Lambda\AlexaVoxCraft.MediatR.Lambda.csproj" />
     </ItemGroup>
     <ItemGroup>
