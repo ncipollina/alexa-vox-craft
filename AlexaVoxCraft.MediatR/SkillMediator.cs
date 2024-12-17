@@ -3,6 +3,7 @@ using AlexaVoxCraft.MediatR.DI;
 using AlexaVoxCraft.MediatR.Wrappers;
 using AlexaVoxCraft.Model.Requests;
 using AlexaVoxCraft.Model.Responses;
+using Microsoft.Extensions.Options;
 
 namespace AlexaVoxCraft.MediatR;
 
@@ -12,10 +13,10 @@ public class SkillMediator : ISkillMediator
     private readonly SkillServiceConfiguration _serviceConfiguration;
     private static readonly ConcurrentDictionary<Type, RequestHandlerWrapper> RequestHandlers = new();
 
-    public SkillMediator(IServiceProvider serviceProvider, SkillServiceConfiguration serviceConfiguration)
+    public SkillMediator(IServiceProvider serviceProvider, IOptions<SkillServiceConfiguration> serviceConfiguration)
     {
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _serviceConfiguration = serviceConfiguration ?? throw new ArgumentNullException(nameof(serviceConfiguration));
+        _serviceConfiguration = serviceConfiguration.Value ?? throw new ArgumentNullException(nameof(serviceConfiguration));
     }
 
     public Task<SkillResponse> Send(SkillRequest request, CancellationToken cancellationToken = default)

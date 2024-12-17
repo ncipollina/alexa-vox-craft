@@ -5,9 +5,10 @@ namespace AlexaVoxCraft.MediatR.DI;
 
 public class SkillServiceConfiguration
 {
+    public const string SectionName = "SkillConfiguration";
     public string? CustomUserAgent { get; set; }
-    public required string SkillId { get; set; }
-    
+    public string? SkillId { get; set; }
+
     public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
     
     internal List<Assembly> AssembliesToRegister { get; } = new();

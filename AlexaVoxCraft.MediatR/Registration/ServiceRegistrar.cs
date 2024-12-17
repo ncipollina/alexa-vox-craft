@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AlexaVoxCraft.MediatR.Attributes;
 using AlexaVoxCraft.MediatR.Attributes.Persistence;
+using AlexaVoxCraft.MediatR.DI;
 using AlexaVoxCraft.MediatR.Pipeline;
 using AlexaVoxCraft.MediatR.Response;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,9 +11,9 @@ namespace AlexaVoxCraft.MediatR.Registration;
 
 public static class ServiceRegistrar
 {
-    public static void AddSkillMediatorClasses(this IServiceCollection services, IEnumerable<Assembly> assembliesToScan)
+    public static void AddSkillMediatorClasses(this IServiceCollection services, SkillServiceConfiguration settings)
     {
-        assembliesToScan = assembliesToScan.Distinct().ToArray();
+        var assembliesToScan = settings.AssembliesToRegister.Distinct().ToArray();
 
         services.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<>), assembliesToScan, true);
         
@@ -45,15 +46,15 @@ public static class ServiceRegistrar
                 .Where(t => t.CanBeCastTo(interfaceType) && t.IsConcrete())
                 .ToList();
 
-            foreach (var concretType in concretions)
+            foreach (var concreteType in concretions)
             {
-                services.AddTransient(interfaceType, concretType);
+                services.AddTransient(interfaceType, concreteType);
             }
         }
     }
     
     private static void ConnectImplementationsToTypesClosing(this IServiceCollection services,
-        Type openRequestInterface, IEnumerable<Assembly> assembliesToScan, bool addIfAlreadExists)
+        Type openRequestInterface, IEnumerable<Assembly> assembliesToScan, bool addIfAlreadyExists)
     {
         var concretions = new List<Type>();
         var interfaces = new List<Type>();
@@ -76,7 +77,7 @@ public static class ServiceRegistrar
         foreach (var @interface in interfaces)
         {
             var exactMatches = concretions.Where(x => x.CanBeCastTo(@interface)).ToList();
-            if (addIfAlreadExists)
+            if (addIfAlreadyExists)
             {
                 foreach (var type in exactMatches)
                 {
@@ -100,7 +101,7 @@ public static class ServiceRegistrar
                 services.AddConcretionsThatCouldBeClosed(@interface, concretions);
         }
     }
-    private static bool IsMatchingWithInterface(Type handlerType, Type handlerInterface)
+    private static bool IsMatchingWithInterface(Type? handlerType, Type? handlerInterface)
     {
         if (handlerType is null || handlerInterface is null)
         {
@@ -131,8 +132,9 @@ public static class ServiceRegistrar
             {
                 services.TryAddTransient(@interface, type.MakeGenericType(@interface.GenericTypeArguments));
             }
-            catch (Exception )
+            catch (Exception)
             {
+                // ignored
             }
         }
     }
@@ -146,13 +148,11 @@ public static class ServiceRegistrar
         return arguments.Length == concreteArguments.Length && openConcretion.CanBeCastTo(openInterface);
     }
 
-    private static bool CanBeCastTo(this Type pluggedType, Type pluginType)
+    private static bool CanBeCastTo(this Type? pluggedType, Type pluginType)
     {
         if (pluggedType is null) return false;
 
-        if (pluggedType == pluginType) return true;
-
-        return pluginType.GetTypeInfo().IsAssignableFrom(pluggedType.GetTypeInfo());
+        return pluggedType == pluginType || pluginType.GetTypeInfo().IsAssignableFrom(pluggedType.GetTypeInfo());
     }
     
     private static bool IsOpenGeneric(this Type type) =>
@@ -161,7 +161,7 @@ public static class ServiceRegistrar
     private static IEnumerable<Type> FindInterfacesThatClose(this Type pluggedType, Type templateType) =>
         FindInterfacesThatCloseCore(pluggedType, templateType).Distinct();
 
-    private static IEnumerable<Type> FindInterfacesThatCloseCore(Type pluggedType, Type templateType)
+    private static IEnumerable<Type> FindInterfacesThatCloseCore(Type? pluggedType, Type templateType)
     {
         if (pluggedType is null) yield break;
 
@@ -175,10 +175,10 @@ public static class ServiceRegistrar
                 yield return interfaceType;
             }
         }
-        else if (pluggedType.GetTypeInfo().BaseType.GetTypeInfo().IsGenericType &&
-                 (pluggedType.GetTypeInfo().BaseType.GetGenericTypeDefinition() == templateType))
+        else if (pluggedType.GetTypeInfo().BaseType!.GetTypeInfo().IsGenericType &&
+                 (pluggedType.GetTypeInfo().BaseType!.GetGenericTypeDefinition() == templateType))
         {
-            yield return pluggedType.GetTypeInfo().BaseType;
+            yield return pluggedType.GetTypeInfo().BaseType!;
         }
 
         if (pluggedType.GetTypeInfo().BaseType == typeof(object)) yield break;
@@ -189,18 +189,17 @@ public static class ServiceRegistrar
         }
     }
 
-    private static bool IsConcrete(this Type? type) => !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsInterface;
+    private static bool IsConcrete(this Type? type) =>
+        !(type ?? throw new ArgumentNullException(nameof(type))).GetTypeInfo().IsAbstract &&
+        !type.GetTypeInfo().IsInterface;
 
     private static void Fill<T>(this IList<T> list, T value)
     {
         if (list.Contains(value)) return;
         list.Add(value);
     }
-    public static void AddRequiredServices(this IServiceCollection services)
+    public static void AddRequiredServices(this IServiceCollection services, SkillServiceConfiguration settings)
     {
-        services.TryAddTransient<ServiceFactory>(p => p.GetRequiredService);
-        services.TryAddScoped<SkillRequestFactory>(p =>
-            () => p.GetRequiredService<ISkillContextAccessor>().SkillContext?.Request);
         services.TryAdd(new ServiceDescriptor(typeof(ISkillMediator), typeof(SkillMediator),
             ServiceLifetime.Transient));
         services.TryAddTransient<IHandlerInput, DefaultHandlerInput>();
