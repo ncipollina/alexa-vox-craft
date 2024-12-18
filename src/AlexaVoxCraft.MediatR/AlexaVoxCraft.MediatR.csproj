@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\AlexaVoxCraft.Model\AlexaVoxCraft.Model.csproj" />
+      <ProjectReference Include="..\AlexaVoxCraft.Model\AlexaVoxCraft.Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
