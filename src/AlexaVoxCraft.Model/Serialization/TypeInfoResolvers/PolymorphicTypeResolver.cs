@@ -207,7 +207,8 @@ public partial class PolymorphicTypeResolver : DefaultJsonTypeInfoResolver
         new(typeof(StopDirective), typeDiscriminator: "AudioPlayer.Stop"),
         new(typeof(APLRenderDocumentDirective), APLRenderDocumentDirective.DirectiveType),
         new(typeof(APLARenderDocumentDirective), APLARenderDocumentDirective.DirectiveType),
-        new(typeof(APLTRenderDocumentDirective), APLTRenderDocumentDirective.DirectiveType)
+        new(typeof(APLTRenderDocumentDirective), APLTRenderDocumentDirective.DirectiveType),
+        new(typeof(ExecuteCommandsDirective), ExecuteCommandsDirective.DirectiveType)
     };
 
     public static IList<JsonDerivedType> ViewportDirectives = new List<JsonDerivedType>

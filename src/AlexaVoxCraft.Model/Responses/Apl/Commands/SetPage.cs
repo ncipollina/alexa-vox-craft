@@ -1,0 +1,19 @@
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Serialization.Converters;
+
+namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
+
+public class SetPage : APLCommand
+{
+    [JsonPropertyName("componentId"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> ComponentId { get; set; }
+
+    [JsonPropertyName("position"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<SetPagePosition>))]
+    public APLValue<SetPagePosition> Position { get; set; }
+
+    [JsonPropertyName("value")] public APLValue<int> Value { get; set; }
+
+    [JsonPropertyName("transitionDuration"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?> TransitionDuration { get; set; }
+}
