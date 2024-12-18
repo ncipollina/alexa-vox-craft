@@ -9,13 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Amazon.Lambda.Core" Version="2.5.0" />
       <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.4" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj" />
     </ItemGroup>
 
 </Project>
