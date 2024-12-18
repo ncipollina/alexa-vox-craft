@@ -12,5 +12,5 @@ public class Binding
     public object Value { get; set; }
     
     [JsonPropertyName("type")]
-    public ParameterType Typpe { get; set; }
+    public ParameterType Type { get; set; }
 }

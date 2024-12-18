@@ -5,6 +5,7 @@ namespace AlexaVoxCraft.Model.Serialization.Converters;
 public class APLComponentConverter : BasePolymorphicConverter<APLComponent>
 {
     public override string TypeDiscriminatorPropertyName => "type";
+
     public override IDictionary<string, Type> DerivedTypes => new Dictionary<string, Type>
     {
         { nameof(AlexaRadioButton), typeof(AlexaRadioButton) },
@@ -40,7 +41,9 @@ public class APLComponentConverter : BasePolymorphicConverter<APLComponent>
         { nameof(AlexaCard), typeof(AlexaCard) },
         { nameof(AlexaImageCaption), typeof(AlexaImageCaption) },
         { nameof(AlexaPhoto), typeof(AlexaPhoto) },
-        { nameof(AlexaTextWrapping), typeof(AlexaTextWrapping) }
+        { nameof(AlexaTextWrapping), typeof(AlexaTextWrapping) },
+        { nameof(AlexaBackground), typeof(AlexaBackground) },
+        { nameof(AlexaHeader), typeof(AlexaHeader) }
     };
 
     public override Type? DefaultType => typeof(CustomComponent);

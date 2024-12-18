@@ -7,6 +7,10 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Components;
 [JsonConverter(typeof(APLComponentConverter))]
 public abstract class APLComponent : APLComponentBase
 {
+    protected APLComponent(string? type = null) : base(type)
+    {
+    }
+    
     [JsonPropertyName("inheritParentState"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> InheritParentState { get; set; }
 
