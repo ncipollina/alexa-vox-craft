@@ -6,9 +6,13 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Components;
 
 public abstract class APLComponentBase
 {
+    protected APLComponentBase(string? type = null)
+    {
+        Type = type;
+    }
     [JsonPropertyName("type")]
     [JsonInclude]
-    public string Type { get; private set; }
+    public string? Type { get; private set; }
 
     [JsonPropertyName("bind"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<Binding> Bindings { get; set; }

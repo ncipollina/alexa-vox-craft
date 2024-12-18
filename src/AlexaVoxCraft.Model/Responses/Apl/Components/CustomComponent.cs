@@ -2,4 +2,7 @@
 
 public class CustomComponent : APLComponent
 {
+    public CustomComponent(string type) : base(type)
+    {
+    }
 }
