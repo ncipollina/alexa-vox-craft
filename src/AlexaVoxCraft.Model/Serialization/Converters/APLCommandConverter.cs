@@ -13,7 +13,8 @@ public class APLCommandConverter : BasePolymorphicConverter<APLCommand>
         { nameof(SendEvent), typeof(SendEvent) },
         { nameof(SetPage), typeof(SetPage) },
         { nameof(SpeakItem), typeof(SpeakItem) },
-        { nameof(Sequential), typeof(Sequential) }
+        { nameof(Sequential), typeof(Sequential) },
+        { nameof(SpeakList), typeof(SpeakList) },
     };
 
     public override Type? DefaultType => typeof(CustomCommand);

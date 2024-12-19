@@ -9,5 +9,5 @@ Follow these steps to start crafting voice experiences with AlexaVoxCraft:
 1. **Installation**: Install the `AlexaVoxCraft.Model` package from NuGet.
    ```bash
    dotnet add package AlexaVoxCraft.Model
-2. **Development**: Create your Alexa skill logic using the `AlexaVoxCraft.Model` package for request and response objects, and use the `AlexaVoxCraft.Lambda.AspNetCoreServer` package to run the skill in an AWS Lambda function.
+2. **Development**: Create your Alexa skill logic using the `AlexaVoxCraft.Model` package for request and response objects.
 4. **Enjoy**: Interact with your skill using Amazon Alexa devices and explore the possibilities of voice-driven applications!
