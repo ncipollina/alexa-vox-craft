@@ -4,10 +4,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TargetFramework>net8.0</TargetFramework>
-        <VersionPrefix>1.0.0-alpha</VersionPrefix>
+        <VersionPrefix>0.1.0-alpha</VersionPrefix>
         <LangVersion>default</LangVersion>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <Version>0.1.0-alpha</Version>
     </PropertyGroup>
     <ItemGroup>
         <None Include="docs\README.md" Pack="true" PackagePath="\"/>
