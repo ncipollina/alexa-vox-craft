@@ -43,7 +43,9 @@ public class APLComponentConverter : BasePolymorphicConverter<APLComponent>
         { nameof(AlexaPhoto), typeof(AlexaPhoto) },
         { nameof(AlexaTextWrapping), typeof(AlexaTextWrapping) },
         { nameof(AlexaBackground), typeof(AlexaBackground) },
-        { nameof(AlexaHeader), typeof(AlexaHeader) }
+        { nameof(AlexaHeader), typeof(AlexaHeader) },
+        { nameof(Sequence), typeof(Sequence) },
+        { nameof(AlexaTextListItem), typeof(AlexaTextListItem) },
     };
 
     public override Type? DefaultType => typeof(CustomComponent);
