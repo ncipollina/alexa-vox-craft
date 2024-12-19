@@ -310,6 +310,9 @@
       <None Update="Model\Examples\APL\Directives\Import.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Model\Examples\APL\Commands\SpeakItem.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
