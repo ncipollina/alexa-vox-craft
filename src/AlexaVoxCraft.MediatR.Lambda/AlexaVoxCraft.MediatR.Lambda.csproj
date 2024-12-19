@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <VersionPrefix>1.0.0-alpha</VersionPrefix>
         <LangVersion>default</LangVersion>
+        <Version>0.1.0-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
