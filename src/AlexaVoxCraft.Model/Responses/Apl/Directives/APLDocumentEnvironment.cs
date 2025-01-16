@@ -12,6 +12,6 @@ public class APLDocumentEnvironment
     public APLValue<LayoutDirection?> LayoutDirection { get; set; }
 
     [JsonPropertyName("parameters"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
-     JsonConverter(typeof(ListObjectOrStringJsonConverter<Parameter, IList<Parameter>>))]
+     JsonConverter(typeof(ParameterListConverter))]
     public IList<Parameter> Parameters { get; set; }
 }

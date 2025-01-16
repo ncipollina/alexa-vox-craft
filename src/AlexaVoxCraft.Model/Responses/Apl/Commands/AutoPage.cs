@@ -4,9 +4,6 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
 
 public class AutoPage : APLCommand
 {
-    [JsonPropertyName("type")]
-    public override string Type => nameof(AutoPage);
-    
     [JsonPropertyName("componentId"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ComponentId { get; set; }
 

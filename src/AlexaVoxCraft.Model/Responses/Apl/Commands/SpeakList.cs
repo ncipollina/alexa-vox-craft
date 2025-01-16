@@ -5,9 +5,6 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
 
 public class SpeakList : APLCommand
 {
-    [JsonPropertyName("type")]
-    public override string Type => nameof(SpeakList);
-
     [JsonPropertyName("align"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<ItemAlignment?> Align { get; set; }
 

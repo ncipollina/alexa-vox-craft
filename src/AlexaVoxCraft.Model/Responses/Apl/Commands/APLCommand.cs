@@ -6,6 +6,11 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
 [JsonConverter(typeof(APLCommandConverter))]
 public abstract class APLCommand
 {
+    protected APLCommand(string? type = null)
+    {
+        Type = !string.IsNullOrWhiteSpace(type) ? type : GetType().Name;
+    }
+
     [JsonPropertyName("type")]
     [JsonInclude]
     public virtual string Type { get; private set; }

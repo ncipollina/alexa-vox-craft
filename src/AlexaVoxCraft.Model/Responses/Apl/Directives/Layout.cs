@@ -22,10 +22,11 @@ public class Layout
     public string Description { get; set; }
 
     [JsonPropertyName("parameters"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
-     JsonConverter(typeof(ListObjectOrStringJsonConverter<Parameter, IList<Parameter>>))]
+     JsonConverter(typeof(ParameterListConverter))]
     public IList<Parameter>? Parameters { get; set; }
     
     [JsonPropertyName("items")]
+    [JsonConverter(typeof(APLComponentListConverter))]
     public IEnumerable<APLComponent> Items { get; set; }
     
     public Layout AsMain(string dataSourceKey = "payload")

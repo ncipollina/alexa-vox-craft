@@ -1,11 +1,29 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Responses.Apl.Directives;
 
 namespace AlexaVoxCraft.Model.Serialization.Converters;
+
+public class ParameterListConverter : ListObjectOrStringJsonConverter<Parameter, IList<Parameter>>
+{
+    public ParameterListConverter() : base(true)
+    {
+    }
+}
 
 public class ListObjectOrStringJsonConverter<TValue, TList> : JsonConverter<TList> where TList : IEnumerable<TValue>
     where TValue : IStringConvertable<TValue>
 {
+    public ListObjectOrStringJsonConverter() : this(false)
+    {
+    }
+
+    public ListObjectOrStringJsonConverter(bool alwaysOutputArray = false)
+    {
+        AlwaysOutputArray = alwaysOutputArray;
+    }
+    
+    public bool AlwaysOutputArray { get; }
     public override TList? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         using var document = JsonDocument.ParseValue(ref reader);
@@ -45,7 +63,12 @@ public class ListObjectOrStringJsonConverter<TValue, TList> : JsonConverter<TLis
 
     public override void Write(Utf8JsonWriter writer, TList value, JsonSerializerOptions options)
     {
-        if (value.Count() == 1)
+        if (value is null || !value.Any())
+        {
+            writer.WriteNullValue();
+            return;
+        }
+        if (value.Count() == 1 && !AlwaysOutputArray)
         {
             var item = value.First();
             if (item.ShouldSerializeAsString())
