@@ -5,5 +5,5 @@ namespace AlexaVoxCraft.Model.Requests;
 public class Resolution
 {
     [JsonPropertyName("resolutionsPerAuthority")]
-    public ResolutionAuthority[] Authorities { get; set; }
+    public required ResolutionAuthority[] Authorities { get; set; }
 }

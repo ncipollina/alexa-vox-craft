@@ -5,20 +5,20 @@ namespace AlexaVoxCraft.Model.Requests;
 public class Slot
 {
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("value"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
     [JsonPropertyName("confirmationStatus"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string ConfirmationStatus { get; set; }
+    public string? ConfirmationStatus { get; set; }
 
     [JsonPropertyName("source"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string Source { get; set; }
+    public string? Source { get; set; }
 
     [JsonPropertyName("resolutions"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Resolution Resolution { get; set; }
+    public Resolution? Resolution { get; set; }
 
     [JsonPropertyName("slotValue"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public SlotValue SlotValue { get; set; }
+    public SlotValue? SlotValue { get; set; }
 }

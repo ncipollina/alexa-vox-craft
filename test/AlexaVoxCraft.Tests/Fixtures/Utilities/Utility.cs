@@ -11,7 +11,7 @@ public static class Utility
     private static readonly string ModelPath = "Model";
     private static readonly string[] BasePath = [ModelPath, ExamplesPath];
 
-    private static JsonSerializerOptions Options = new(AlexaJsonOptions.DefaultOptions);
+    private static JsonSerializerOptions? Options = new(AlexaJsonOptions.DefaultOptions);
 
     public static bool CompareJson(object actual, params string[] filename)
     {
@@ -22,7 +22,7 @@ public static class Utility
         return actualDocument.DeepEquals(expectedDocument);
     }
 
-    public static bool CompareObjectJson(object actual, object expected)
+    public static bool CompareObjectJson(object? actual, object expected)
     {
         var actualDocument = JsonNode.Parse(JsonSerializer.Serialize(actual, Options));
         var expectedDocument = JsonNode.Parse(JsonSerializer.Serialize(expected, Options));

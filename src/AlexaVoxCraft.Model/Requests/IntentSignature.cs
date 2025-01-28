@@ -4,14 +4,16 @@ namespace AlexaVoxCraft.Model.Requests;
 
 public sealed class IntentSignature
 {
-    public string FullName { get; private set; }
+    public string FullName { get; }
     public string Namespace { get; private set; }
     public string Action { get; private set; }
     public System.Collections.ObjectModel.ReadOnlyDictionary<string, IntentProperty> Properties { get; private set; }
 
-    private static Regex PropertyFinder = new Regex(@"(\w+?)@(\w+?)\b(\[(\w+)\])*", RegexOptions.Compiled);
+    private static readonly Regex PropertyFinder = new Regex(@"(\w+?)@(\w+?)\b(\[(\w+)\])*", RegexOptions.Compiled);
 
+#pragma warning disable CS8618, CS9264
     private IntentSignature(string fullName)
+#pragma warning restore CS8618, CS9264
     {
         FullName = fullName;
     }
@@ -26,19 +28,15 @@ public sealed class IntentSignature
         return FullName.GetHashCode();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        if(obj is string && !string.IsNullOrWhiteSpace((string)obj))
+        return obj switch
         {
-            return FullName.Equals(obj);
-        }
-
-        if(obj is IntentSignature)
-        {
-            return FullName.Equals(((IntentSignature)obj).FullName);
-        }
-
-        return base.Equals(obj);
+            string s when !string.IsNullOrWhiteSpace(s) => FullName.Equals(obj),
+            IntentSignature signature => FullName.Equals(signature.FullName),
+            // ReSharper disable once BaseObjectEqualsIsObjectEquals
+            _ => base.Equals(obj)
+        };
     }
 
     public static IntentSignature Parse(string action)
@@ -50,7 +48,7 @@ public sealed class IntentSignature
 
     private static void Parse(string action, IntentSignature name)
     {
-        if (action.Contains("<") && action.EndsWith(">", StringComparison.Ordinal))
+        if (action.Contains('<') && action.EndsWith('>'))
         {
             ParseComplex(action, name);
         }
@@ -62,7 +60,7 @@ public sealed class IntentSignature
 
     private static void ParseSimple(string action, IntentSignature name)
     {
-        int namespacePoint = action.LastIndexOf('.');
+        var namespacePoint = action.LastIndexOf('.');
 
         if (namespacePoint == -1)
         {
@@ -70,16 +68,16 @@ public sealed class IntentSignature
             return;
         }
 
-        name.Namespace = action.Substring(0, namespacePoint);
-        name.Action = action.Substring(namespacePoint + 1);
+        name.Namespace = action[..namespacePoint];
+        name.Action = action[(namespacePoint + 1)..];
     }
 
     private static void ParseComplex(string action, IntentSignature name)
     {
-        int propertyPoint = action.IndexOf('<');
-        ParseSimple(action.Substring(0, propertyPoint),name);
+        var propertyPoint = action.IndexOf('<');
+        ParseSimple(action[..propertyPoint],name);
 
-        string propertyPiece = action.Substring(propertyPoint+1, action.Length - (propertyPoint+2));
+        var propertyPiece = action.Substring(propertyPoint+1, action.Length - (propertyPoint+2));
 
         IDictionary<string, IntentProperty> propertyDictionary = new Dictionary<string, IntentProperty>();
 

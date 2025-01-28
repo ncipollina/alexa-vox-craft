@@ -5,5 +5,5 @@ namespace AlexaVoxCraft.Model.Requests;
 public class ResolutionValueContainer
 {
     [JsonPropertyName("value")]
-    public ResolutionValue Value { get; set; }
+    public required ResolutionValue Value { get; set; }
 }

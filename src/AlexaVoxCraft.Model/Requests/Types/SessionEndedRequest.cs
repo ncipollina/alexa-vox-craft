@@ -11,6 +11,6 @@ public class SessionEndedRequest : RequestType
 
     [JsonPropertyName("error")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Error Error { get; set; }
+    public Error? Error { get; set; }
 
 }
