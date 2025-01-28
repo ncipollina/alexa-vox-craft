@@ -93,7 +93,7 @@ public class AttributesManager : IAttributesManager
     {
         var attributes = await GetSessionAttributes(cancellationToken);
         var session = _eventRequest.Session;
-        session.Attributes = attributes.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        session!.Attributes = attributes.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         return session;
     }
 }

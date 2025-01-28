@@ -27,7 +27,7 @@ public class Parameter : IStringConvertable<Parameter>
 
     public static implicit operator Parameter(string value) => new(value);
     
-    public bool ShouldSerializeAsString() => Type != ParameterType.Any;
+    public bool ShouldSerializeAsString() => Type == ParameterType.Any;
     
     public override string ToString() => Name;
 }

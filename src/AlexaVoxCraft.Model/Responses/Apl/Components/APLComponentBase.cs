@@ -8,11 +8,11 @@ public abstract class APLComponentBase
 {
     protected APLComponentBase(string? type = null)
     {
-        Type = type;
+        Type = !string.IsNullOrWhiteSpace(type) ? type : GetType().Name;
     }
     [JsonPropertyName("type")]
     [JsonInclude]
-    public string? Type { get; private set; }
+    public virtual string? Type { get; private set; }
 
     [JsonPropertyName("bind"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<Binding> Bindings { get; set; }

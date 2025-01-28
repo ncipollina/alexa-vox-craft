@@ -4,11 +4,12 @@ namespace AlexaVoxCraft.Model.Requests;
 
 public class Intent
 {
-    private string _name;
+    private string _name = string.Empty;
     
     [JsonPropertyName("name")]
-    public string Name {
-        get { return _name; }
+    public required string Name {
+        get => _name;
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
         set {
             _name = value;
             Signature = value;
@@ -16,11 +17,11 @@ public class Intent
     }
 
     [JsonIgnore]
-    public IntentSignature Signature { get; private set; }
+    public IntentSignature? Signature { get; private set; }
 
     [JsonPropertyName("confirmationStatus")]
-    public string ConfirmationStatus { get; set; }
+    public string? ConfirmationStatus { get; set; }
 
     [JsonPropertyName("slots")]
-    public Dictionary<string, Slot> Slots { get; set; }
+    public Dictionary<string, Slot>? Slots { get; set; }
 }

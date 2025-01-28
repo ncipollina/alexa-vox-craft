@@ -4,9 +4,6 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
 
 public class SetValue : APLCommand
 {
-    [JsonPropertyName("type")]
-    public override string Type => nameof(SetValue);
-
     [JsonPropertyName("componentId"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ComponentId { get; set; }
 

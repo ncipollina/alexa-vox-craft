@@ -6,16 +6,16 @@ namespace AlexaVoxCraft.Model.Requests;
 public sealed class SkillRequest
 {
     [JsonPropertyName("version")]
-    public string Version { get; set; }
+    public required string Version { get; set; }
 
     [JsonPropertyName("session")]
-    public Session Session { get; set; }
+    public required Session Session { get; set; }
 
     [JsonPropertyName("context")]
-    public Context Context { get; set; }
+    public Context? Context { get; set; }
     
     [JsonPropertyName("request")]
-    public RequestType Request { get; set; }
+    public required RequestType Request { get; set; }
 
     public System.Type? GetRequestType()
     {

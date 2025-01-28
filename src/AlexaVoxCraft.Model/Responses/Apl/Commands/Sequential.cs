@@ -17,9 +17,6 @@ public class Sequential : APLCommand
     {
     }
 
-    [JsonPropertyName("type")]
-    public override string Type => nameof(Sequential);
-
     [JsonPropertyName("finally"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>> Finally { get; set; }
 

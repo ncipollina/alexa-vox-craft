@@ -5,9 +5,6 @@ namespace AlexaVoxCraft.Model.Responses.Apl.Commands;
 
 public class SetPage : APLCommand
 {
-    [JsonPropertyName("type")]
-    public override string Type => nameof(SetPage);
-
     [JsonPropertyName("componentId"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ComponentId { get; set; }
 
