@@ -9,7 +9,7 @@ jobs:
   build:
     uses: ncipollina/devops-templates/.github/workflows/pr-build.yaml@v2.1
     with:
-      solution: Disney.Trivia.Skill.sln
+      solution: AlexaVoxCraft.sln
       hasTests: true
       dotnetVersion: "8.0.x"
       runCdk: false
