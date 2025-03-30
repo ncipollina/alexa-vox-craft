@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{07C12036-28B
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.github\workflows\build.yaml = .github\workflows\build.yaml
-		.github\workflows\prbuild.yaml = .github\workflows\prbuild.yaml
+		.github\workflows\pr-build.yaml = .github\workflows\pr-build.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7756AA98-6912-4579-AB67-979A9FD0EC05}"
