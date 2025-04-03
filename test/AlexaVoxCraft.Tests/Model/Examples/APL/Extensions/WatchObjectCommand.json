@@ -1,5 +1,0 @@
-{
-  "type": "DataStore:WatchObject",
-  "namespace": "LocationWeather",
-  "key": "weather"
-}

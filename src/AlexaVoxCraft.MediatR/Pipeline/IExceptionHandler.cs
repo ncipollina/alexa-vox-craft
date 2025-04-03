@@ -1,4 +1,4 @@
-﻿using AlexaVoxCraft.Model.Responses;
+﻿using AlexaVoxCraft.Model.Response;
 
 namespace AlexaVoxCraft.MediatR.Pipeline;
 

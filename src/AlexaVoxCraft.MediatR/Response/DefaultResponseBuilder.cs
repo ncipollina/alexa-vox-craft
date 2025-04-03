@@ -1,8 +1,8 @@
 ﻿using AlexaVoxCraft.MediatR.Attributes;
-using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
-using AlexaVoxCraft.Model.Responses.Directives;
-using AlexaVoxCraft.Model.Responses.Ssmls;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
+using AlexaVoxCraft.Model.Response.Directive;
+using AlexaVoxCraft.Model.Response.Ssml;
 
 namespace AlexaVoxCraft.MediatR.Response;
 
@@ -173,10 +173,7 @@ public class DefaultResponseBuilder : IResponseBuilder
 
     public IResponseBuilder AddConfirmSlotDirective(string slotToConfirm, Intent? updatedIntent = null)
     {
-        var confirmSlotDirective = new DialogConfirmSlot
-        {
-            SlotName = slotToConfirm
-        };
+        var confirmSlotDirective = new DialogConfirmSlot(slotToConfirm);
         if (updatedIntent != null)
         {
             confirmSlotDirective.UpdatedIntent = updatedIntent;
@@ -197,9 +194,9 @@ public class DefaultResponseBuilder : IResponseBuilder
         return AddDirective(delegateDirective);
     }
 
-    public IResponseBuilder AddDirective(Directive directive)
+    public IResponseBuilder AddDirective(IDirective directive)
     {
-        _response.Directives ??= new List<Directive>();
+        _response.Directives ??= new List<IDirective>();
 
         _response.Directives.Add(directive);
 
@@ -208,10 +205,7 @@ public class DefaultResponseBuilder : IResponseBuilder
 
     public IResponseBuilder AddElicitSlotDirective(string slotToElicit, Intent? updatedIntent = null)
     {
-        var elicitSlotDirective = new DialogElicitSlot
-        {
-            SlotName = slotToElicit
-        };
+        var elicitSlotDirective = new DialogElicitSlot(slotToElicit);
 
         if (updatedIntent != null)
         {
@@ -235,10 +229,7 @@ public class DefaultResponseBuilder : IResponseBuilder
 
     public IResponseBuilder AddVideoAppLaunchDirective(string source, string? title = null, string? subtitle = null)
     {
-        var videoItem = new VideoItem
-        {
-            Source = source
-        };
+        var videoItem = new VideoItem(source);
 
         if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(subtitle))
         {

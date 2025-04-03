@@ -1,4 +1,4 @@
-﻿using AlexaVoxCraft.Model.Requests;
+﻿using AlexaVoxCraft.Model.Request;
 
 namespace AlexaVoxCraft.MediatR;
 

@@ -1,7 +1,7 @@
 ﻿using AlexaVoxCraft.MediatR.Pipeline;
-using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Requests.Types;
-using AlexaVoxCraft.Model.Responses;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Request.Type;
+using AlexaVoxCraft.Model.Response;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlexaVoxCraft.MediatR.Wrappers;
@@ -12,7 +12,7 @@ public abstract class RequestHandlerWrapper : HandlerBase
         CancellationToken cancellationToken);
 }
 
-public class RequestHandlerWrapperImpl<TRequestType> : RequestHandlerWrapper where TRequestType : RequestType
+public class RequestHandlerWrapperImpl<TRequestType> : RequestHandlerWrapper where TRequestType : Request
 {
     public override Task<SkillResponse> Handle(SkillRequest request, IServiceProvider serviceProvider,
         CancellationToken cancellationToken)

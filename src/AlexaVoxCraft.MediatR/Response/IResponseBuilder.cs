@@ -1,7 +1,7 @@
-﻿using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
-using AlexaVoxCraft.Model.Responses.Directives;
-using AlexaVoxCraft.Model.Responses.Ssmls;
+﻿using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
+using AlexaVoxCraft.Model.Response.Directive;
+using AlexaVoxCraft.Model.Response.Ssml;
 
 namespace AlexaVoxCraft.MediatR.Response;
 
@@ -51,7 +51,7 @@ public interface IResponseBuilder
 
     IResponseBuilder AddDelegateDirective(Intent? updatedIntent = null);
 
-    IResponseBuilder AddDirective(Directive directive);
+    IResponseBuilder AddDirective(IDirective directive);
 
     IResponseBuilder AddElicitSlotDirective(string slotToElicit, Intent? updatedIntent = null);
 

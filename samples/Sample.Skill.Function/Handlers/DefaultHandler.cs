@@ -1,5 +1,5 @@
 using AlexaVoxCraft.MediatR;
-using AlexaVoxCraft.Model.Responses;
+using AlexaVoxCraft.Model.Response;
 
 namespace Sample.Skill.Function.Handlers;
 

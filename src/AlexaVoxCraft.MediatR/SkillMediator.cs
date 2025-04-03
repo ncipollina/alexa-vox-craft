@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using AlexaVoxCraft.MediatR.DI;
 using AlexaVoxCraft.MediatR.Wrappers;
-using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
 using Microsoft.Extensions.Options;
 
 namespace AlexaVoxCraft.MediatR;
