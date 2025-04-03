@@ -1,10 +1,11 @@
 # AlexaVoxCraft
 
 ## Package Version
-| Package                               | Build Status | Nuget                                                                                                                                                        |
-|---------------------------------------| ------------ |--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AlexaVoxCraft.Lambda.AspNetCoreServer | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/alexavoxcraft.lambda.aspnetcoreserver)](https://www.nuget.org/packages/AlexaVoxCraft.Lambda.AspNetCoreServer/) |
-| AlexaVoxCraft.Model                   | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/alexavoxcraft.model)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                                     |
+| Package                      | Build Status | Nuget                                                                                                                                      |
+|------------------------------| ------------ |--------------------------------------------------------------------------------------------------------------------------------------------|
+| AlexaVoxCraft.MediatR        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.MediatR)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
+| AlexaVoxCraft.MediatR.Lambda | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.MediatR.Lambda)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) |
+| AlexaVoxCraft.Model          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.Model)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
 
 ## Introduction
 
