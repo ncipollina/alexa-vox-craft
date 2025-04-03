@@ -1,12 +1,11 @@
 # AlexaVoxCraft
 
 ## Package Version
-| Package                      | Build Status | Nuget                                                                                                                                      |
-|------------------------------| ------------ |--------------------------------------------------------------------------------------------------------------------------------------------|
-| AlexaVoxCraft.MediatR        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.MediatR)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
-| AlexaVoxCraft.MediatR.Lambda | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.MediatR.Lambda)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) |
-| AlexaVoxCraft.Model          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml) | [![NuGet Badge](https://buildstats.info/nuget/AlexaVoxCraft.Model)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
-
+| Package                      | Version                                                                                                                   | Downloads                                                                                                                       |
+|------------------------------|---------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| AlexaVoxCraft.MediatR        | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.MediatR.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)                         | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)                         |
+| AlexaVoxCraft.MediatR.Lambda | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.MediatR.Lambda.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/)           | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/)           |
+| AlexaVoxCraft.Model          | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.Model.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                             | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                             |
 ## Introduction
 
 AlexaVoxCraft is a .NET library for crafting interactive voice experiences with Amazon Alexa using the VoxCraft framework. This repository provides tools and utilities to develop, deploy, and manage Alexa skills in .NET applications.
