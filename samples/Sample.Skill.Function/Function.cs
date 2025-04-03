@@ -2,8 +2,8 @@
 using AlexaVoxCraft.MediatR.DI;
 using AlexaVoxCraft.MediatR.Lambda;
 using AlexaVoxCraft.MediatR.Lambda.Extensions;
-using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 

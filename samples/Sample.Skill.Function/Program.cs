@@ -1,5 +1,5 @@
-﻿using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
+﻿using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
 using AlexaVoxCraft.Model.Serialization;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;

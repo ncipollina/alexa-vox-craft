@@ -1,6 +1,6 @@
 ﻿using AlexaVoxCraft.MediatR.Attributes;
 using AlexaVoxCraft.MediatR.Response;
-using AlexaVoxCraft.Model.Requests;
+using AlexaVoxCraft.Model.Request;
 
 namespace AlexaVoxCraft.MediatR;
 

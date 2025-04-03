@@ -1,5 +1,5 @@
-﻿using AlexaVoxCraft.Model.Requests.Types;
-using AlexaVoxCraft.Model.Responses;
+﻿using AlexaVoxCraft.Model.Request.Type;
+using AlexaVoxCraft.Model.Response;
 
 namespace AlexaVoxCraft.MediatR;
 
@@ -16,6 +16,6 @@ public interface IDefaultRequestHandler : IRequestHandler
         Task.FromResult(true);
 }
 
-public interface IRequestHandler<TRequestType> : IRequestHandler where TRequestType : RequestType
+public interface IRequestHandler<TRequestType> : IRequestHandler where TRequestType : Request
 {
 }

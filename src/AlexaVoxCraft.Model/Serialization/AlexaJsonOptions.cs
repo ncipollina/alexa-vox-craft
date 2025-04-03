@@ -1,15 +1,40 @@
 ﻿using System.Text.Json;
-using AlexaVoxCraft.Model.Serialization.TypeInfoResolvers;
+using System.Text.Json.Serialization.Metadata;
 
 namespace AlexaVoxCraft.Model.Serialization;
 
 public static class AlexaJsonOptions
 {
-    public static JsonSerializerOptions DefaultOptions => new()
+    // This allows external packages to register their own JsonTypeInfo modifiers
+    private static readonly List<Action<JsonTypeInfo>> AdditionalModifiers = [];
+
+    public static JsonSerializerOptions DefaultOptions
     {
-        TypeInfoResolver = new PolymorphicTypeResolver
+        get
         {
-            Modifiers = { APLComponentModifiers.NormalizePropertyNames }
+            var resolver = new AlexaTypeResolver();
+
+            resolver.Modifiers.Add(Modifiers.SetNumberHandlingModifier);
+
+            foreach (var modifier in AdditionalModifiers)
+            {
+                resolver.Modifiers.Add(modifier);
+            }
+
+            return new JsonSerializerOptions
+            {
+                TypeInfoResolver = resolver
+            };
         }
-    };
+    }
+    
+    public static void RegisterTypeModifier<T>(Action<JsonTypeInfo> modifier)
+    {
+        AdditionalModifiers.Add(ti => {
+            if (ti.Type == typeof(T))
+            {
+                modifier(ti);
+            }
+        });
+    }
 }

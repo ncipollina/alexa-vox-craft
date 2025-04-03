@@ -1,6 +1,0 @@
-{
-  "type": "DataStore:Object",
-  "namespace": "LocationWeather",
-  "key": "weather",
-  "token": "thisIsADummyToken"
-}

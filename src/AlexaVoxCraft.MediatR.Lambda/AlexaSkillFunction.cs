@@ -1,8 +1,8 @@
 ﻿using AlexaVoxCraft.MediatR.Lambda.Abstractions;
 using AlexaVoxCraft.MediatR.Lambda.Context;
 using AlexaVoxCraft.MediatR.Lambda.Extensions;
-using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

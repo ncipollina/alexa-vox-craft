@@ -1,5 +1,5 @@
-﻿using AlexaVoxCraft.Model.Requests;
-using AlexaVoxCraft.Model.Responses;
+﻿using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Response;
 
 namespace AlexaVoxCraft.MediatR;
 
