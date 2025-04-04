@@ -1,0 +1,21 @@
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace AlexaVoxCraft.Model.Apl;
+
+public class UserEventRequest: Request.Type.Request
+{
+    public const string RequestType = "Alexa.Presentation.APL.UserEvent";
+
+    [JsonProperty("token", NullValueHandling = NullValueHandling.Ignore)]
+    public string Token { get; set; }
+
+    [JsonProperty("arguments", NullValueHandling = NullValueHandling.Ignore)]
+    public string[] Arguments { get; set; }
+
+    [JsonProperty("source",NullValueHandling = NullValueHandling.Ignore)]
+    public APLCommandSource Source { get; set; }
+
+    [JsonProperty("components",NullValueHandling = NullValueHandling.Ignore)]
+    public Dictionary<string, object> Components { get; set; }
+}

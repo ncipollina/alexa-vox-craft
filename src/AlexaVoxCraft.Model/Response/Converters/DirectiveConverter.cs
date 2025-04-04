@@ -5,7 +5,7 @@ namespace AlexaVoxCraft.Model.Response.Converters;
 
 public class DirectiveConverter : BasePolymorphicConverter<IDirective>
 {
-    public static IDictionary<string, Type> DirectiveDerivedTypes = new Dictionary<string, Type>
+    private static IDictionary<string, Type> _directiveDerivedTypes = new Dictionary<string, Type>
     {
         { AudioPlayerPlayDirective.DirectiveType, typeof(AudioPlayerPlayDirective) },
         { ClearQueueDirective.DirectiveType, typeof(ClearQueueDirective) },
@@ -21,17 +21,27 @@ public class DirectiveConverter : BasePolymorphicConverter<IDirective>
         { DialogUpdateDynamicEntities.DirectiveType, typeof(DialogUpdateDynamicEntities) }
     };
 
-    public static Dictionary<string, Func<JsonElement, Type>> DirectiveDataDrivenTypeFactories =
+    private static Dictionary<string, Func<JsonElement, Type>> _directiveDataDrivenTypeFactories =
         new()
         {
             { ConnectionSendRequest.DirectiveType, ConnectionSendRequestFactory.Create }
         };
+
+    public static void RegisterDirectiveDerivedType<TDirective>(string key) where TDirective : IDirective
+    {
+        _directiveDerivedTypes.TryAdd(key, typeof(TDirective));
+    }
+    
+    public static void RegisterDirectiveDataDrivenTypeFactory(string key, Func<JsonElement, Type> factory)
+    {
+        _directiveDataDrivenTypeFactories.TryAdd(key, factory);
+    }
     
     protected override string TypeDiscriminatorPropertyName => "type";
 
-    protected override IDictionary<string, Type> DerivedTypes => DirectiveDerivedTypes;
+    protected override IDictionary<string, Type> DerivedTypes => _directiveDerivedTypes;
 
-    protected override IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories => DirectiveDataDrivenTypeFactories;
+    protected override IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories => _directiveDataDrivenTypeFactories;
 
 
     protected override Func<JsonElement, Type?>? CustomTypeResolver => null;

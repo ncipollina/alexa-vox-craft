@@ -18,7 +18,12 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
     };
     
     protected abstract Func<JsonElement, Type?>? CustomTypeResolver { get; }
-
+    
+    protected virtual JsonElement TransformJson(JsonElement original)
+    {
+        return original; // No-op by default
+    }
+    
     public abstract Type? DefaultType { get; }
 
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -50,9 +55,15 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
             }
         }
 
-        return resultType is not null
-            ? (T)JsonSerializer.Deserialize(root.GetRawText(), resultType, options)!
-            : throw new JsonException($"Unrecognized type '{typeValue}'");
+        if (resultType is null)
+        {
+            throw new JsonException($"Unrecognized type '{typeValue}'");
+        }
+
+        // Allow subclasses to mutate the element
+        var transformed = TransformJson(root);
+
+        return (T)JsonSerializer.Deserialize(transformed.GetRawText(), resultType, options)!;
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

@@ -1,0 +1,44 @@
+﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace AlexaVoxCraft.Model.Apl.JsonConverter;
+
+public class APLDocumentConverter:JsonConverter<APLDocumentReference>
+{
+    public override bool CanWrite => false;
+
+    public override void WriteJson(JsonWriter writer, APLDocumentReference value, JsonSerializer serializer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override APLDocumentReference ReadJson(JsonReader reader, Type objectType, APLDocumentReference existingValue, bool hasExistingValue,
+        JsonSerializer serializer)
+    {
+        var jObject = JObject.Load(reader);
+        var documentType = jObject.Value<string>("type");
+
+        switch (documentType.ToUpper())
+        {
+            case "APL":
+                var apl = new APLDocument();
+                serializer.Populate(jObject.CreateReader(), apl);
+                return apl;
+            case "APLT":
+                var aplt = new APLTDocument();
+                serializer.Populate(jObject.CreateReader(), aplt);
+                return aplt;
+            case "APLA":
+                var apla = new APLADocument();
+                serializer.Populate(jObject.CreateReader(), apla);
+                return apla;
+            case "LINK":
+                var link = new APLDocumentLink();
+                serializer.Populate(jObject.CreateReader(), link);
+                return link;
+        }
+
+        throw new InvalidOperationException($"Unknown APL Document type {documentType}");
+    }
+}

@@ -6,7 +6,7 @@ namespace AlexaVoxCraft.Model.Request.Type;
 
 public class RequestConverter : JsonConverter<Request>
 {
-    public static readonly List<IRequestTypeResolver> RequestTypeResolvers =
+    private static readonly List<IRequestTypeResolver> RequestTypeResolvers =
     [
         ..new IRequestTypeResolver[]
         {
@@ -19,6 +19,18 @@ public class RequestConverter : JsonConverter<Request>
             new ConnectionResponseTypeResolver()
         }
     ];
+
+    public static void RegisterRequestTypeResolver<TResolver>() where TResolver : IRequestTypeResolver, new()
+    {
+        // Prevent duplicates (optional)
+        if (RequestTypeResolvers.Any(r => r.GetType() == typeof(TResolver)))
+        {
+            return;
+        }
+
+        var instance = new TResolver();
+        RequestTypeResolvers.Add(instance);
+    }
 
     public override bool CanConvert(System.Type objectType)
     {

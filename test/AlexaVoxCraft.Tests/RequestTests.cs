@@ -264,11 +264,7 @@ public class RequestTests
     [Fact]
     public void Can_Handle_New_Intent()
     {
-        if (!RequestConverter.RequestTypeResolvers.Any(c => c is NewIntentRequestTypeResolver))
-        {
-            RequestConverter.RequestTypeResolvers.Add(new NewIntentRequestTypeResolver());
-        }
-
+        RequestConverter.RegisterRequestTypeResolver<NewIntentRequestTypeResolver>();
         var request = GetObjectFromExample<SkillRequest>("NewIntent.json");
         Assert.IsType<NewIntentRequest>(request.Request);
         Assert.True(((NewIntentRequest) request.Request).TestProperty);
