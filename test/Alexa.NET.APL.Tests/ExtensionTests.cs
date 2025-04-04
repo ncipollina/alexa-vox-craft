@@ -18,7 +18,7 @@ public class ExtensionTests
         doc.Extensions.Value.Add(backstack);
         doc.Settings = new APLDocumentSettings(); 
         doc.Settings.Add(backstack.Name, new BackStackSettings{BackstackId = "myDocument"});
-        Assert.True(Utility.CompareJson(doc, "ExtensionBackStack.json"));
+        Assert.True(Utility.CompareJson(doc, "ExtensionBackStack.json", null));
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class ExtensionTests
             DeviceStateName = "MyDeviceState",
             WakeWordResponse = WakeWordResponse.FollowOnWakeWord
         });
-        Assert.True(Utility.CompareJson(doc, "ExtensionSmartMotion.json"));
+        Assert.True(Utility.CompareJson(doc, "ExtensionSmartMotion.json", null));
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class ExtensionTests
             EntitySensingStateName = "EntitySensingState",
             PrimaryUserName = "User"
         });
-        Assert.True(Utility.CompareJson(doc, "ExtensionEntitySensing.json"));
+        Assert.True(Utility.CompareJson(doc, "ExtensionEntitySensing.json", null));
     }
 
     [Fact]
@@ -172,7 +172,7 @@ public class ExtensionTests
                 }
             }
         });
-        Assert.True(Utility.CompareJson(doc, "DataStore_Extension.json"));
+        Assert.True(Utility.CompareJson(doc, "DataStore_Extension.json", null));
     }
 
     [Fact]

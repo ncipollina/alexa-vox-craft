@@ -1,21 +1,36 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
-public class InsertItem:APLCommand
+public class InsertItem : APLCommand
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(InsertItem);
+    [JsonPropertyName("type")] public override string Type => nameof(InsertItem);
 
-    [JsonProperty("at", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> At { get; set; }
+    [JsonPropertyName("at")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? At { get; set; }
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 
-    [JsonProperty("items", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(GenericLegacySingleOrListConverter<object>))]
-    public APLValue<IList<object>> Items { get; set; }
+    [JsonPropertyName("items")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<object>>? Items { get; set; }
+
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<CommandDefinition>(typeInfo =>
+        {
+            var parameterProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "items");
+            if (parameterProp is not null)
+            {
+                parameterProp.CustomConverter = new GenericSingleOrListConverter<object>(false);
+            }
+        });
+    }
 }

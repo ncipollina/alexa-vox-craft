@@ -1,20 +1,19 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
-public class ControlMedia:APLCommand
+public class ControlMedia : APLCommand
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(ControlMedia);
+    [JsonPropertyName("type")] public override string Type => nameof(ControlMedia);
 
-    [JsonProperty("command")]
-    public APLValue<ControlMediaCommand> Command { get; set; }
+    [JsonPropertyName("command")] public APLValue<ControlMediaCommand> Command { get; set; }
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 
-    [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> Value { get; set; }
+    [JsonPropertyName("value")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? Value { get; set; }
 
 }

@@ -38,7 +38,7 @@ public class DataStoreCommandTests
     {
         var raw = Utility.ExampleFileContent<DataStoreCommand>("DataStore_PutObject.json");
         var cmd = Assert.IsType<PutObject>(raw);
-        Utility.CompareJson(cmd, "DataStore_PutObject.json");
+        Utility.CompareJson(cmd, "DataStore_PutObject.json", null);
     }
 
     [Fact]
@@ -46,6 +46,6 @@ public class DataStoreCommandTests
     {
         var raw = Utility.ExampleFileContent<DataStoreCommand>("DataStore_PutObjectArray.json");
         var cmd = Assert.IsType<PutObjectArray>(raw);
-        Utility.CompareJson(cmd, "DataStore_PutObjectArray.json");
+        Utility.CompareJson(cmd, "DataStore_PutObjectArray.json", null);
     }
 }

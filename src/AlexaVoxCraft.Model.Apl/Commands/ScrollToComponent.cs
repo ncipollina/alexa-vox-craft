@@ -1,19 +1,21 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
 public class ScrollToComponent : APLCommand
 {
-    [JsonProperty("align",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<ItemAlignment> Align { get; set; }
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<ItemAlignment>? Align { get; set; }
 
-    [JsonProperty("componentId",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public override string Type => nameof(ScrollToComponent);
 
-    [JsonProperty("targetDuration", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> TargetDuration { get; set; }
+    [JsonPropertyName("targetDuration")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? TargetDuration { get; set; }
 }

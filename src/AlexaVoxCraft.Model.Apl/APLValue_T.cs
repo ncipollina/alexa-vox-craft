@@ -25,7 +25,7 @@ public class APLValue<T> : APLValue
         return value.Value;
     }
 
-    public static implicit operator APLValue<T>(T value)
+    public static implicit operator APLValue<T>?(T value)
     {
         return value == null ? null : new APLValue<T>(value);
     }

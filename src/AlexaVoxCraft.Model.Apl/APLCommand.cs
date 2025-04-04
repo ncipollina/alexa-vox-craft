@@ -1,26 +1,31 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(APLCommandConverter))]
 public abstract class APLCommand
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public abstract string Type { get; }
 
-    [JsonProperty("when",NullValueHandling = NullValueHandling.Ignore)]
-    public string When { get; set; }
+    [JsonPropertyName("when")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? When { get; set; }
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public string Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Description { get; set; }
 
-    [JsonProperty("delay", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> DelayMilliseconds { get; set; }
+    [JsonPropertyName("delay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? DelayMilliseconds { get; set; }
 
-    [JsonProperty("screenLock",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ScreenLock { get; set; }
+    [JsonPropertyName("screenLock")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ScreenLock { get; set; }
 
-    [JsonProperty("sequencer",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Sequencer { get; set; }
+    [JsonPropertyName("sequencer")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Sequencer { get; set; }
 }

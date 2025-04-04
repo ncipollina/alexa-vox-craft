@@ -19,7 +19,7 @@ public class GradientTest
     [Fact]
     public void LinearGradient()
     {
-        APLSupport.Add();
+        // APLSupport.Add();
         
         var expectedRaw = @"{
         ""type"": ""linear"",

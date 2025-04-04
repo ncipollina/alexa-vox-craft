@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
@@ -20,14 +20,16 @@ public class AnimatedTransform : AnimatedProperty
         };
     }
 
-    [JsonProperty("property")]
+    [JsonPropertyName("property")]
     public override APLValue<string> Property => "transform";
 
-    [JsonProperty("from", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<IList<APLTransform>> From { get; set; }
+    [JsonPropertyName("from")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLTransform>>? From { get; set; }
 
-    [JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<IList<APLTransform>> To { get; set; }
+    [JsonPropertyName("to")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLTransform>>? To { get; set; }
 
     public static APLValue<IList<AnimatedProperty>> Multiple(IEnumerable<APLTransform> from, IEnumerable<APLTransform> to)
     {

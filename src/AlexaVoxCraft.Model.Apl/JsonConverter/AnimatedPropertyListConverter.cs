@@ -1,16 +1,10 @@
-﻿using System.Collections.Generic;
-using AlexaVoxCraft.Model.Apl.Commands;
-using Newtonsoft.Json;
+﻿using AlexaVoxCraft.Model.Apl.Commands;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class AnimatedPropertyListConverter : LegacySingleOrListConverter<AnimatedProperty>
+public class AnimatedPropertyListConverter : SingleOrListConverter<AnimatedProperty>
 {
-    private readonly AnimatedPropertyConverter _converter = new AnimatedPropertyConverter();
-    protected override JsonToken SingleToken => JsonToken.StartObject;
-    protected override void ReadSingle(JsonReader reader, JsonSerializer serializer, List<AnimatedProperty> list)
+    public AnimatedPropertyListConverter(bool alwaysOutputArray) : base(alwaysOutputArray)
     {
-        var value = (AnimatedProperty)_converter.ReadJson(reader, typeof(AnimatedProperty), null, serializer);
-        list.Add(value);
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Commands;
+﻿using System.Text.Json.Serialization;
 
-public class Finish:APLCommand
+namespace AlexaVoxCraft.Model.Apl.Commands;
+
+public class Finish : APLCommand
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(Finish);
 }

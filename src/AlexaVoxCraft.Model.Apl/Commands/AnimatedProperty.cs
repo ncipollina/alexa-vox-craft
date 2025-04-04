@@ -1,11 +1,11 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
 [JsonConverter(typeof(AnimatedPropertyConverter))]
 public abstract class AnimatedProperty
 {
-    [JsonProperty("property")]
+    [JsonPropertyName("property")]
     public abstract APLValue<string> Property { get; }
 }

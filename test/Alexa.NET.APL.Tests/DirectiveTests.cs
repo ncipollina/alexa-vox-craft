@@ -68,7 +68,7 @@ public class DirectiveTests
         directive.Commands = new List<APLCommand>();
         directive.Commands.Add(new Idle());
 
-        Assert.True(Utility.CompareJson(directive, "ExecuteCommands.json"));
+        Assert.True(Utility.CompareJson(directive, "ExecuteCommands.json", null));
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class DirectiveTests
                 new DynamicListItem{PrimaryText = "item 20"},
             }
         };
-        Assert.True(Utility.CompareJson(directive, "SendIndexListDataDirective.json"));
+        Assert.True(Utility.CompareJson(directive, "SendIndexListDataDirective.json", null));
     }
 
     [Fact]
@@ -137,6 +137,6 @@ public class DirectiveTests
         Assert.Equal(17,dmi.Index);
         Assert.Equal(2,dmi.Count);
 
-        Assert.True(Utility.CompareJson(updateDirective,"UpdateIndexListData.json"));
+        Assert.True(Utility.CompareJson(updateDirective,"UpdateIndexListData.json", null));
     }
 }

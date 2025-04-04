@@ -1,8 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Linq;
+using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
+using AlexaVoxCraft.Model.Response.Converters;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
+[JsonConverter(typeof(ParameterConverter))]
 public class Parameter
 {
     public Parameter() { }
@@ -12,10 +16,13 @@ public class Parameter
         Name = name;
     }
 
-    [JsonProperty("name")]
+    [JsonIgnore] public bool WasStringInput { get; set; } = false;
+
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("type"),JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("type")]
+    [JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<ParameterType>))]
     public ParameterType Type { get; set; }
 
     public bool ShouldSerializeType()
@@ -23,14 +30,35 @@ public class Parameter
         return Type != ParameterType.any;
     }
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public string Description { get; set; }
 
-    [JsonProperty("default", NullValueHandling = NullValueHandling.Ignore)]
-    public object Default { get; set; }
+    [JsonPropertyName("default")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? Default { get; set; }
 
     public static implicit operator Parameter(string parameterName)
     {
-        return new Parameter(parameterName);
+        return new Parameter(parameterName)
+        {
+            WasStringInput = true
+        };
+    }
+
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<Parameter>(info =>
+        {
+            var prop = info.Properties.FirstOrDefault(p => p.Name == "type");
+            if (prop is not null)
+            {
+                prop.ShouldSerialize = ((obj, _) =>
+                {
+                    var parameter = (Parameter)obj;
+                    return parameter.Type != ParameterType.any;
+                });
+            }
+        });
     }
 }

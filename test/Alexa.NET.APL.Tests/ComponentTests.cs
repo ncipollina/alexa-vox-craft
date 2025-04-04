@@ -180,7 +180,7 @@ public class ComponentTests
             Start = 1552070232
         };
 
-        Assert.True(Utility.CompareJson(timeText, "TimeText.json"));
+        Assert.True(Utility.CompareJson(timeText, "TimeText.json", null));
     }
 
 
@@ -206,7 +206,7 @@ public class ComponentTests
                 Value = APLValue.To<string>("${exampleData.imageStyleText}")
             }}.ToList()
         };
-        Assert.True(Utility.CompareJson(control,"AlexaIconButton.json"));
+        Assert.True(Utility.CompareJson(control,"AlexaIconButton.json", null));
     }
 
     [Fact]
@@ -224,7 +224,7 @@ public class ComponentTests
             ImageAspectRatio = AlexaImageAspectRatio.Square,
             ImageSource = "${exampleData.imageSource}"
         };
-        Assert.True(Utility.CompareJson(control,"AlexaImageListItem.json"));
+        Assert.True(Utility.CompareJson(control,"AlexaImageListItem.json", null));
     }
 
 
@@ -239,7 +239,7 @@ public class ComponentTests
             RatingText = "509 ratings",
             Spacing = "@spacingMedium"
         };
-        Assert.True(Utility.CompareJson(control,"AlexaRating.json"));
+        Assert.True(Utility.CompareJson(control,"AlexaRating.json", null));
     }
 
     [Fact]
@@ -258,7 +258,7 @@ public class ComponentTests
                 }
             }.ToList())
         };
-        Assert.True(Utility.CompareJson(control,"AlexaImageList.json"));
+        Assert.True(Utility.CompareJson(control,"AlexaImageList.json", null));
     }
 
     [Fact]
@@ -272,7 +272,7 @@ public class ComponentTests
             ImageBlurredBackground = true
         };
 
-        Assert.True(Utility.CompareJson(control, "AlexaLists.json"));
+        Assert.True(Utility.CompareJson(control, "AlexaLists.json", null));
     }
 
     [Fact]

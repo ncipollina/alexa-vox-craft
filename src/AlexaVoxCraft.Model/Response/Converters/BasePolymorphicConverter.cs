@@ -5,9 +5,11 @@ namespace AlexaVoxCraft.Model.Response.Converters;
 
 public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
 {
-    protected abstract string TypeDiscriminatorPropertyName { get; }
+    protected virtual string TypeDiscriminatorPropertyName => "type";
     protected abstract IDictionary<string, Type> DerivedTypes { get; }
-    protected abstract IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories { get; }
+
+    protected virtual IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories =>
+        new Dictionary<string, Func<JsonElement, Type>>();
 
     protected virtual Func<JsonElement, string?> KeyResolver => element =>
     {
@@ -16,15 +18,15 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
             : null;
         return typeValue;
     };
-    
-    protected abstract Func<JsonElement, Type?>? CustomTypeResolver { get; }
+
+    protected virtual Func<JsonElement, Type?>? CustomTypeResolver => null;
     
     protected virtual JsonElement TransformJson(JsonElement original)
     {
         return original; // No-op by default
     }
-    
-    public abstract Type? DefaultType { get; }
+
+    public virtual Type? DefaultType => null;
 
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -1,15 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Commands;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class APLCommandTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public APLCommandTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
 
     [Fact]
     public void CommandDefinitionWorksProperly()
@@ -42,7 +50,7 @@ public class APLCommandTests
             Value = list
         };
 
-        Assert.True(Utility.CompareJson(command,"AnimatedItem.json"));
+        Assert.True(Utility.CompareJson(command,"AnimatedItem.json", _output));
 
         var deserial = Utility.ExampleFileContent<AnimateItem>("AnimatedItem.json");
         var property = Assert.Single(deserial.Value.Value);
@@ -63,7 +71,7 @@ public class APLCommandTests
 
         var parsed = Utility.ExampleFileContent<SpeakItem>("SpeakItem.json");
         Assert.NotNull(parsed);
-        Assert.True(Utility.CompareJson(command, "SpeakItem.json"));
+        Assert.True(Utility.CompareJson(command, "SpeakItem.json", null));
     }
 
     [Fact]
@@ -71,11 +79,11 @@ public class APLCommandTests
     {
         var command = new ControlMedia
         {
-            Command = ControlMediaCommand.Seek,
+            Command = ControlMediaCommand.Seek!,
             ComponentId = "myAudioPlayer",
             Value = 5000
         };
-        Assert.True(Utility.CompareJson(command,"ControlMediaCommand.json"));
+        Assert.True(Utility.CompareJson(command,"ControlMediaCommand.json", null));
     }
 
     [Fact]
@@ -87,7 +95,7 @@ public class APLCommandTests
             Property = "opacity",
             Value = "1"
         };
-        Assert.True(Utility.CompareJson(command,"SetValueCommand.json"));
+        Assert.True(Utility.CompareJson(command,"SetValueCommand.json", null));
     }
 
     [Fact]
@@ -102,24 +110,55 @@ public class APLCommandTests
     [Fact]
     public void Finish()
     {
+        // Arrange: create instance of Finish command
         var command = new Finish();
-        var jo = JObject.FromObject(command);
-        Assert.Single(jo);
-        Assert.Equal("Finish",jo["type"].Value<string>());
-        Assert.IsType<Finish>(JsonConvert.DeserializeObject<APLCommand>(jo.ToString()));
+
+        // Act: serialize to JsonNode
+        var jsonNode = JsonSerializer.SerializeToNode(command, AlexaJsonOptions.DefaultOptions);
+
+        // Assert: it only has one property
+        Assert.NotNull(jsonNode);
+        var obj = Assert.IsType<JsonObject>(jsonNode);
+        Assert.Single(obj);
+
+        // Assert: type is "Finish"
+        Assert.Equal("Finish", obj["type"]?.GetValue<string>());
+
+        // Act: deserialize back into base APLCommand
+        var deserialized = JsonSerializer.Deserialize<APLCommand>(jsonNode.ToJsonString(), AlexaJsonOptions.DefaultOptions);
+
+        // Assert: it's correctly deserialized into the Finish type
+        Assert.IsType<Finish>(deserialized);
     }
 
     [Fact]
     public void Reinflate()
     {
-        var command = new Reinflate{PreservedSequencers = new[] {"test"}};
-        var jo = JObject.FromObject(command);
-        Assert.Equal(2,jo.Count);
-        Assert.Equal("Reinflate", jo["type"].Value<string>());
-        Assert.Equal(JTokenType.Array, jo["preservedSequencers"].Type);
-        var sequencer = Assert.Single(jo["preservedSequencers"]);
-        Assert.Equal("test", sequencer.Value<string>());
-        Assert.IsType<Reinflate>(JsonConvert.DeserializeObject<APLCommand>(jo.ToString()));
+        // Arrange
+        var command = new Reinflate { PreservedSequencers = new[] { "test" } };
+
+        // Act: Serialize to JsonNode
+        var node = JsonSerializer.SerializeToNode(command, AlexaJsonOptions.DefaultOptions);
+
+        // Assert: Top-level object and property count
+        var obj = Assert.IsType<JsonObject>(node);
+        Assert.Equal(2, obj.Count);
+
+        // Assert: "type" is "Reinflate"
+        Assert.Equal("Reinflate", obj["type"]?.GetValue<string>());
+
+        // Assert: preservedSequencers is a JSON array
+        var preserved = obj["preservedSequencers"];
+        Assert.NotNull(preserved);
+        var array = Assert.IsType<JsonArray>(preserved);
+        var sequencer = Assert.Single(array);
+        Assert.Equal("test", sequencer?.GetValue<string>());
+
+        // Act: Deserialize back into base APLCommand
+        var deserialized = JsonSerializer.Deserialize<APLCommand>(node.ToJsonString(), AlexaJsonOptions.DefaultOptions);
+
+        // Assert: deserialized type is correct
+        Assert.IsType<Reinflate>(deserialized);
     }
 
     [Fact]
@@ -133,19 +172,19 @@ public class APLCommandTests
     [Fact]
     public void InsertItem()
     {
-        Utility.AssertSerialization<APLCommand, InsertItem>("Command_InsertItem.json");
+        Utility.AssertSerialization<APLCommand, InsertItem>("Command_InsertItem.json", _output);
     }
 
     [Fact]
     public void RemoveItem()
     {
-        Utility.AssertSerialization<APLCommand, RemoveItem>("Command_RemoveItem.json");
+        Utility.AssertSerialization<APLCommand, RemoveItem>("Command_RemoveItem.json", _output);
     }
 
     [Fact]
     public void ScrollToComponent()
     {
-        Utility.AssertSerialization<APLCommand, ScrollToComponent>("Command_ScrollToComponent.json");
+        Utility.AssertSerialization<APLCommand, ScrollToComponent>("Command_ScrollToComponent.json", _output);
     }
 
     [Fact]

@@ -13,7 +13,7 @@ public class RequestTests
     {
         var req = Utility.ExampleFileContent<Request>("LoadIndexListDataRequest.json");
         var loadIndex = Assert.IsType<LoadIndexListDataRequest>(req);
-        Assert.True(Utility.CompareJson(loadIndex, "LoadIndexListDataRequest.json"));
+        Assert.True(Utility.CompareJson(loadIndex, "LoadIndexListDataRequest.json", null));
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class RequestTests
     {
         var req = Utility.ExampleFileContent<Request>("LoadTokenListDataRequest.json");
         var loadIndex = Assert.IsType<LoadTokenListDataRequest>(req);
-        Assert.True(Utility.CompareJson(loadIndex, "LoadTokenListDataRequest.json"));
+        Assert.True(Utility.CompareJson(loadIndex, "LoadTokenListDataRequest.json", null));
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class RequestTests
     {
         var req = Utility.ExampleFileContent<Request>("RuntimeError.json");
         var errorReq = Assert.IsType<RuntimeErrorRequest>(req);
-        Assert.True(Utility.CompareJson(errorReq, "RuntimeError.json"));
+        Assert.True(Utility.CompareJson(errorReq, "RuntimeError.json", null));
     }
 
     [Fact]

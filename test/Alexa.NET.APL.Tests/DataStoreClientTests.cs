@@ -79,12 +79,12 @@ public class DataStoreClientTests
 
             var raw = await hr.Content.ReadAsStringAsync();
             var content = new JsonSerializer().Deserialize<CommandsRequest>(new JsonTextReader(new StringReader(raw)));
-            Assert.True(Utility.CompareJson(content, "DataStore_CommandsRequest.json"));
+            Assert.True(Utility.CompareJson(content, "DataStore_CommandsRequest.json", null));
 
         }, Utility.ExampleFileContent<CommandsResponse>("DataStore_CommandsResponse.json"))), "https://example.com", "xxx");
 
         var req = Utility.ExampleFileContent<CommandsRequest>("DataStore_CommandsRequest.json");
         var result = await client.Commands(req);
-        Assert.True(Utility.CompareJson(result, "DataStore_CommandsResponse.json"));
+        Assert.True(Utility.CompareJson(result, "DataStore_CommandsResponse.json", null));
     }
 }

@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
 public class RemoveItem : APLCommand
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public override string Type => nameof(RemoveItem);
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 }

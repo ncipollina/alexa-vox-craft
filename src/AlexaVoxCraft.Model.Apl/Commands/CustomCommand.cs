@@ -7,6 +7,7 @@ public class CustomCommand:APLCommand
 {
     public CustomCommand() { }
 
+    [JsonConstructor]
     public CustomCommand(string type)
     {
         Type = type;

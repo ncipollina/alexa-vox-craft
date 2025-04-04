@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
 using AlexaVoxCraft.Model.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
@@ -16,26 +17,57 @@ public static class Utility
 {
     private const string ExamplesPath = "Examples";
 
-    public static bool CompareJson(object actual, string expectedFile, params string[] exclude)
+    public static bool CompareJson(object actual, string expectedFile, ITestOutputHelper? output,
+        params string[] exclude)
     {
-        var actualJObject = JObject.FromObject(actual);
-        var expected = File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
-        var expectedJObject = JObject.Parse(expected);
+        // Read expected JSON directly as JsonNode
+        var expectedJson = File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
+        var expectedNode = JsonNode.Parse(expectedJson);
 
-        foreach (var item in exclude)
+        // Serialize actual object directly into JsonNode
+        var actualNode = JsonSerializer.SerializeToNode(actual, AlexaJsonOptions.DefaultOptions);
+
+        // Remove properties by paths (supporting dot notation)
+        actualNode!.RemovePaths(exclude);
+        expectedNode!.RemovePaths(exclude);
+
+        // Re-parse into JsonDocuments
+        using var cleanedActual = JsonDocument.Parse(actualNode.ToJsonString());
+        using var cleanedExpected = JsonDocument.Parse(expectedNode.ToJsonString());
+
+        // Compare with deep diff
+        var diffs = new List<string>();
+        var equal = cleanedActual.RootElement.JsonElementDeepEquals(cleanedExpected.RootElement, "", diffs);  
+        
+        if (!equal && output is not null)
         {
-            RemoveFrom(actualJObject, item);
-            RemoveFrom(expectedJObject, item);
+            output.WriteLine("❌ JSON DeepEquals failed. Differences:");
+            foreach (var diff in diffs)
+            {
+                output.WriteLine($"• {diff}");
+            }
         }
 
-        var result = JToken.DeepEquals(expectedJObject, actualJObject);
-
-        if (!result)
-        {
-            OutputTrimEqual(expectedJObject, actualJObject);
-        }
-
-        return result;
+        return equal;
+        //
+        // var actualJObject = JObject.FromObject(actual);
+        // var expected = File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
+        // var expectedJObject = JObject.Parse(expected);
+        //
+        // foreach (var item in exclude)
+        // {
+        //     RemoveFrom(actualJObject, item);
+        //     RemoveFrom(expectedJObject, item);
+        // }
+        //
+        // var result = JToken.DeepEquals(expectedJObject, actualJObject);
+        //
+        // if (!result)
+        // {
+        //     OutputTrimEqual(expectedJObject, actualJObject);
+        // }
+        //
+        // return result;
     }
 
     private static void OutputTrimEqual(JObject expectedJObject, JObject actualJObject, bool output = true)
@@ -92,11 +124,61 @@ public static class Utility
         }
     }
 
+    /// <summary>
+    /// Removes multiple paths (dot-separated) from the root JsonNode.
+    /// </summary>
+    public static void RemovePaths(this JsonNode? root, params string[] paths)
+    {
+        foreach (var path in paths)
+        {
+            root.RemovePath(path);
+        }
+    }
+    
+    /// <summary>
+    /// Removes a single path (dot-separated) from the JsonNode.
+    /// </summary>
+    public static void RemovePath(this JsonNode? node, string path)
+    {
+        if (node is null || string.IsNullOrWhiteSpace(path))
+            return;
+
+        var segments = path.Split('.');
+        RemovePathRecursive(node, segments, 0);
+    }
+
+    private static void RemovePathRecursive(JsonNode? current, string[] segments, int index)
+    {
+        if (current is null || index >= segments.Length)
+            return;
+
+        if (current is JsonObject obj)
+        {
+            var key = segments[index];
+
+            if (index == segments.Length - 1)
+            {
+                obj.Remove(key);
+                return;
+            }
+
+            if (obj.TryGetPropertyValue(key, out var nextNode))
+            {
+                RemovePathRecursive(nextNode, segments, index + 1);
+            }
+        }
+        else if (current is JsonArray array)
+        {
+            foreach (var element in array)
+            {
+                RemovePathRecursive(element, segments, index);
+            }
+        }
+    }
     public static T ExampleFileContent<T>(string expectedFile)
     {
-        APLSupport.Add();
         var json = ExampleFileContent(expectedFile);
-        return System.Text.Json.JsonSerializer.Deserialize<T>(json, AlexaJsonOptions.DefaultOptions);
+        return JsonSerializer.Deserialize<T>(json, AlexaJsonOptions.DefaultOptions);
     }
 
     public static string ExampleFileContent(string expectedFile)
@@ -124,18 +206,18 @@ public static class Utility
     {
         APLComponentConverter.ThrowConversionExceptions = true;
         var obj = ExampleFileContent<T>(expectedFile);
-        Assert.True(CompareJson(obj, expectedFile));
+        Assert.True(CompareJson(obj, expectedFile, null));
         return obj;
     }
 
-    public static void AssertSerialization<TImplied, TExplicit>(string expectedFile)
+    public static void AssertSerialization<TImplied, TExplicit>(string expectedFile, ITestOutputHelper? output = null)
     {
         APLComponentConverter.ThrowConversionExceptions = true;
         var obj = ExampleFileContent<TImplied>(expectedFile);
         var final = Assert.IsType<TExplicit>(obj);
-        Assert.True(CompareJson(final, expectedFile));
+        Assert.True(CompareJson(final, expectedFile, output));
     }
-        
+
     public static bool JsonElementDeepEquals(this JsonElement a, JsonElement b, string path = "",
         List<string>? diffs = null)
     {

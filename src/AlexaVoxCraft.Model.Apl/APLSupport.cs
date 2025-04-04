@@ -1,4 +1,5 @@
-﻿using AlexaVoxCraft.Model.Apl.DataStore;
+﻿using AlexaVoxCraft.Model.Apl.Commands;
+using AlexaVoxCraft.Model.Apl.DataStore;
 using AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
 
@@ -22,5 +23,10 @@ public static class APLSupport
         InstallationErrorHandler.AddToRequestConverter();
         DataStoreErrorHandler.AddToRequestConverter();
         FixedDecimalJsonConverter.AddSupport();
+        // Add support for models
+        Parameter.AddSupport();
+        CommandDefinition.AddSupport();
+        Select.AddSupport();
+        InsertItem.AddSupport();
     }
 }

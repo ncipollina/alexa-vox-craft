@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
@@ -13,14 +13,16 @@ public class AnimatedOpacity : AnimatedProperty
         To = to;
     }
 
-    [JsonProperty("property")]
+    [JsonPropertyName("property")]
     public override APLValue<string> Property => "opacity";
 
-    [JsonProperty("from", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> From { get; set; }
+    [JsonPropertyName("from")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? From { get; set; }
 
-    [JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> To { get; set; }
+    [JsonPropertyName("to")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? To { get; set; }
 
     public static APLValue<IList<AnimatedProperty>> Single(double? from, double? to)
     {

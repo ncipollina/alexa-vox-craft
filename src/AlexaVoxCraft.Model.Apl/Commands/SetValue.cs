@@ -1,19 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
 public class SetValue : APLCommand
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public override string Type => nameof(SetValue);
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 
-    [JsonProperty("property")]
+    [JsonPropertyName("property")]
     public APLValue<string> Property { get; set; }
 
 
-    [JsonProperty("value")]
+    [JsonPropertyName("value")]
     public APLValue<object> Value { get; set; }
 }

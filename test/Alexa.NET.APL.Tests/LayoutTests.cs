@@ -40,7 +40,7 @@ public class LayoutTests
             ImageBlurredBackground = true
         };
 
-        Assert.True(Utility.CompareJson(image, "AlexaImage.json"));
+        Assert.True(Utility.CompareJson(image, "AlexaImage.json", null));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class LayoutTests
     public void AlexaFooterGeneratesCorrectJson()
     {
         var footer = new AlexaFooter("Hint Text");
-        Assert.True(Utility.CompareJson(footer,"AlexaFooter.json"));
+        Assert.True(Utility.CompareJson(footer,"AlexaFooter.json", null));
     }
 
     [Fact]
@@ -97,6 +97,6 @@ public class LayoutTests
             LayoutDirection = LayoutDirection.RTL
         };
 
-        Assert.True(Utility.CompareJson(header,"AlexaHeader.json"));
+        Assert.True(Utility.CompareJson(header,"AlexaHeader.json", null));
     }
 }

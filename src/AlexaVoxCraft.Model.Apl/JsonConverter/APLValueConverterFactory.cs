@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -55,9 +56,9 @@ public class APLValueConverter<T> : JsonConverter<APLValue<T>>
     {
         return jsonValueKind switch
         {
-            JsonValueKind.String when t.IsString() => true,
+            JsonValueKind.String when t.IsStringType() => true,
             JsonValueKind.False or JsonValueKind.True when typeof(bool) == t => true,
-            JsonValueKind.Number when t.IsNumber() => true,
+            JsonValueKind.Number when t.IsNumberType() => true,
             _ => false
         };
     }
@@ -65,12 +66,12 @@ public class APLValueConverter<T> : JsonConverter<APLValue<T>>
 
 internal static partial class TypeExtensions
 {
-    internal static IList<Type> _numberTypes =
-        [typeof(int), typeof(short), typeof(long), typeof(float), typeof(decimal)];
+    private static readonly IList<Type> NumberTypes =
+        [typeof(int), typeof(short), typeof(long), typeof(double), typeof(float), typeof(decimal)];
 
-    internal static bool IsString(this Type type) => type == typeof(string) || type.IsEnum;
+    internal static bool IsStringType(this Type type) => type == typeof(string) || type.IsEnum;
 
-    internal static bool IsNumber(this Type type) => _numberTypes.Contains(type);
+    internal static bool IsNumberType(this Type type) => NumberTypes.Contains(type);
 }
 
 public class APLEnumerableValueConverter<TValue, TList> : JsonConverter<APLValue<TList>>
@@ -163,7 +164,7 @@ public class APLValueConverterFactory : JsonConverterFactory
     private static Type _aplAbsoluteDimensionType = typeof(APLAbsoluteDimensionValue);
     private static Type _aplObjectType = typeof(APLValue<object>);
     private static List<Type> _dimensionTypes = [_aplDimensionType, _aplAbsoluteDimensionType, _aplObjectType];
-
+    private static readonly ConcurrentDictionary<Type, System.Text.Json.Serialization.JsonConverter?> _converterCache = new();
     public override bool CanConvert(Type typeToConvert)
     {
         if (_dimensionTypes.Contains(typeToConvert))
@@ -178,8 +179,12 @@ public class APLValueConverterFactory : JsonConverterFactory
         return true;
     }
 
-    public override System.Text.Json.Serialization.JsonConverter? CreateConverter(Type typeToConvert,
-        JsonSerializerOptions options)
+    public override System.Text.Json.Serialization.JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+    {
+        return _converterCache.GetOrAdd(typeToConvert, CreateConverterInternal);
+    }
+    
+    private System.Text.Json.Serialization.JsonConverter? CreateConverterInternal(Type typeToConvert)
     {
         if (_dimensionTypes.Contains(typeToConvert))
         {
@@ -203,14 +208,14 @@ public class APLValueConverterFactory : JsonConverterFactory
                 BindingFlags.Instance | BindingFlags.Public,
                 binder: null,
                 args: null,
-                culture: null);
+                culture: null)!;
         }
 
         var converter = (System.Text.Json.Serialization.JsonConverter)Activator.CreateInstance(
             typeof(APLValueConverter<>).MakeGenericType(valueType), BindingFlags.Instance | BindingFlags.Public,
             binder: null,
             args: null,
-            culture: null);
+            culture: null)!;
 
         return converter;
     }

@@ -1,37 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Text.Json;
 using AlexaVoxCraft.Model.Apl.Commands;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class APLCommandConverter : Newtonsoft.Json.JsonConverter
+public class APLCommandConverter : BasePolymorphicConverter<APLCommand>
 {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    {
-
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-
-        var jObject = JObject.Load(reader);
-        var commandType = jObject.Value<string>("type");
-        object target = GetCommand(commandType);
-        if (target != null)
-        {
-            serializer.Populate(jObject.CreateReader(), target);
-            return target;
-        }
-
-        throw new ArgumentOutOfRangeException($"Command type {commandType} not supported");
-    }
-
-    public static Dictionary<string, Type> APLCommandLookup = new Dictionary<string, Type>
+    private static Dictionary<string, Type> _derivedTypes = new()
     {
         {nameof(Idle), typeof(Idle)},
         {nameof(Sequential), typeof(Sequential)},
@@ -57,17 +34,7 @@ public class APLCommandConverter : Newtonsoft.Json.JsonConverter
         {nameof(InsertItem), typeof(InsertItem)},
         {nameof(RemoveItem), typeof(RemoveItem)}
     };
-
-    private APLCommand GetCommand(string commandType)
-    {
-        return (APLCommand)(
-            APLCommandLookup.ContainsKey(commandType)
-                ? Activator.CreateInstance(APLCommandLookup[commandType])
-                : new CustomCommand(commandType));
-    }
-
-    public override bool CanConvert(Type objectType)
-    {
-        return objectType.GetTypeInfo().IsSubclassOf(typeof(APLCommand));
-    }
+    
+    protected override IDictionary<string, Type> DerivedTypes => _derivedTypes;
+    public override Type? DefaultType => typeof(CustomCommand);
 }

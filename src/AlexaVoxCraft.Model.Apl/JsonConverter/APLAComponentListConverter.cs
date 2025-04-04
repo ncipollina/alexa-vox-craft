@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
-
-namespace AlexaVoxCraft.Model.Apl.JsonConverter;
+﻿namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
 public class APLAComponentListConverter : SingleOrListConverter<APLAComponent>
 {

@@ -68,7 +68,7 @@ public class APLDocumentTests
 
         var mount = doc.OnMount.Value.Single();
         Assert.IsType<OpenURL>(mount);
-        Assert.True(Utility.CompareJson(doc, "Example_DailyCheese.json"));
+        Assert.True(Utility.CompareJson(doc, "Example_DailyCheese.json", null));
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class APLDocumentTests
 
         var occ = doc.OnConfigChange.Value.Single();
         Assert.IsType<Reinflate>(occ);
-        Assert.True(Utility.CompareJson(doc, "Example_ChangeDocumentLayout.json"));
+        Assert.True(Utility.CompareJson(doc, "Example_ChangeDocumentLayout.json", null));
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public class APLDocumentTests
         list.ListPage.ListItems.Add(new TestListItem("brie",4));
         list.ListPage.ListItems.Add(new TestListItem("cheddar",5));
         list.ListPage.ListItems.Add(new TestListItem("parm",6));
-        Assert.True(Utility.CompareJson(list, "ListDataSource.json"));
+        Assert.True(Utility.CompareJson(list, "ListDataSource.json", null));
     }
 
     [Fact]
@@ -184,7 +184,7 @@ public class APLDocumentTests
         list.Items.Add(new DynamicListItem { PrimaryText = "item 8"});
         list.Items.Add(new DynamicListItem { PrimaryText = "item 9"});
         list.Items.Add(new DynamicListItem { PrimaryText = "item 10"});
-        Assert.True(Utility.CompareJson(list, "DynamicSourceExample.json"));
+        Assert.True(Utility.CompareJson(list, "DynamicSourceExample.json", null));
         var source = Utility.ExampleFileContent<APLDataSource>("DynamicSourceExample.json");
         Assert.IsType<DynamicIndexList>(source);
     }
