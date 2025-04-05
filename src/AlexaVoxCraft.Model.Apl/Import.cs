@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -17,25 +17,28 @@ public class Import:IEquatable<Import>
         Version = version;
     }
 
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("version",NullValueHandling = NullValueHandling.Ignore)]
-    public string Version { get; set; }
+    [JsonPropertyName("version")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Version { get; set; }
 
-    [JsonProperty("source",NullValueHandling = NullValueHandling.Ignore)]
-    public string Source { get; set; }
+    [JsonPropertyName("source")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Source { get; set; }
 
-    [JsonProperty("when", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> When { get; set; }
+    [JsonPropertyName("when")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? When { get; set; }
 
-    [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ImportType? Type { get; set; }
 
-    [JsonProperty("loadAfter", NullValueHandling = NullValueHandling.Ignore)] 
-    [JsonConverter(typeof(StringOrArrayConverter))]
-    public IList<string> LoadAfter { get; set; } = new List<string>();
+    [JsonPropertyName("loadAfter")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    public IList<string>? LoadAfter { get; set; } = new List<string>();
 
     public static Import AlexaStyles => new Import("alexa-styles","1.6.0");
     public static Import AlexaViewportProfiles => new Import("alexa-viewport-profiles", "1.6.0");
@@ -71,4 +74,21 @@ public class Import:IEquatable<Import>
     {
         return LoadAfter?.Any() ?? false;
     }
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<Import>(info =>
+        {
+            var loadAfterProp = info.Properties.FirstOrDefault(p => p.Name == "loadAfter");
+            if (loadAfterProp is not null)
+            {
+                loadAfterProp.ShouldSerialize = ((obj, _) =>
+                {
+                    var import = (Import)obj;
+                    return import.LoadAfter?.Any() ?? false;
+                });
+                loadAfterProp.CustomConverter = new StringOrArrayConverter(false);
+            }
+        });
+    }
+
 }

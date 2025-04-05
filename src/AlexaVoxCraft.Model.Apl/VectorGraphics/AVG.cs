@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.VectorGraphics;
 
@@ -24,17 +26,13 @@ public class AVG
 
     [JsonPropertyName("data")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-     [JsonConverter(typeof(GenericSingleOrListConverter<object>))]
     public APLValue<IList<object>>? Data { get; set; }
 
-    [JsonPropertyName("height")]
-    public APLAbsoluteDimensionValue Height { get; set; }
+    [JsonPropertyName("height")] public APLAbsoluteDimensionValue Height { get; set; }
 
-    [JsonPropertyName("width")]
-    public APLAbsoluteDimensionValue Width { get; set; }
+    [JsonPropertyName("width")] public APLAbsoluteDimensionValue Width { get; set; }
 
     [JsonPropertyName("items")]
-     [JsonConverter(typeof(AVGItemListConverter))]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<IAVGItem>>? Items { get; set; }
 
@@ -64,5 +62,21 @@ public class AVG
 
     [JsonPropertyName("viewportWidth")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public APLValue<int?> ViewportWidth { get; set; }
+    public APLValue<int?>? ViewportWidth { get; set; }
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<AVG>(info =>
+        {
+            var dataProp = info.Properties.FirstOrDefault(p => p.Name == "data");
+            if (dataProp is not null)
+            {
+                dataProp.CustomConverter = new GenericSingleOrListConverter<object>(false);
+            }
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.CustomConverter = new AVGItemListConverter(false);
+            }
+        });
+    }
 }

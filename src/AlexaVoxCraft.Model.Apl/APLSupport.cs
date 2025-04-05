@@ -4,6 +4,7 @@ using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Apl.DataStore;
 using AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
+using AlexaVoxCraft.Model.Apl.VectorGraphics;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -38,5 +39,10 @@ public static class APLSupport
         DynamicIndexList.AddSupport();
         DynamicTokenList.AddSupport();
         Mixer.AddSupport();
+        Style.AddSupport();
+        AVG.AddSupport();
+        APLDocument.AddSupport();
+        APLKeyboardHandler.AddSupport();
+        Import.AddSupport();
     }
 }

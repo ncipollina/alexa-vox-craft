@@ -34,6 +34,8 @@ public static class AlexaJsonOptions
                 options.Converters.Add(converter);
             }
             
+            options.ReadCommentHandling = JsonCommentHandling.Skip;
+            
             return options;
         }
     }
