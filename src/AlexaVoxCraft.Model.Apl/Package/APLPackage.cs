@@ -1,19 +1,18 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Package;
 
 public class APLPackage
 {
-    [JsonProperty("packageVersion")]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("packageVersion")]
     public PackageVersion PackageVersion { get; set; }
 
-    [JsonProperty("packageType")] public string PackageType { get; } = "APL_PACKAGE";
+    [JsonPropertyName("packageType")] public string PackageType { get; } = "APL_PACKAGE";
 
-    [JsonProperty("publishingInformation",NullValueHandling = NullValueHandling.Ignore)]
-    public PublishingInformation PublishingInformation { get; set; }
+    [JsonPropertyName("publishingInformation")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public PublishingInformation? PublishingInformation { get; set; }
 
-    [JsonProperty("manifest")]
+    [JsonPropertyName("manifest")]
     public Manifest Manifest { get; set; }
 }

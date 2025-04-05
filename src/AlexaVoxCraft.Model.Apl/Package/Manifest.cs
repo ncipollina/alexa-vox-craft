@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Package;
 
 public class Manifest
 {
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
 
-    [JsonProperty("installStageChanges",NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("installStageChanges")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public InstallStateChanges? InstallStageChanges { get; set; }
 
-    [JsonProperty("appliesTo")]
+    [JsonPropertyName("appliesTo")]
     public string AppliesTo { get; set; }
 
-    [JsonProperty("presentationDefinitions")]
+    [JsonPropertyName("presentationDefinitions")]
     public List<PresentationDefinitionFile> PresentationDefinitions { get; set; }
 }

@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Package;
 
 public class LocalePublishingInformationMetadata
 {
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("description")]
+    [JsonPropertyName("description")]
     public string Description { get; set; }
 
-    [JsonProperty("keywords")]
+    [JsonPropertyName("keywords")]
     public string[] Keywords { get; set; }
 
-    [JsonProperty("iconUri")]
+    [JsonPropertyName("iconUri")]
     public string IconUri { get; set; }
 
-    [JsonProperty("previews")]
+    [JsonPropertyName("previews")]
     public string[] Previews { get; set; }
 }

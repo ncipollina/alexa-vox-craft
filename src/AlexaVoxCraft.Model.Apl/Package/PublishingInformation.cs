@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Package;
 
 public class PublishingInformation
 {
-    [JsonProperty("schemaVersion")] public string SchemaVersion { get; set; } = "1.0";
+    [JsonPropertyName("schemaVersion")] public string SchemaVersion { get; set; } = "1.0";
 
-    [JsonProperty("locales")] public Dictionary<string, List<LocalePublishingInformation>> Locales { get; set; } = new();
+    [JsonPropertyName("locales")]
+    public Dictionary<string, List<LocalePublishingInformation>> Locales { get; set; } = new();
 }
