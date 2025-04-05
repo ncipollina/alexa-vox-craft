@@ -1,11 +1,10 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(APLDataSourceConverter))]
 public abstract class APLDataSource
 {
-    [JsonProperty("type")]
-    public abstract string Type { get; }
+    [JsonPropertyName("type")] public abstract string Type { get; }
 }

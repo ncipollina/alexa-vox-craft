@@ -29,4 +29,12 @@ public sealed class JsonStringEnumConverterWithEnumMemberAttrSupport<
         public override string ConvertName(string name)
             => map.TryGetValue(name, out string? newName) ? newName : name;
     }
+    
+    public static string ToEnumString(TEnum value)
+    {
+        var name = Enum.GetName(typeof(TEnum), value);
+        var enumMember = typeof(TEnum).GetField(name!)
+            ?.GetCustomAttribute<EnumMemberAttribute>();
+        return enumMember?.Value ?? name!;
+    }
 }

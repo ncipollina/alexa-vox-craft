@@ -24,7 +24,7 @@ public class Select : APLCommand
 
     public static void AddSupport()
     {
-        AlexaJsonOptions.RegisterTypeModifier<CommandDefinition>(typeInfo =>
+        AlexaJsonOptions.RegisterTypeModifier<Select>(typeInfo =>
         {
             var otherwiseProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "otherwise");
             if (otherwiseProp is not null)

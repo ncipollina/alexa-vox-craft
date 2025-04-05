@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Audio;
 
@@ -17,15 +18,15 @@ public class AudioLayout
         Items = items.ToList();
     }
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public string Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Description { get; set; }
 
-    [JsonProperty("parameters", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(ParameterListConverter), true)]
-    public IList<Parameter> Parameters { get; set; }
+    [JsonPropertyName("parameters")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Parameter>? Parameters { get; set; }
 
-    [JsonProperty("items"),
-     JsonConverter(typeof(APLAComponentListConverter), true)]
+    [JsonPropertyName("items")]
     public IList<APLAComponent> Items { get; set; }
 
     public AudioLayout AsMain(string dataSourceKey = "payload")
@@ -41,5 +42,21 @@ public class AudioLayout
         }
 
         return this;
+    }
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<AudioLayout>(typeInfo =>
+        {
+            var parameterProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "parameters");
+            if (parameterProp is not null)
+            {
+                parameterProp.CustomConverter = new ParameterListConverter(true);
+            }
+            var itemsProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.CustomConverter = new APLAComponentListConverter(true);
+            }
+        });
     }
 }

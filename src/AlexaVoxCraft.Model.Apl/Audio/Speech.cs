@@ -1,14 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Audio;
 
 public class Speech : APLAComponent
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(Speech);
 
-    [JsonProperty("content",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Content { get; set; }
+    [JsonPropertyName("content")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Content { get; set; }
 
-    [JsonProperty("contentType",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<SpeechContentType?> ContentType { get; set; }
+    [JsonPropertyName("contentType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<SpeechContentType?>? ContentType { get; set; }
 }

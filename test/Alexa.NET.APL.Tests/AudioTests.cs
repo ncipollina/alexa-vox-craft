@@ -1,27 +1,35 @@
 ﻿using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Audio;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class AudioTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public AudioTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void APLADocument()
     {
-        Utility.AssertSerialization<APLADocument>("APLADocument.json");
+        Utility.AssertSerialization<APLADocument>("APLADocument.json", _output);
     }
 
     [Fact]
     public void APLARenderDocument()
     {
-        Utility.AssertSerialization<RenderDocumentDirective>("APLARenderDocument.json");
+        Utility.AssertSerialization<RenderDocumentDirective>("APLARenderDocument.json", _output);
     }
 
     [Fact]
     public void Audio()
     {
-        Utility.AssertSerialization<Audio>("Audio_AudioFilters.json");
+        Utility.AssertSerialization<Audio>("Audio_AudioFilters.json", _output);
     }
 
     [Fact]

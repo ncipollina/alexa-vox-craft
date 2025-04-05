@@ -36,5 +36,6 @@ public abstract class APLComponentBase
 
     [JsonPropertyName("duration")]
     [JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<AudioDuration>))]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public AudioDuration? Duration { get; set; }
 }

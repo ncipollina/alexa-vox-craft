@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataSources;
 
 public class KeyValueDataSource:APLDataSource
 {
-    [JsonProperty("type",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public override string Type { get; }
 
     [JsonExtensionData]
-    public Dictionary<string,object> Properties { get; set; }
+    public Dictionary<string,JsonElement> Properties { get; set; }
 }

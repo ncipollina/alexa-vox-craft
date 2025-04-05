@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using AlexaVoxCraft.Model.Apl.Audio;
 using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
@@ -11,6 +12,10 @@ public class APLAComponentConverter: BasePolymorphicConverter<APLAComponent>
     private static IDictionary<string, Type> _derivedTypes = new Dictionary<string, Type>
     {
         { nameof(Audio), typeof(Audio.Audio) },
+        { nameof(Speech), typeof(Speech) },
+        { nameof(Sequencer), typeof(Sequencer) },
+        { nameof(Selector), typeof(Selector) },
+        { nameof(Mixer), typeof(Mixer) },
     };
 
     public override void Write(Utf8JsonWriter writer, APLAComponent value, JsonSerializerOptions options)
@@ -28,7 +33,7 @@ public class APLAComponentConverter: BasePolymorphicConverter<APLAComponent>
             node["items"] = itemNode;
         }
 
-        return System.Text.Json.JsonSerializer.SerializeToElement(node);
+        return JsonSerializer.SerializeToElement(node);
     }
 
     protected override string TypeDiscriminatorPropertyName => "type";

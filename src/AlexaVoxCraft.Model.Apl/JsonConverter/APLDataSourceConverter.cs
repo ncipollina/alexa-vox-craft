@@ -1,45 +1,27 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Text.Json;
 using AlexaVoxCraft.Model.Apl.DataSources;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class APLDataSourceConverter : Newtonsoft.Json.JsonConverter
+public class APLDataSourceConverter : BasePolymorphicConverter<APLDataSource>
 {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    protected override IDictionary<string, Type> DerivedTypes => new Dictionary<string, Type>
     {
+        { DynamicIndexList.DataSourceType, typeof(DynamicIndexList) },
+        { ObjectDataSource.DataSourceType, typeof(ObjectDataSource) },
+        { ListDataSource.DataSourceType, typeof(ListDataSource) },
+        { DynamicTokenList.DataSourceType, typeof(DynamicTokenList) }
+    };
 
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override Type? DefaultType => typeof(KeyValueDataSource);
+    protected override Func<JsonElement, string?> KeyResolver => element =>
     {
-        // Load JObject from stream
-        var jObject = JObject.Load(reader);
-
-        var target = GetDataSource(jObject.Value<string>("type"));
-        serializer.Populate(jObject.CreateReader(), target);
-        return target;
-    }
-
-    private static APLDataSource GetDataSource(string value)
-    {
-        return value switch
-        {
-            DynamicIndexList.DataSourceType => new DynamicIndexList(),
-            ObjectDataSource.DataSourceType => new ObjectDataSource(),
-            ListDataSource.DataSourceType => new ListDataSource(),
-            DynamicTokenList.DataSourceType => new DynamicTokenList(),
-            _ => (APLDataSource)new KeyValueDataSource()
-        };
-    }
-
-    public override bool CanConvert(Type objectType)
-    {
-        return objectType.GetTypeInfo().GetInterfaces().Contains(typeof(APLDataSource));
-    }
+        var typeValue = element.TryGetProperty(TypeDiscriminatorPropertyName, out var typeProp)
+            ? typeProp.GetString()
+            : nameof(KeyValueDataSource); // this will allow the default type to be used
+        return typeValue;
+    };
 }

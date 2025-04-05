@@ -88,7 +88,7 @@ public class ComponentTests
                 { "textContent", "My Skill" },
                 { "hintText", "Try, \"What can you do?\"" }
             },
-            TopLevelData = new Dictionary<string, object>()
+            TopLevelData = new Dictionary<string, JsonElement>()
         };
         // Create the directive
         var directive = CreateAplDirective(aplElement, ("launchTemplateData", launchTemplateData));

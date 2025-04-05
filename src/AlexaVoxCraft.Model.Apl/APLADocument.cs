@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Audio;
-using Newtonsoft.Json;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class APLADocument:APLDocumentReference
+public class APLADocument : APLDocumentReference
 {
+    public const string DocumentType = "APLA";
+
     public APLADocument()
     {
         VersionString = "0.8";
     }
-    public override string Type => "APLA";
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Description { get; set; }
+    [JsonPropertyName("type")]
+    public override string Type => DocumentType;
+
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Description { get; set; }
 
     [JsonIgnore]
     public APLADocumentVersion Version
@@ -22,12 +27,13 @@ public class APLADocument:APLDocumentReference
         set => VersionString = EnumParser.ToEnumString(typeof(APLADocumentVersion), value);
     }
 
-    [JsonProperty("mainTemplate")]
-    public AudioLayout MainTemplate { get; set; }
+    [JsonPropertyName("mainTemplate")] public AudioLayout MainTemplate { get; set; }
 
-    [JsonProperty("resources", NullValueHandling = NullValueHandling.Ignore)]
-    public IList<APLAResource> Resources { get; set; }
+    [JsonPropertyName("resources")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<APLAResource>? Resources { get; set; }
 
-    [JsonProperty("compositions", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, AudioLayout> Compositions { get; set; }
+    [JsonPropertyName("compositions")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, AudioLayout>? Compositions { get; set; }
 }

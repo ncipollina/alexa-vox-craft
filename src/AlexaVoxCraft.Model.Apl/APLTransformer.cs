@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -19,17 +19,20 @@ public class APLTransformer
         OutputName = outputName;
     }
 
-    [JsonProperty("inputPath", NullValueHandling = NullValueHandling.Ignore)]
-    public string InputPath { get; set; }
+    [JsonPropertyName("inputPath")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? InputPath { get; set; }
 
-    [JsonProperty("outputName",NullValueHandling = NullValueHandling.Ignore)]
-    public string OutputName { get; set; }
+    [JsonPropertyName("outputName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? OutputName { get; set; }
 
-    [JsonProperty("transformer")]
+    [JsonPropertyName("transformer")]
     public string Transformer { get; set; }
 
-    [JsonProperty("template",NullValueHandling = NullValueHandling.Ignore)]
-    public string Template { get; set; }
+    [JsonPropertyName("template")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Template { get; set; }
 
     public static APLTransformer SsmlToSpeech(string inputPath, string outputName)
     {

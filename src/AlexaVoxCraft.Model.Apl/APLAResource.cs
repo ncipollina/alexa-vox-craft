@@ -1,6 +1,5 @@
 ﻿namespace AlexaVoxCraft.Model.Apl;
 
-public class APLAResource:ResourceBase
+public class APLAResource : ResourceBase
 {
-
 }

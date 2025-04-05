@@ -1,4 +1,6 @@
-﻿using AlexaVoxCraft.Model.Apl.Commands;
+﻿using AlexaVoxCraft.Model.Apl.Audio;
+using AlexaVoxCraft.Model.Apl.Commands;
+using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Apl.DataStore;
 using AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
@@ -28,5 +30,13 @@ public static class APLSupport
         CommandDefinition.AddSupport();
         Select.AddSupport();
         InsertItem.AddSupport();
+        AudioLayout.AddSupport();
+        Audio.Audio.AddSupport();
+        APLAMultiChildComponent.AddSupport();
+        Sequencer.AddSupport();
+        Selector.AddSupport();
+        DynamicIndexList.AddSupport();
+        DynamicTokenList.AddSupport();
+        Mixer.AddSupport();
     }
 }

@@ -1,14 +1,14 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(APLDocumentConverter))]
 public abstract class APLDocumentReference
 {
-    [JsonProperty("type")]
-    public abstract string Type { get; }
+    [JsonPropertyName("type")] public abstract string Type { get; }
 
-    [JsonProperty("version", NullValueHandling = NullValueHandling.Ignore)]
-    public string VersionString { get; set; }
+    [JsonPropertyName("version")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? VersionString { get; set; }
 }

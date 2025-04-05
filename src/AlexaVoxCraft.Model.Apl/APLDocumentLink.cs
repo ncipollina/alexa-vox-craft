@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLDocumentLink : APLDocumentReference
 {
+    public const string DocumentType = "Link";
     public APLDocumentLink(){}
 
     public APLDocumentLink(string source)
@@ -11,8 +12,10 @@ public class APLDocumentLink : APLDocumentReference
         Source = source;
     }
 
-    public override string Type => "Link";
+    [JsonPropertyName("type")]
+    public override string Type => DocumentType;
 
-    [JsonProperty("src",NullValueHandling = NullValueHandling.Ignore)]
-    public string Source { get; set; }
+    [JsonPropertyName("src")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Source { get; set; }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
@@ -55,10 +56,29 @@ public class ParameterConverter : JsonConverter<Parameter>
         if (value.WasStringInput)
         {
             writer.WriteStringValue(value.Name);
+            return;
         }
-        else
+
+        writer.WriteStartObject();
+
+        writer.WriteString("name", value.Name);
+
+        if (value.Type != ParameterType.any)
         {
-            JsonSerializer.Serialize(writer, value, typeof(Parameter), options);
+            var enumName = JsonStringEnumConverterWithEnumMemberAttrSupport<ParameterType>.ToEnumString(value.Type);
+            writer.WriteString("type", enumName);
         }
-    }
+
+        if (!string.IsNullOrWhiteSpace(value.Description))
+        {
+            writer.WriteString("description", value.Description);
+        }
+
+        if (value.Default is not null)
+        {
+            writer.WritePropertyName("default");
+            JsonSerializer.Serialize(writer, value.Default, options);
+        }
+
+        writer.WriteEndObject();    }
 }

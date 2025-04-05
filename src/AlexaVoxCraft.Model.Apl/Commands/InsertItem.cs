@@ -24,7 +24,7 @@ public class InsertItem : APLCommand
 
     public static void AddSupport()
     {
-        AlexaJsonOptions.RegisterTypeModifier<CommandDefinition>(typeInfo =>
+        AlexaJsonOptions.RegisterTypeModifier<InsertItem>(typeInfo =>
         {
             var parameterProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "items");
             if (parameterProp is not null)

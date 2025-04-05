@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Audio.Filters;
 
 public class FadeIn : APLAFilter
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(FadeIn);
 
-    [JsonProperty("duration")]
+    [JsonPropertyName("duration")]
     public APLValue<int> Duration { get; set; }
 }

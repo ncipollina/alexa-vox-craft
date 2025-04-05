@@ -31,6 +31,9 @@ public static class Utility
         actualNode!.RemovePaths(exclude);
         expectedNode!.RemovePaths(exclude);
 
+        var actualString = actualNode.ToJsonString();
+        var expectedString = expectedNode.ToJsonString();
+        
         // Re-parse into JsonDocuments
         using var cleanedActual = JsonDocument.Parse(actualNode.ToJsonString());
         using var cleanedExpected = JsonDocument.Parse(expectedNode.ToJsonString());
@@ -202,11 +205,11 @@ public static class Utility
         return component;
     }
 
-    public static T AssertSerialization<T>(string expectedFile)
+    public static T AssertSerialization<T>(string expectedFile, ITestOutputHelper? output = null)
     {
         APLComponentConverter.ThrowConversionExceptions = true;
         var obj = ExampleFileContent<T>(expectedFile);
-        Assert.True(CompareJson(obj, expectedFile, null));
+        Assert.True(CompareJson(obj, expectedFile, output));
         return obj;
     }
 

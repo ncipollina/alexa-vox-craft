@@ -32,7 +32,9 @@ public class APLValueConverter<T> : JsonConverter<APLValue<T>>
 
         if (_simpleTypes.Contains(root.ValueKind) && !TypeMatches(root.ValueKind, genericType))
         {
-            returnValue.Expression = root.GetRawText();
+            returnValue.Expression = root.ValueKind == JsonValueKind.String
+                ? root.GetString()
+                : root.GetRawText();
         }
         else if (genericType == typeof(object))
         {

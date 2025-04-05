@@ -1,30 +1,37 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public abstract class ResourceBase
 {
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public string Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Description { get; set; }
 
-    [JsonProperty("when", NullValueHandling = NullValueHandling.Ignore)]
-    public string When { get; set; }
+    [JsonPropertyName("when")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? When { get; set; }
 
-    [JsonProperty("strings", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, string> Strings { get; set; }
+    [JsonPropertyName("strings")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Strings { get; set; }
 
-    [JsonProperty("numbers", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, APLValue<double?>> Numbers { get; set; }
+    [JsonPropertyName("numbers")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, APLValue<double?>>? Numbers { get; set; }
 
-    [JsonProperty("booleans", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, string> Booleans { get; set; }
+    [JsonPropertyName("booleans")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Booleans { get; set; }
 
-    [JsonProperty("arrays", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, string> Arrays { get; set; }
+    [JsonPropertyName("arrays")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Arrays { get; set; }
 
-    [JsonProperty("maps", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, string> Maps { get; set; }
+    [JsonPropertyName("maps")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Maps { get; set; }
 
     public void AddString(string key, string expression)
     {

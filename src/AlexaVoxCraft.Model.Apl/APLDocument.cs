@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Commands;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
 using AlexaVoxCraft.Model.Apl.VectorGraphics;
@@ -9,7 +10,9 @@ namespace AlexaVoxCraft.Model.Apl;
 
 public class APLDocument: APLDocumentBase
 {
-    public override string Type => "APL";
+    public const string DocumentType = "APL";
+    [JsonPropertyName("type")]
+    public override string Type => DocumentType;
 
     public APLDocument()
     {
@@ -22,14 +25,14 @@ public class APLDocument: APLDocumentBase
     }
 
     [JsonProperty("handleKeyDown", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(APLKeyboardHandlerConverter))]
+    [Newtonsoft.Json.JsonConverter(typeof(APLKeyboardHandlerConverter))]
     public APLValue<IList<APLKeyboardHandler>> HandleKeyDown { get; set; }
 
     [JsonProperty("handleKeyUp", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(APLKeyboardHandlerConverter))]
+    [Newtonsoft.Json.JsonConverter(typeof(APLKeyboardHandlerConverter))]
     public APLValue<IList<APLKeyboardHandler>> HandleKeyUp { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(StringEnumConverter))]
+    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore), Newtonsoft.Json.JsonConverter(typeof(StringEnumConverter))]
     public ViewportTheme? Theme { get; set; }
 
     [JsonProperty("import", NullValueHandling = NullValueHandling.Ignore)]
@@ -51,6 +54,6 @@ public class APLDocument: APLDocumentBase
     public APLValue<DocumentBackgroundColor> Background { get; set; }
 
     [JsonProperty("onDisplayStateChange", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
+     Newtonsoft.Json.JsonConverter(typeof(APLCommandListConverter), true)]
     public APLValue<IList<APLCommand>> OnDisplayStateChange { get; set; }
 }

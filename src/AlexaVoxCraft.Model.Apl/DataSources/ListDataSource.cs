@@ -1,19 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataSources;
 
 public class ListDataSource : APLDataSource
 {
     public const string DataSourceType = "list";
+    [JsonPropertyName("type")]
     public override string Type => DataSourceType;
 
-    [JsonProperty("listPage")]
+    [JsonPropertyName("listPage")]
     public ListPage ListPage { get; }
 
-    [JsonProperty("listId")]
+    [JsonPropertyName("listId")]
     public string ListId { get; set; }
 
-    [JsonProperty("totalNumberOfItems")]
+    [JsonPropertyName("totalNumberOfItems")]
     public int TotalNumberOfItems { get; set; }
 
     public ListDataSource()
