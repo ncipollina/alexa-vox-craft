@@ -1,17 +1,20 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(APLExtensionConverter))]
 public class APLExtension
 {
-    [JsonProperty("name",NullValueHandling = NullValueHandling.Ignore)]
-    public string Name { get; set; }
+    [JsonPropertyName("name")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Name { get; set; }
 
-    [JsonProperty("uri",NullValueHandling = NullValueHandling.Ignore)]
-    public string Uri { get; set; }
+    [JsonPropertyName("uri")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Uri { get; set; }
 
-    [JsonProperty("required", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("required")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Required { get; set; }
 }

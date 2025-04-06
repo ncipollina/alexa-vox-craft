@@ -1,169 +1,263 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(APLComponentConverter))]
-public abstract class APLComponent:APLComponentBase
+public abstract class APLComponent : APLComponentBase, IJsonSerializable<APLComponent>
 {
- [JsonProperty("inheritParentState", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> InheritParentState { get; set; }
+    [JsonPropertyName("inheritParentState")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?> InheritParentState { get; set; }
 
- [JsonProperty("style",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Style { get; set; }
+    [JsonPropertyName("style")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> Style { get; set; }
 
- [JsonProperty("padding", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<int>))]
- public APLValue<IList<int>> Padding { get; set; }
+    [JsonPropertyName("padding")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<int>>? Padding { get; set; }
 
- [JsonProperty("paddingStart", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingStart { get; set; }
+    [JsonPropertyName("paddingStart")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingStart { get; set; }
 
- [JsonProperty("paddingEnd", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingEnd { get; set; }
+    [JsonPropertyName("paddingEnd")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingEnd { get; set; }
 
- [JsonProperty("paddingLeft", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingLeft { get; set; }
+    [JsonPropertyName("paddingLeft")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingLeft { get; set; }
 
- [JsonProperty("paddingTop", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingTop { get; set; }
+    [JsonPropertyName("paddingTop")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingTop { get; set; }
 
- [JsonProperty("paddingRight", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingRight { get; set; }
+    [JsonPropertyName("paddingRight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingRight { get; set; }
 
- [JsonProperty("paddingBottom", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue PaddingBottom { get; set; }
+    [JsonPropertyName("paddingBottom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue PaddingBottom { get; set; }
 
- [JsonProperty("minWidth", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue MinWidth { get; set; }
+    [JsonPropertyName("minWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue MinWidth { get; set; }
 
- [JsonProperty("minHeight", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue MinHeight { get; set; }
+    [JsonPropertyName("minHeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue MinHeight { get; set; }
 
- [JsonProperty("maxWidth", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue MaxWidth { get; set; }
+    [JsonPropertyName("maxWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue MaxWidth { get; set; }
 
- [JsonProperty("maxHeight", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue MaxHeight { get; set; }
+    [JsonPropertyName("maxHeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue MaxHeight { get; set; }
 
- [JsonProperty("height", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Height { get; set; }
+    [JsonPropertyName("height")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Height { get; set; }
 
- [JsonProperty("width", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Width { get; set; }
+    [JsonPropertyName("width")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Width { get; set; }
 
- [JsonProperty("alignSelf",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> AlignSelf { get; set; }
+    [JsonPropertyName("alignSelf")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> AlignSelf { get; set; }
 
- [JsonProperty("bottom",NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Bottom { get; set; }
+    [JsonPropertyName("bottom")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Bottom { get; set; }
 
- [JsonProperty("grow",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<double?> Grow { get; set; }
+    [JsonPropertyName("grow")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?> Grow { get; set; }
 
- [JsonProperty("left",NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Left { get; set; }
+    [JsonPropertyName("left")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Left { get; set; }
 
- [JsonProperty("start", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Start { get; set; }
+    [JsonPropertyName("start")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Start { get; set; }
 
- [JsonProperty("numbering",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Numbering { get; set; }
+    [JsonPropertyName("numbering")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> Numbering { get; set; }
 
- [JsonProperty("position",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Position { get; set; }
+    [JsonPropertyName("position")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> Position { get; set; }
 
- [JsonProperty("right",NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Right { get; set; }
+    [JsonPropertyName("right")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Right { get; set; }
 
- [JsonProperty("end", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue End { get; set; }
+    [JsonPropertyName("end")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue End { get; set; }
 
- [JsonProperty("shrink",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<int?> Shrink { get; set; }
+    [JsonPropertyName("shrink")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?> Shrink { get; set; }
 
- [JsonProperty("spacing",NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Spacing { get; set; }
+    [JsonPropertyName("spacing")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Spacing { get; set; }
 
- [JsonProperty("top",NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue Top { get; set; }
+    [JsonPropertyName("top")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue Top { get; set; }
 
- [JsonProperty("speech",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Speech { get; set; }
+    [JsonPropertyName("speech")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> Speech { get; set; }
 
- [JsonExtensionData]
- public Dictionary<string, object> Properties { get; set; }
+    [JsonExtensionData] public Dictionary<string, object> Properties { get; set; }
 
- [JsonProperty("accessibilityLabel",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> AccessibilityLabel { get; set; }
+    [JsonPropertyName("accessibilityLabel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string> AccessibilityLabel { get; set; }
 
- [JsonProperty("checked",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> Checked { get; set; }
+    [JsonPropertyName("checked")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?> Checked { get; set; }
 
- [JsonProperty("disabled",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> Disabled { get; set; }
+    [JsonPropertyName("disabled")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?> Disabled { get; set; }
 
- [JsonProperty("display",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<APLDisplay> Display { get; set; }
+    [JsonPropertyName("display")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<APLDisplay> Display { get; set; }
 
- [JsonProperty("onMount", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> OnMount { get; set; }
+    [JsonPropertyName("onMount")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnMount { get; set; }
 
- [JsonProperty("onCursorEnter", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> OnCursorEnter { get; set; }
+    [JsonPropertyName("onCursorEnter")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnCursorEnter { get; set; }
 
- [JsonProperty("onCursorExit", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> OnCursorExit { get; set; }
+    [JsonPropertyName("onCursorExit")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnCursorExit { get; set; }
 
- [JsonProperty("onSpeechMark", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> OnSpeechMark { get; set; }
+    [JsonPropertyName("onSpeechMark")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnSpeechMark { get; set; }
 
- [JsonProperty("transform",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<List<APLTransform>> Transform { get; set; }
+    [JsonPropertyName("transform")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<List<APLTransform>>? Transform { get; set; }
 
- [JsonProperty("shadowColor",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> ShadowColor { get; set; }
+    [JsonPropertyName("shadowColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ShadowColor { get; set; }
 
- [JsonProperty("shadowHorizontalOffset", NullValueHandling = NullValueHandling.Ignore)]
- public APLAbsoluteDimensionValue ShadowHorizontalOffset { get; set; }
+    [JsonPropertyName("shadowHorizontalOffset")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLAbsoluteDimensionValue? ShadowHorizontalOffset { get; set; }
 
- [JsonProperty("shadowVerticalOffset", NullValueHandling = NullValueHandling.Ignore)]
- public APLAbsoluteDimensionValue ShadowVerticalOffset { get; set; }
+    [JsonPropertyName("shadowVerticalOffset")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLAbsoluteDimensionValue? ShadowVerticalOffset { get; set; }
 
- [JsonProperty("shadowRadius",NullValueHandling = NullValueHandling.Ignore)]
- public APLAbsoluteDimensionValue ShadowRadius { get; set; }
+    [JsonPropertyName("shadowRadius")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLAbsoluteDimensionValue? ShadowRadius { get; set; }
 
- [JsonProperty("opacity", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<double?> Opacity { get; set; }
+    [JsonPropertyName("opacity")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? Opacity { get; set; }
 
- [JsonProperty("entities", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<object>))]
- public APLValue<IList<object>> Entities { get; set; }
+    [JsonPropertyName("entities")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<object>>? Entities { get; set; }
 
- [JsonProperty("handleTick",NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<TickHandler>))]
- public APLValue<IList<TickHandler>> HandleTick { get; set; }
+    [JsonPropertyName("handleTick")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<TickHandler>>? HandleTick { get; set; }
 
- [JsonProperty("handleVisibilityChange", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<VisibilityChangeHandler>))]
- public APLValue<IList<VisibilityChangeHandler>> HandleVisibilityChange { get; set; }
+    [JsonPropertyName("handleVisibilityChange")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<VisibilityChangeHandler>>? HandleVisibilityChange { get; set; }
 
- [JsonProperty("role",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Role { get; set; }
+    [JsonPropertyName("role")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Role { get; set; }
 
- [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<APLAction>))]
- public APLValue<IList<APLAction>> Actions { get; set; }
+    [JsonPropertyName("actions")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLAction>>? Actions { get; set; }
 
- [JsonProperty("preserve", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<IList<string>> Preserve { get; set; }
+    [JsonPropertyName("preserve")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<string>>? Preserve { get; set; }
 
- [JsonProperty("layoutDirection", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<LayoutDirection?> LayoutDirection { get; set; }
+    [JsonPropertyName("layoutDirection")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<LayoutDirection?>? LayoutDirection { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : APLComponent
+    {
+        APLComponentBase.RegisterTypeInfo<APLComponent>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var paddingProp = info.Properties.FirstOrDefault(p => p.Name == "padding");
+            if (paddingProp is not null)
+            {
+                paddingProp.CustomConverter = new GenericSingleOrListConverter<int>(false);
+            }
+            var onMountProp = info.Properties.FirstOrDefault(p => p.Name == "onMount");
+            if (onMountProp is not null)
+            {
+                onMountProp.CustomConverter = new APLCommandListConverter(false);
+            }
+            var onCursorEnterProp = info.Properties.FirstOrDefault(p => p.Name == "onCursorEnter");
+            if (onCursorEnterProp is not null)
+            {
+                onCursorEnterProp.CustomConverter = new APLCommandListConverter(false);
+            }
+            var onCursorExitProp = info.Properties.FirstOrDefault(p => p.Name == "onCursorExit");
+            if (onCursorExitProp is not null)
+            {
+                onCursorExitProp.CustomConverter = new APLCommandListConverter(false);
+            }
+            var onSpeechMarkProp = info.Properties.FirstOrDefault(p => p.Name == "onSpeechMark");
+            if (onSpeechMarkProp is not null)
+            {
+                onSpeechMarkProp.CustomConverter = new APLCommandListConverter(false);
+            }
+            var entitiesProp = info.Properties.FirstOrDefault(p => p.Name == "entities");
+            if (entitiesProp is not null)
+            {
+                entitiesProp.CustomConverter = new GenericSingleOrListConverter<object>(false);
+            }
+            var handleTickProp = info.Properties.FirstOrDefault(p => p.Name == "handleTick");
+            if (handleTickProp is not null)
+            {
+                handleTickProp.CustomConverter = new GenericSingleOrListConverter<TickHandler>(false);
+            }
+            var handleVisibilityChangeProp = info.Properties.FirstOrDefault(p => p.Name == "handleVisibilityChange");
+            if (handleVisibilityChangeProp is not null)
+            {
+                handleVisibilityChangeProp.CustomConverter = new GenericSingleOrListConverter<VisibilityChangeHandler>(false);
+            }
+            var actionsProp = info.Properties.FirstOrDefault(p => p.Name == "actions");
+            if (actionsProp is not null)
+            {
+                actionsProp.CustomConverter = new GenericSingleOrListConverter<APLAction>(false);
+            }
+        });
+    }
 }

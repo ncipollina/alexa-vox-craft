@@ -82,6 +82,27 @@ public class APLDocument: APLDocumentBase
             {
                 handleKeyDownProp.CustomConverter = new APLKeyboardHandlerConverter(false);
             }
+            // Configuration from base
+            var extensionsProp = info.Properties.FirstOrDefault(p => p.Name == "extensions");
+            if (extensionsProp is not null)
+            {
+                extensionsProp.ShouldSerialize = ((obj, _) =>
+                {
+                    var document = (APLDocument)obj;
+                    return document.Extensions?.Value?.Any() ?? false;
+                });
+                extensionsProp.CustomConverter = new GenericSingleOrListConverter<APLExtension>(true);
+            }
+            var onConfigChangeProp = info.Properties.FirstOrDefault(p => p.Name == "onConfigChange");
+            if (onConfigChangeProp is not null)
+            {
+                onConfigChangeProp.CustomConverter = new APLCommandListConverter(true);
+            }
+            var onMountProp = info.Properties.FirstOrDefault(p => p.Name == "onMount");
+            if (onMountProp is not null)
+            {
+                onMountProp.CustomConverter = new APLCommandListConverter(true);
+            }
         });
     }
 }

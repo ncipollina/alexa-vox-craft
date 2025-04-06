@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
@@ -81,6 +82,11 @@ public class ObjectConverter : JsonConverter<object>
     public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value, value.GetType(), options);
+    }
+    
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterConverter(new ObjectConverter());
     }
 }
 

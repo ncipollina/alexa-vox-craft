@@ -26,6 +26,8 @@ public static class APLSupport
         InstallationErrorHandler.AddToRequestConverter();
         DataStoreErrorHandler.AddToRequestConverter();
         FixedDecimalJsonConverter.AddSupport();
+        // Add global converters
+        ObjectConverter.AddSupport();
         // Add support for models
         Parameter.AddSupport();
         CommandDefinition.AddSupport();
@@ -44,5 +46,13 @@ public static class APLSupport
         APLDocument.AddSupport();
         APLKeyboardHandler.AddSupport();
         Import.AddSupport();
+        Sequential.AddSupport();
+        Parallel.AddSupport();
+        APLDocumentBase.AddSupport();
+        APLTDocument.AddSupport();
+        Layout.AddSupport();
+        APLDocumentEnvironment.AddSupport();
+        APLComponentBase.RegisterTypeInfo<APLComponentBase>();
+        APLComponent.RegisterTypeInfo<APLComponent>();
     }
 }

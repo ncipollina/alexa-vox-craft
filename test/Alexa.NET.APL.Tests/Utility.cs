@@ -207,7 +207,6 @@ public static class Utility
 
     public static T AssertSerialization<T>(string expectedFile, ITestOutputHelper? output = null)
     {
-        APLComponentConverter.ThrowConversionExceptions = true;
         var obj = ExampleFileContent<T>(expectedFile);
         Assert.True(CompareJson(obj, expectedFile, output));
         return obj;
@@ -215,7 +214,6 @@ public static class Utility
 
     public static void AssertSerialization<TImplied, TExplicit>(string expectedFile, ITestOutputHelper? output = null)
     {
-        APLComponentConverter.ThrowConversionExceptions = true;
         var obj = ExampleFileContent<TImplied>(expectedFile);
         var final = Assert.IsType<TExplicit>(obj);
         Assert.True(CompareJson(final, expectedFile, output));

@@ -1,35 +1,40 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class DocumentBackgroundColorConverter:JsonConverter<DocumentBackgroundColor>
+public class DocumentBackgroundColorConverter : JsonConverter<DocumentBackgroundColor>
 {
-    public override void WriteJson(JsonWriter writer, DocumentBackgroundColor value, JsonSerializer serializer)
+    public override void Write(Utf8JsonWriter writer, DocumentBackgroundColor value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (!string.IsNullOrWhiteSpace(value.Color))
         {
-            writer.WriteNull();
+            writer.WriteStringValue(value.Color);
         }
-        else if (!string.IsNullOrWhiteSpace(value.Color))
+        else if (value.Gradient is not null)
         {
-            writer.WriteValue(value.Color);
+            JsonSerializer.Serialize(writer, value.Gradient, options);
         }
-        else if(value.Gradient != null)
+        else
         {
-            serializer.Serialize(writer,value.Gradient);
+            writer.WriteNullValue();
         }
     }
 
-    public override DocumentBackgroundColor ReadJson(JsonReader reader, Type objectType, DocumentBackgroundColor existingValue,
-        bool hasExistingValue, JsonSerializer serializer)
+    public override DocumentBackgroundColor? Read(ref Utf8JsonReader reader, Type typeToConvert,
+        JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonToken.String)
+        // Handle string input (e.g., "white")
+        if (reader.TokenType == JsonTokenType.String)
         {
-            return new DocumentBackgroundColor(reader.Value.ToString());
+            var color = reader.GetString();
+            return new DocumentBackgroundColor(color!);
         }
 
-        var gradient = serializer.Deserialize<APLGradient>(reader);
-        return new DocumentBackgroundColor(gradient);
+        // Handle object input (e.g., gradient JSON)
+        using var doc = JsonDocument.ParseValue(ref reader);
+        var gradient = doc.RootElement.Deserialize<APLGradient>(options);
+        return new DocumentBackgroundColor(gradient!);
     }
 }

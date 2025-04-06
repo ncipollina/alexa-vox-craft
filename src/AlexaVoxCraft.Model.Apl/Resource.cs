@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class Resource:ResourceBase
+public class Resource : ResourceBase
 {
     public Resource()
     {
@@ -15,20 +15,25 @@ public class Resource:ResourceBase
         When = when;
     }
 
-    [JsonProperty("colors", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, string> Colors { get; set; }
+    [JsonPropertyName("colors")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Colors { get; set; }
 
-    [JsonProperty("dimensions", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, APLDimensionValue> Dimensions { get; set; }
+    [JsonPropertyName("dimensions")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, APLDimensionValue>? Dimensions { get; set; }
 
-    [JsonProperty("gradients",NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, APLValue<APLGradient>> Gradients { get; set; }
+    [JsonPropertyName("gradients")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, APLValue<APLGradient>>? Gradients { get; set; }
 
-    [JsonProperty("easings",NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string,string> Easings { get; set; }
+    [JsonPropertyName("easings")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, string>? Easings { get; set; }
 
-    [JsonProperty("resources", NullValueHandling = NullValueHandling.Ignore)]
-    public IList<Resource> Resources { get; set; }
+    [JsonPropertyName("resources")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Resource>? Resources { get; set; }
 
     public void AddColor(string key, string expression)
     {
@@ -36,6 +41,7 @@ public class Resource:ResourceBase
         {
             Colors = new Dictionary<string, string>();
         }
+
         Colors.Add(key, expression);
     }
 
@@ -45,6 +51,7 @@ public class Resource:ResourceBase
         {
             Dimensions = new Dictionary<string, APLDimensionValue>();
         }
+
         Dimensions.Add(key, expression);
     }
 
@@ -54,6 +61,7 @@ public class Resource:ResourceBase
         {
             Gradients = new Dictionary<string, APLValue<APLGradient>>();
         }
+
         Gradients.Add(key, gradient);
     }
 
@@ -63,6 +71,7 @@ public class Resource:ResourceBase
         {
             Easings = new Dictionary<string, string>();
         }
+
         Easings.Add(key, expression);
     }
 
@@ -72,6 +81,7 @@ public class Resource:ResourceBase
         {
             Resources = new List<Resource>();
         }
+
         Resources.Add(resource);
     }
 }

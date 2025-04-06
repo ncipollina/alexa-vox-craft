@@ -4,48 +4,22 @@ using AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 using AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 using AlexaVoxCraft.Model.Apl.Extensions.EntitySensing;
 using AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
+using AlexaVoxCraft.Model.Response.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class APLExtensionConverter:JsonConverter<APLExtension>
+public class APLExtensionConverter : BasePolymorphicConverter<APLExtension>
 {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, APLExtension value, JsonSerializer serializer)
+    private static readonly Dictionary<string, Type> AplExtensionLookup = new Dictionary<string, Type>
     {
-        throw new NotImplementedException();
-    }
-
-    public override APLExtension ReadJson(JsonReader reader, Type objectType, APLExtension existingValue, bool hasExistingValue,
-        JsonSerializer serializer)
-    {
-        var jObject = JObject.Load(reader);
-        var extensionUri = jObject.Value<string>("uri");
-        var target = GetGesture(extensionUri);
-        if (target != null)
-        {
-            serializer.Populate(jObject.CreateReader(), target);
-            return target;
-        }
-
-        throw new ArgumentOutOfRangeException($"Extension Uri {extensionUri} not supported");
-    }
-
-    public static Dictionary<string, Type> APLExtensionLookup = new Dictionary<string, Type>
-    {
-        {BackstackExtension.URL, typeof(BackstackExtension)},
-        {SmartMotionExtension.URL, typeof(SmartMotionExtension)},
-        {EntitySensingExtension.URL, typeof(EntitySensingExtension)},
-        {DataStoreExtension.URL, typeof(DataStoreExtension)}
+        { BackstackExtension.URL, typeof(BackstackExtension) },
+        { SmartMotionExtension.URL, typeof(SmartMotionExtension) },
+        { EntitySensingExtension.URL, typeof(EntitySensingExtension) },
+        { DataStoreExtension.URL, typeof(DataStoreExtension) }
     };
 
-    private APLExtension GetGesture(string commandType)
-    {
-        return (APLExtension)(
-            APLExtensionLookup.ContainsKey(commandType)
-                ? Activator.CreateInstance(APLExtensionLookup[commandType])
-                : null);
-    }
+    protected override string TypeDiscriminatorPropertyName => "uri";
+    protected override IDictionary<string, Type> DerivedTypes => AplExtensionLookup;
 }

@@ -1,81 +1,69 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using AlexaVoxCraft.Model.Apl.Components;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class APLComponentConverter : Newtonsoft.Json.JsonConverter
+public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
 {
-    public static bool ThrowConversionExceptions { get; set; }
-
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    {
-
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-        // Load JObject from stream
-        var jObject = JObject.Load(reader);
-        var componentType = jObject.Value<string>("type");
-        object target = APLComponentLookup.GetLookupType<APLComponent>(componentType, "AlexaVoxCraft.Model.Apl.Components", s => new CustomComponent(s));
-        if (target == null)
-        {
-            throw new ArgumentOutOfRangeException($"Component type {componentType} not supported");
-        }
-
-        jObject.Move("gesture", "gestures");
-        jObject.Move("entity", "entities");
-
-        if (target is GridSequence)
-        {
-            jObject.Move("childHeight", "childHeights");
-            jObject.Move("childWidth", "childWidths");
-        }
-
-        if ((target is Frame || target is TouchWrapper) && jObject["items"] != null)
-        {
-            jObject.Move("items", "item");
-        }
-
-        if ((target is Container || target is Pager || target is GridSequence) && jObject["item"] != null)
-        {
-            jObject.Move("item", "items");
-        }
-
-        try
-        {
-            serializer.Populate(jObject.CreateReader(), target);
-        }
-        catch
-        {
-            if (ThrowConversionExceptions)
-            {
-                throw;
-            }
-        }
-
-        if (target is CustomComponent custom)
-        {
-            custom.Properties.Remove("type");
-        }
-
-        return target;
-
-    }
-
-    public static ConcurrentDictionary<string, Type> APLComponentLookup = new ConcurrentDictionary<string, Type>
+    public static ConcurrentDictionary<string, Type> APLComponentLookup = new()
     {
 
     };
-
-    public override bool CanConvert(Type objectType)
+    protected override IDictionary<string, Type> DerivedTypes => APLComponentLookup;
+    protected override JsonElement TransformJson(JsonElement original)
     {
-        return objectType.GetTypeInfo().IsSubclassOf(typeof(APLComponent));
+        var obj = original.Deserialize<JsonObject>() ?? new JsonObject();
+
+        string? type = obj["type"]?.GetValue<string>();
+        if (string.IsNullOrEmpty(type))
+        {
+            return original;
+        }
+
+        // Universal field renames
+        Move(obj, "gesture", "gestures");
+        Move(obj, "entity", "entities");
+
+        // Type-specific remapping
+        switch (type)
+        {
+            case "GridSequence":
+                Move(obj, "childHeight", "childHeights");
+                Move(obj, "childWidth", "childWidths");
+
+                if (obj.ContainsKey("item"))
+                    Move(obj, "item", "items");
+                break;
+
+            case "Frame":
+            case "TouchWrapper":
+                if (obj.ContainsKey("items"))
+                    Move(obj, "items", "item");
+                break;
+
+            case "Container":
+            case "Pager":
+                if (obj.ContainsKey("item"))
+                    Move(obj, "item", "items");
+                break;
+        }
+
+        return JsonSerializer.Deserialize<JsonElement>(obj.ToJsonString());
     }
+
+    private static void Move(JsonObject json, string from, string to)
+    {
+        if (json.ContainsKey(from))
+        {
+            json[to] = json[from];
+            json.Remove(from);
+        }
+    }
+
+    public override Type? DefaultType => typeof(CustomComponent);
 }

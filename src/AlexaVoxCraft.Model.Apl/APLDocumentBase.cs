@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public abstract class APLDocumentBase:APLDocumentReference
+public abstract class APLDocumentBase : APLDocumentReference
 {
     protected APLDocumentBase()
     {
@@ -24,43 +25,41 @@ public abstract class APLDocumentBase:APLDocumentReference
         set => VersionString = EnumParser.ToEnumString(typeof(APLDocumentVersion), value);
     }
 
-    [JsonProperty("description",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Description { get; set; }
 
-    [JsonProperty("layouts", NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string, Layout> Layouts { get; set; }
+    [JsonPropertyName("layouts")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, Layout>? Layouts { get; set; }
 
-    [JsonProperty("resources", NullValueHandling = NullValueHandling.Ignore)]
-    public IList<Resource> Resources { get; set; }
+    [JsonPropertyName("resources")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Resource>? Resources { get; set; }
 
-    [JsonProperty("mainTemplate")]
-    public Layout MainTemplate { get; set; }
+    [JsonPropertyName("mainTemplate")] public Layout MainTemplate { get; set; }
 
-    [JsonProperty("onMount", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnMount { get; set; }
+    [JsonPropertyName("onMount")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnMount { get; set; }
 
-    [JsonProperty("onConfigChange", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnConfigChange { get; set; }
+    [JsonPropertyName("onConfigChange")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnConfigChange { get; set; }
 
-    [JsonProperty("settings", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDocumentSettings Settings { get; set; }
+    [JsonPropertyName("settings")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDocumentSettings? Settings { get; set; }
 
-    [JsonProperty("extensions",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(GenericLegacySingleOrListConverter<APLExtension>),true)]
-    public APLValue<IList<APLExtension>> Extensions { get; set; } = new List<APLExtension>();
+    [JsonPropertyName("extensions")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLExtension>>? Extensions { get; set; } = new List<APLExtension>();
 
-    public bool ShouldSerializeExtensions()
-    {
-        return Extensions.Value?.Any() ?? false;
-    }
+    [JsonPropertyName("environment")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDocumentEnvironment? Environment { get; set; }
 
-    [JsonProperty("environment", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDocumentEnvironment Environment { get; set; }
-
-    [JsonExtensionData]
-    public Dictionary<string,object> Handlers { get; set; }
+    [JsonExtensionData] public Dictionary<string, object> Handlers { get; set; }
 
     public void AddHandler(string name, APLValue<IList<APLCommand>> commands)
     {
@@ -70,5 +69,31 @@ public abstract class APLDocumentBase:APLDocumentReference
         }
 
         Handlers.Add(name, commands);
+    }
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<APLDocumentBase>(info =>
+        {
+            var extensionsProp = info.Properties.FirstOrDefault(p => p.Name == "extensions");
+            if (extensionsProp is not null)
+            {
+                extensionsProp.ShouldSerialize = ((obj, _) =>
+                {
+                    var document = (APLDocumentBase)obj;
+                    return document.Extensions?.Value?.Any() ?? false;
+                });
+                extensionsProp.CustomConverter = new GenericSingleOrListConverter<APLExtension>(true);
+            }
+            var onConfigChangeProp = info.Properties.FirstOrDefault(p => p.Name == "onConfigChange");
+            if (onConfigChangeProp is not null)
+            {
+                onConfigChangeProp.CustomConverter = new APLCommandListConverter(true);
+            }
+            var onMountProp = info.Properties.FirstOrDefault(p => p.Name == "onMount");
+            if (onMountProp is not null)
+            {
+                onMountProp.CustomConverter = new APLCommandListConverter(true);
+            }
+        });
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -17,23 +18,19 @@ public class Layout
         Items = items.ToList();
     }
 
-    [JsonProperty("bind", NullValueHandling = NullValueHandling.Ignore)]
-    public IList<Binding> Bindings { get; set; }
+    [JsonPropertyName("bind")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Binding>? Bindings { get; set; }
 
-    public bool ShouldSerializeBindings()
-    {
-        return Bindings?.Any() ?? false;
-    }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Description { get; set; }
 
-    [JsonProperty("description",NullValueHandling = NullValueHandling.Ignore)]
-    public string Description { get; set; }
+    [JsonPropertyName("parameters")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Parameter>? Parameters { get; set; }
 
-    [JsonProperty("parameters", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(ParameterListConverter),true)]
-    public IList<Parameter> Parameters { get; set; }
-
-    [JsonProperty("items"), 
-     JsonConverter(typeof(APLComponentListConverter))]
+    [JsonPropertyName("items")] 
     public IList<APLComponent> Items { get; set; }
 
     public Layout AsMain(string dataSourceKey = "payload")
@@ -49,5 +46,30 @@ public class Layout
         }
 
         return this;
+    }
+    public static void AddSupport()
+    {
+        AlexaJsonOptions.RegisterTypeModifier<Layout>(info =>
+        {
+            var bindProp = info.Properties.FirstOrDefault(p => p.Name == "bind");
+            if (bindProp is not null)
+            {
+                bindProp.ShouldSerialize = ((obj, _) =>
+                {
+                    var layout = (Layout)obj;
+                    return layout.Bindings?.Any() ?? false;
+                });
+            }
+            var parametersProp = info.Properties.FirstOrDefault(p => p.Name == "parameters");
+            if (parametersProp is not null)
+            {
+                parametersProp.CustomConverter = new ParameterListConverter(true);
+            }
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.CustomConverter = new APLComponentListConverter(false);
+            }
+        });
     }
 }

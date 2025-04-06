@@ -2,11 +2,15 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Audio;
-using AlexaVoxCraft.Model.Response.Converters;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public abstract class APLComponentBase
+public interface IJsonSerializable<TType>
+{
+    static abstract void RegisterTypeInfo<T>() where T : TType;
+}
+public abstract class APLComponentBase : IJsonSerializable<APLComponentBase>
 {
     [JsonPropertyName("type")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -15,13 +19,7 @@ public abstract class APLComponentBase
     [JsonPropertyName("bind")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<Binding>? Bindings { get; set; }
-
-    // TODO: Add this to the Options Modifier
-    public bool ShouldSerializeBindings()
-    {
-        return Bindings?.Any() ?? false;
-    }
-
+    
     [JsonPropertyName("when")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?>? When { get; set; }
@@ -35,7 +33,22 @@ public abstract class APLComponentBase
     public APLValue<string>? Description { get; set; }
 
     [JsonPropertyName("duration")]
-    [JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<AudioDuration>))]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public AudioDuration? Duration { get; set; }
+    
+    public static void RegisterTypeInfo<T>() where T : APLComponentBase
+    {
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var bindProp = info.Properties.FirstOrDefault(p => p.Name == "bind");
+            if (bindProp is not null)
+            {
+                bindProp.ShouldSerialize = ((obj, _) =>
+                {
+                    var layout = (T)obj;
+                    return layout.Bindings?.Any() ?? false;
+                });
+            }
+        });
+    }
 }

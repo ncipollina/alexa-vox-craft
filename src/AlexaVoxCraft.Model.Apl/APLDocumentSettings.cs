@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -12,10 +12,12 @@ public class APLDocumentSettings
         IdleTimeout = idleTimeout;
     }
 
-    [JsonProperty("idleTimeout",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("idleTimeout")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? IdleTimeout { get; set; }
 
-    [JsonProperty("supportsResizing",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("supportsResizing")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? SupportsResizing { get; set; }
 
     [JsonExtensionData]

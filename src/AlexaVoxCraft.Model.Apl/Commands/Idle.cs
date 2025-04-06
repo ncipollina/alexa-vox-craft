@@ -1,6 +1,8 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Commands;
+﻿using System.Text.Json.Serialization;
 
-public class Idle:APLCommand
+namespace AlexaVoxCraft.Model.Apl.Commands;
+
+public class Idle : APLCommand
 {
-    public override string Type => nameof(Idle);
+    [JsonPropertyName("type")] public override string Type => nameof(Idle);
 }
