@@ -1,37 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using AlexaVoxCraft.Model.Apl.Gestures;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class APLGestureConverter : Newtonsoft.Json.JsonConverter<APLGesture>
+public class APLGestureConverter : BasePolymorphicConverter<APLGesture>
 {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, APLGesture value, JsonSerializer serializer)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override APLGesture ReadJson(JsonReader reader, Type objectType, APLGesture existingValue, bool hasExistingValue,
-        JsonSerializer serializer)
-    {
-        var jObject = JObject.Load(reader);
-        var commandType = jObject.Value<string>("type");
-        var target = GetGesture(commandType);
-        if (target != null)
-        {
-            jObject.Move("items", "item");
-            serializer.Populate(jObject.CreateReader(), target);
-            return target;
-        }
-
-        throw new ArgumentOutOfRangeException($"Command type {commandType} not supported");
-    }
-
-    public static Dictionary<string, Type> APLGestureLookup = new Dictionary<string, Type>
+    private static readonly Dictionary<string, Type> AplGestureLookup = new()
     {
         {nameof(DoublePress), typeof(DoublePress)},
         {nameof(LongPress), typeof(LongPress)},
@@ -39,11 +15,5 @@ public class APLGestureConverter : Newtonsoft.Json.JsonConverter<APLGesture>
         {nameof(Tap), typeof(Tap)}
     };
 
-    private APLGesture GetGesture(string commandType)
-    {
-        return (APLGesture)(
-            APLGestureLookup.ContainsKey(commandType)
-                ? Activator.CreateInstance(APLGestureLookup[commandType])
-                : null);
-    }
+    protected override IDictionary<string, Type> DerivedTypes => AplGestureLookup;
 }

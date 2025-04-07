@@ -1,48 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Reflection;
+using System.Collections.Generic;
 using AlexaVoxCraft.Model.Apl.Filters;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class ImageFilterConverter : Newtonsoft.Json.JsonConverter
+public class ImageFilterConverter : BasePolymorphicConverter<IImageFilter>
 {
-    public override bool CanWrite => false;
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public static ConcurrentDictionary<string, Type> ImageFilterLookup = new()
     {
+        [nameof(Blend)] = typeof(Blend),
+        [nameof(Blur)] = typeof(Blur),
+        [nameof(Color)] = typeof(Color),
+        [nameof(Gradient)] = typeof(Gradient),
+        [nameof(Grayscale)] = typeof(Grayscale),
+        [nameof(Noise)] = typeof(Noise),
+        [nameof(Saturate)] = typeof(Saturate),
+    };
 
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-        var jObject = JObject.Load(reader);
-        var filterType = jObject.Value<string>("type");
-        object target = ImageFilterLookup.GetLookupType<IImageFilter>(filterType, "AlexaVoxCraft.Model.Apl.Filters", s => null);
-        if (target == null)
-        {
-            throw new ArgumentOutOfRangeException($"Filter type {filterType} not supported");
-        }
-
-        try
-        {
-            serializer.Populate(jObject.CreateReader(), target);
-        }
-        catch (Exception)
-        {
-        }
-
-        return target;
-
-    }
-
-    public static ConcurrentDictionary<string,Type> ImageFilterLookup = new ConcurrentDictionary<string, Type>();
-
-    public override bool CanConvert(Type objectType)
-    {
-        return objectType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IImageFilter));
-    }
+    protected override IDictionary<string, Type> DerivedTypes => ImageFilterLookup;
 }

@@ -1,75 +1,111 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public abstract class ResponsiveTemplate : APLComponent
+public abstract class ResponsiveTemplate : APLComponent, IJsonSerializable<ResponsiveTemplate>
 {
-    [JsonProperty("backgroundAlign", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> BackgroundAlign { get; set; }
+    [JsonPropertyName("backgroundAlign")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BackgroundAlign { get; set; }
 
-    [JsonProperty("backgroundBlur", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> BackgroundBlur { get; set; }
+    [JsonPropertyName("backgroundBlur")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? BackgroundBlur { get; set; }
 
-    [JsonProperty("backgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> BackgroundColor { get; set; }
+    [JsonPropertyName("backgroundColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BackgroundColor { get; set; }
 
-    [JsonProperty("backgroundColorOverlay",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> BackgroundColorOverlay { get; set; }
+    [JsonPropertyName("backgroundColorOverlay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? BackgroundColorOverlay { get; set; }
 
-    [JsonProperty("backgroundOverlayGradient",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> BackgroundOverlayGradient { get; set; }
+    [JsonPropertyName("backgroundOverlayGradient")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? BackgroundOverlayGradient { get; set; }
 
-    [JsonProperty("backgroundImageSource", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> BackgroundImageSource { get; set; }
+    [JsonPropertyName("backgroundImageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BackgroundImageSource { get; set; }
 
-    [JsonProperty("backgroundScale",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<Scale?> BackgroundScale { get; set; }
+    [JsonPropertyName("backgroundScale")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Scale?>? BackgroundScale { get; set; }
 
-    [JsonProperty("backgroundVideoSource", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<VideoSource> BackgroundVideoSource { get; set; }
+    [JsonPropertyName("backgroundVideoSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<VideoSource>? BackgroundVideoSource { get; set; }
 
-    [JsonProperty("backgroundVideoAudioTrack", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> BackgroundVideoAudioTrack { get; set; }
+    [JsonPropertyName("backgroundVideoAudioTrack")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BackgroundVideoAudioTrack { get; set; }
 
-    [JsonProperty("backgroundVideoAutoPlay", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> BackgroundVideoAutoPlay { get; set; }
+    [JsonPropertyName("backgroundVideoAutoPlay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? BackgroundVideoAutoPlay { get; set; }
 
-    [JsonProperty("headerDivider", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HeaderDivider { get; set; }
+    [JsonPropertyName("headerDivider")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HeaderDivider { get; set; }
 
-    [JsonProperty("headerTitle", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderTitle { get; set; }
+    [JsonPropertyName("headerTitle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderTitle { get; set; }
 
-    [JsonProperty("headerSubtitle", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderSubtitle { get; set; }
+    [JsonPropertyName("headerSubtitle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderSubtitle { get; set; }
 
-    [JsonProperty("headerAttributionText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderAttributionText { get; set; }
+    [JsonPropertyName("headerAttributionText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderAttributionText { get; set; }
 
-    [JsonProperty("headerAttributionImage", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderAttributionImage { get; set; }
+    [JsonPropertyName("headerAttributionImage")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderAttributionImage { get; set; }
 
-    [JsonProperty("headerAttributionPrimacy", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HeaderAttributionPrimacy { get; set; }
+    [JsonPropertyName("headerAttributionPrimacy")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HeaderAttributionPrimacy { get; set; }
 
-    [JsonProperty("headerBackButton", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HeaderBackButton { get; set; }
+    [JsonPropertyName("headerBackButton")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HeaderBackButton { get; set; }
 
-    [JsonProperty("headerBackButtonAccessibilityLabel", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderBackButtonAccessibilityLabel { get; set; }
+    [JsonPropertyName("headerBackButtonAccessibilityLabel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderBackButtonAccessibilityLabel { get; set; }
 
-    [JsonProperty("headerBackButtonCommand", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> HeaderBackButtonCommand { get; set; }
+    [JsonPropertyName("headerBackButtonCommand")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>?>? HeaderBackButtonCommand { get; set; }
 
-    [JsonProperty("headerBackgroundColor", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderBackgroundColor { get; set; }
+    [JsonPropertyName("headerBackgroundColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderBackgroundColor { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Theme { get; set; }
+    [JsonPropertyName("theme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Theme { get; set; }
 
-    [JsonProperty("footerHintText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FooterHintText { get; set; }
+    [JsonPropertyName("footerHintText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FooterHintText { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : ResponsiveTemplate
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var headerBackButtonCommandProp = info.Properties.FirstOrDefault(p => p.Name == "headerBackButtonCommand");
+            if (headerBackButtonCommandProp is not null)
+            {
+                headerBackButtonCommandProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

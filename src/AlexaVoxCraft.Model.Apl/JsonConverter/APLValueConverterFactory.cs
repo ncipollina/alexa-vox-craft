@@ -131,16 +131,19 @@ public class APLEnumerableValueConverter<TValue, TList> : JsonConverter<APLValue
 
     public override void Write(Utf8JsonWriter writer, APLValue<TList> value, JsonSerializerOptions options)
     {
-        // For all instances of APLValue<TList> where TList is an IEnumerable<TValue> we will always output a single value if 
-        // the list contains only one item. This is to ensure that the APLValue<TList> is always serialized as a single value
-        if (value.IsSingle)
+        object? obj;
+        if (!string.IsNullOrEmpty(value.Expression))
         {
-            JsonSerializer.Serialize(writer, value.Value!.First(), options);
+            obj = value.Expression;
+        } else if (value.IsSingle)
+        {
+            obj = value.Value!.First();
         }
         else
         {
-            JsonSerializer.Serialize(writer, value.Value, options);
+            obj = value.Value;
         }
+        JsonSerializer.Serialize(writer, obj, options);
     }
 }
 

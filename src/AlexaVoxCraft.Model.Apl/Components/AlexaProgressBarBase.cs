@@ -1,27 +1,32 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public abstract class AlexaProgressBarBase:APLComponent
-{ 
-    [JsonProperty("bufferValue",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> BufferValue { get; set; }
+public abstract class AlexaProgressBarBase : APLComponent, IJsonSerializable<AlexaProgressBarBase>
+{
+    [JsonPropertyName("bufferValue")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? BufferValue { get; set; }
 
-    [JsonProperty("isLoading",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> IsLoading { get; set; }
+    [JsonPropertyName("isLoading")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? IsLoading { get; set; }
 
-    [JsonProperty("progressBarType",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<ProgressBarType?> ProgressBarType { get; set; }
+    [JsonPropertyName("progressBarType")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<ProgressBarType?>? ProgressBarType { get; set; }
 
-    [JsonProperty("progressFillColor",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ProgressFillColor { get; set; }
+    [JsonPropertyName("progressFillColor")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ProgressFillColor { get; set; }
 
-    [JsonProperty("progressValue",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> ProgressValue { get; set; }
+    [JsonPropertyName("progressValue")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? ProgressValue { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Theme { get; set; }
+    [JsonPropertyName("theme")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Theme { get; set; }
 
-    [JsonProperty("totalValue",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> TotalValue { get; set; }
+    [JsonPropertyName("totalValue")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? TotalValue { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaProgressBarBase
+    {
+        APLComponent.RegisterTypeInfo<T>();
+    }
 }

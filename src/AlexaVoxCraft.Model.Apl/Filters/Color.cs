@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Filters;
 
 public class Color : IImageFilter
 {
-    [JsonProperty("type")]
-    public string Type => nameof(Color);
+    [JsonPropertyName("type")] public string Type => nameof(Color);
 
-    [JsonProperty("color",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SelectedColor { get; set; }
+    [JsonPropertyName("color")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SelectedColor { get; set; }
 }

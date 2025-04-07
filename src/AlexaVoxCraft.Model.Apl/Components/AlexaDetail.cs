@@ -1,142 +1,167 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaDetail:ResponsiveTemplate
+public class AlexaDetail : ResponsiveTemplate, IJsonSerializable<AlexaDetail>
 {
- public override string Type => nameof(AlexaDetail);
+    [JsonPropertyName("type")]
+    public override string Type => nameof(AlexaDetail);
 
- [JsonProperty("bodyText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> BodyText { get; set; }
+    [JsonPropertyName("bodyText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BodyText { get; set; }
 
- [JsonProperty("button1AccessibilityLabel",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button1AccessibilityLabel { get; set; }
+    [JsonPropertyName("button1AccessibilityLabel")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button1AccessibilityLabel { get; set; }
 
- [JsonProperty("button1PrimaryAction", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> Button1PrimaryAction { get; set; }
+    [JsonPropertyName("button1PrimaryAction")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? Button1PrimaryAction { get; set; }
 
- [JsonProperty("button1Style",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button1Style { get; set; }
+    [JsonPropertyName("button1Style")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button1Style { get; set; }
 
- [JsonProperty("button1Text",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button1Text { get; set; }
+    [JsonPropertyName("button1Text")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button1Text { get; set; }
 
- [JsonProperty("button1Theme",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button1Theme { get; set; }
+    [JsonPropertyName("button1Theme")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button1Theme { get; set; }
 
- [JsonProperty("button2PrimaryAction", NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(APLCommandListConverter))]
- public APLValue<IList<APLCommand>> Button2PrimaryAction { get; set; }
+    [JsonPropertyName("button2PrimaryAction")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? Button2PrimaryAction { get; set; }
 
- [JsonProperty("button2Style", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button2Style { get; set; }
+    [JsonPropertyName("button2Style")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button2Style { get; set; }
 
- [JsonProperty("button2Text", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button2Text { get; set; }
+    [JsonPropertyName("button2Text")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button2Text { get; set; }
 
- [JsonProperty("button2Theme", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Button2Theme { get; set; }
+    [JsonPropertyName("button2Theme")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Button2Theme { get; set; }
 
- [JsonProperty("detailImageAlignment",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> DetailImageAlignment { get; set; }
+    [JsonPropertyName("detailImageAlignment")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? DetailImageAlignment { get; set; }
 
- [JsonProperty("detailType",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> DetailType { get; set; }
+    [JsonPropertyName("detailType")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? DetailType { get; set; }
 
- [JsonProperty("emptyRatingGraphic",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> EmptyRatingGraphic { get; set; }
+    [JsonPropertyName("emptyRatingGraphic")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptyRatingGraphic { get; set; }
 
- [JsonProperty("fullRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> FullRatingGraphic { get; set; }
+    [JsonPropertyName("fullRatingGraphic")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FullRatingGraphic { get; set; }
 
- [JsonProperty("halfRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> HalfRatingGraphic { get; set; }
+    [JsonPropertyName("halfRatingGraphic")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HalfRatingGraphic { get; set; }
 
- [JsonProperty("ratingGraphicType", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<RatingGraphicType?> RatingGraphicType { get; set; }
+    [JsonPropertyName("ratingGraphicType")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingGraphicType?>? RatingGraphicType { get; set; }
 
- [JsonProperty("ratingNumber", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<double?> RatingNumber { get; set; }
+    [JsonPropertyName("ratingNumber")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? RatingNumber { get; set; }
 
- [JsonProperty("ratingSlotMode", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<RatingSlotMode?> RatingSlotMode { get; set; }
+    [JsonPropertyName("ratingSlotMode")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingSlotMode?>? RatingSlotMode { get; set; }
 
- [JsonProperty("ratingSlotPadding", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue RatingSlotPadding { get; set; }
+    [JsonPropertyName("ratingSlotPadding")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? RatingSlotPadding { get; set; }
 
- [JsonProperty("ratingText", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> RatingText { get; set; }
+    [JsonPropertyName("ratingText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? RatingText { get; set; }
 
- [JsonProperty("singleRatingGraphicWidth", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue SingleRatingGraphicWidth { get; set; }
+    [JsonPropertyName("singleRatingGraphicWidth")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? SingleRatingGraphicWidth { get; set; }
 
- [JsonProperty("singleRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> SingleRatingGraphic { get; set; }
+    [JsonPropertyName("singleRatingGraphic")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SingleRatingGraphic { get; set; }
 
- [JsonProperty("imageAlignment", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<AlexaImageAlignment?> ImageAlignment { get; set; }
+    [JsonPropertyName("imageAlignment")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAlignment?>? ImageAlignment { get; set; }
 
- [JsonProperty("imageAspectRatio", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<AlexaImageAspectRatio?> ImageAspectRatio { get; set; }
+    [JsonPropertyName("imageAspectRatio")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAspectRatio?>? ImageAspectRatio { get; set; }
 
- [JsonProperty("imageBlurredBackground", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> ImageBlurredBackground { get; set; }
+    [JsonPropertyName("imageBlurredBackground")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageBlurredBackground { get; set; }
 
- [JsonProperty("imageHeight", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue ImageHeight { get; set; }
+    [JsonPropertyName("imageHeight")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? ImageHeight { get; set; }
 
- [JsonProperty("imageWidth", NullValueHandling = NullValueHandling.Ignore)]
- public APLDimensionValue ImageWidth { get; set; }
+    [JsonPropertyName("imageWidth")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? ImageWidth { get; set; }
 
- [JsonProperty("imageRoundedCorner", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> ImageRoundedCorner { get; set; }
+    [JsonPropertyName("imageRoundedCorner")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageRoundedCorner { get; set; }
 
- [JsonProperty("imageScale", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<Scale> Scale { get; set; }
+    [JsonPropertyName("imageScale")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Scale>? Scale { get; set; }
 
- [JsonProperty("imageSource", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> ImageSource { get; set; }
+    [JsonPropertyName("imageSource")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageSource { get; set; }
 
- [JsonProperty("imageCaption",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> ImageCaption { get; set; }
+    [JsonPropertyName("imageCaption")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageCaption { get; set; }
 
- [JsonProperty("ingredientsHideDivider", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> IngredientsHideDivider { get; set; }
+    [JsonPropertyName("ingredientsHideDivider")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? IngredientsHideDivider { get; set; }
 
- [JsonProperty("ingredientsText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> IngredientsText { get; set; }
+    [JsonPropertyName("ingredientsText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? IngredientsText { get; set; }
 
- [JsonProperty("locationText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> LocationText { get; set; }
+    [JsonPropertyName("locationText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? LocationText { get; set; }
 
- [JsonProperty("primaryText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> PrimaryText { get; set; }
+    [JsonPropertyName("primaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? PrimaryText { get; set; }
 
- [JsonProperty("quaternaryText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> QuaternaryText { get; set; }
+    [JsonPropertyName("quaternaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? QuaternaryText { get; set; }
 
- [JsonProperty("scrollViewId",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> ScrollViewId { get; set; }
+    [JsonPropertyName("scrollViewId")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ScrollViewId { get; set; }
 
- [JsonProperty("secondaryText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> SecondaryText { get; set; }
+    [JsonPropertyName("secondaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryText { get; set; }
 
- [JsonProperty("tertiaryText",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> TertiaryText { get; set; }
+    [JsonPropertyName("tertiaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TertiaryText { get; set; }
 
- [JsonProperty("ingredientListItems",NullValueHandling = NullValueHandling.Ignore),
-  JsonConverter(typeof(GenericLegacySingleOrListConverter<IngredientListItem>))]
- public APLValue<IList<IngredientListItem>> IngredientListItems { get; set; }
+    [JsonPropertyName("ingredientListItems")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<IngredientListItem>>? IngredientListItems { get; set; }
 
- [JsonProperty("imageShadow",NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<bool?> ImageShadow { get; set; }
+    [JsonPropertyName("imageShadow")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageShadow { get; set; }
 
- [JsonProperty("lang", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<string> Lang { get; set; }
+    [JsonPropertyName("lang")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Lang { get; set; }
 
- [JsonProperty("headerAttributionOpacity", NullValueHandling = NullValueHandling.Ignore)]
- public APLValue<double?> HeaderAttributionOpacity { get; set; }
+    [JsonPropertyName("headerAttributionOpacity")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? HeaderAttributionOpacity { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaDetail
+    {
+        ResponsiveTemplate.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var button1PrimaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "button1PrimaryAction");
+            if (button1PrimaryActionProp is not null)
+            {
+                button1PrimaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var button2PrimaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "button2PrimaryAction");
+            if (button2PrimaryActionProp is not null)
+            {
+                button2PrimaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var ingredientListItemsProp = info.Properties.FirstOrDefault(p => p.Name == "ingredientListItems");
+            if (ingredientListItemsProp is not null)
+            {
+                ingredientListItemsProp.CustomConverter = new GenericSingleOrListConverter<IngredientListItem>(false);
+            }
+        });
+    }
 }

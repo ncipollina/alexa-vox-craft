@@ -1,29 +1,49 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaCheckbox:APLComponent{
-    [JsonProperty("type")]
-    public override string Type => nameof(AlexaCheckbox);
+public class AlexaCheckbox : APLComponent, IJsonSerializable<AlexaCheckbox>
+{
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaCheckbox);
 
-    [JsonProperty("primaryAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
+    [JsonPropertyName("primaryAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>> PrimaryAction { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("theme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Theme { get; set; }
 
-    [JsonProperty("selectedColor", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("selectedColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> SelectedColor { get; set; }
 
-    [JsonProperty("checkboxHeight", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("checkboxHeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLDimensionValue CheckboxHeight { get; set; }
 
-    [JsonProperty("checkboxWidth", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("checkboxWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLDimensionValue CheckboxWidth { get; set; }
 
-    [JsonProperty("isIndeterminate", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("isIndeterminate")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> IsIndeterminate { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaCheckbox
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var primaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "primaryAction");
+            if (primaryActionProp is not null)
+            {
+                primaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

@@ -30,7 +30,7 @@ public class APLKeyboardHandler
             var commandsProp = info.Properties.FirstOrDefault(p => p.Name == "commands");
             if (commandsProp is not null)
             {
-                commandsProp.CustomConverter = new APLCommandListConverter(true);
+                commandsProp.CustomConverter = new APLCommandListConverter(false);
             }
         });
     }

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class TouchWrapper : TouchComponent
+public class TouchWrapper : TouchComponent, IJsonSerializable<TouchWrapper>
 {
     public TouchWrapper()
     {
-
     }
 
     public TouchWrapper(APLComponent item)
@@ -18,7 +19,6 @@ public class TouchWrapper : TouchComponent
 
     public TouchWrapper(params APLComponent[] item) : this((IEnumerable<APLComponent>)item)
     {
-
     }
 
     public TouchWrapper(IEnumerable<APLComponent> item)
@@ -26,11 +26,23 @@ public class TouchWrapper : TouchComponent
         Item = new List<APLComponent>(item);
     }
 
-    [JsonProperty("type")]
-    public override string Type => nameof(TouchWrapper);
+    [JsonPropertyName("type")] public override string Type => nameof(TouchWrapper);
 
 
-    [JsonProperty("item", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLComponentListConverter))]
-    public APLValue<IList<APLComponent>> Item { get; set; }
+    [JsonPropertyName("item")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLComponent>>? Item { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : TouchWrapper
+    {
+        TouchComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var itemProp = info.Properties.FirstOrDefault(p => p.Name == "item");
+            if (itemProp is not null)
+            {
+                itemProp.CustomConverter = new APLComponentListConverter(false);
+            }
+        });
+    }
 }

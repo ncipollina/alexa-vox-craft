@@ -1,48 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public abstract class AlexaListItem : APLComponent
+public abstract class AlexaListItem : APLComponent, IJsonSerializable<AlexaListItem>
 {
-    [JsonProperty("hideOrdinal", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HideOrdinal { get; set; }
+    [JsonPropertyName("hideOrdinal")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HideOrdinal { get; set; }
 
-    [JsonProperty("primaryAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> PrimaryAction { get; set; }
+    [JsonPropertyName("primaryAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? PrimaryAction { get; set; }
 
-    [JsonProperty("primaryText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> PrimaryText { get; set; }
+    [JsonPropertyName("primaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? PrimaryText { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Theme { get; set; }
+    [JsonPropertyName("theme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Theme { get; set; }
 
-    [JsonProperty("emptyRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> EmptyRatingGraphic { get; set; }
+    [JsonPropertyName("emptyRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptyRatingGraphic { get; set; }
 
-    [JsonProperty("fullRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FullRatingGraphic { get; set; }
+    [JsonPropertyName("fullRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FullRatingGraphic { get; set; }
 
-    [JsonProperty("halfRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HalfRatingGraphic { get; set; }
+    [JsonPropertyName("halfRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HalfRatingGraphic { get; set; }
 
-    [JsonProperty("ratingGraphicType", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingGraphicType?> RatingGraphicType { get; set; }
+    [JsonPropertyName("ratingGraphicType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingGraphicType?>? RatingGraphicType { get; set; }
 
-    [JsonProperty("ratingNumber", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> RatingNumber { get; set; }
+    [JsonPropertyName("ratingNumber")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? RatingNumber { get; set; }
 
-    [JsonProperty("ratingSlotMode", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingSlotMode?> RatingSlotMode { get; set; }
+    [JsonPropertyName("ratingSlotMode")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingSlotMode?>? RatingSlotMode { get; set; }
 
-    [JsonProperty("ratingText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> RatingText { get; set; }
+    [JsonPropertyName("ratingText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? RatingText { get; set; }
 
-    [JsonProperty("singleRatingGraphicWidth", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue SingleRatingGraphicWidth { get; set; }
+    [JsonPropertyName("singleRatingGraphicWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? SingleRatingGraphicWidth { get; set; }
 
-    [JsonProperty("singleRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SingleRatingGraphic { get; set; }
+    [JsonPropertyName("singleRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SingleRatingGraphic { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaListItem
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var primaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "primaryAction");
+            if (primaryActionProp is not null)
+            {
+                primaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

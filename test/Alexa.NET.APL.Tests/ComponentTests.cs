@@ -66,7 +66,7 @@ public class ComponentTests
     [Fact]
     public void VideoComponent()
     {
-        Utility.AssertComponent<Video>("Video.json");
+        Utility.AssertComponent<Video>("Video.json", _output);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class ComponentTests
     [Fact]
     public void ImageFilters()
     {
-        Utility.AssertComponent<Image>("ImageFilters.json");
+        Utility.AssertComponent<Image>("ImageFilters.json", _output);
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class ComponentTests
             Start = 1552070232
         };
 
-        Assert.True(Utility.CompareJson(timeText, "TimeText.json", null));
+        Assert.True(Utility.CompareJson(timeText, "TimeText.json", _output));
     }
 
 
@@ -190,7 +190,7 @@ public class ComponentTests
     [Fact]
     public void KeyboardEvent()
     {
-        Utility.AssertComponent<APLComponent>("KeyboardTouchWrapper.json");
+        Utility.AssertComponent<APLComponent>("KeyboardTouchWrapper.json", _output);
     }
 
     [Fact]
@@ -208,7 +208,7 @@ public class ComponentTests
                 Value = APLValue.To<string>("${exampleData.imageStyleText}")
             }}.ToList()
         };
-        Assert.True(Utility.CompareJson(control,"AlexaIconButton.json", null));
+        Assert.True(Utility.CompareJson(control,"AlexaIconButton.json", _output));
     }
 
     [Fact]
@@ -226,7 +226,7 @@ public class ComponentTests
             ImageAspectRatio = AlexaImageAspectRatio.Square,
             ImageSource = "${exampleData.imageSource}"
         };
-        Assert.True(Utility.CompareJson(control,"AlexaImageListItem.json", null));
+        Assert.True(Utility.CompareJson(control,"AlexaImageListItem.json", _output));
     }
 
 
@@ -241,7 +241,7 @@ public class ComponentTests
             RatingText = "509 ratings",
             Spacing = "@spacingMedium"
         };
-        Assert.True(Utility.CompareJson(control,"AlexaRating.json", null));
+        Assert.True(Utility.CompareJson(control,"AlexaRating.json", _output));
     }
 
     [Fact]
@@ -260,7 +260,7 @@ public class ComponentTests
                 }
             }.ToList())
         };
-        Assert.True(Utility.CompareJson(control,"AlexaImageList.json", null));
+        Assert.True(Utility.CompareJson(control,"AlexaImageList.json", _output));
     }
 
     [Fact]
@@ -274,61 +274,61 @@ public class ComponentTests
             ImageBlurredBackground = true
         };
 
-        Assert.True(Utility.CompareJson(control, "AlexaLists.json", null));
+        Assert.True(Utility.CompareJson(control, "AlexaLists.json", _output));
     }
 
     [Fact]
     public void AlexaPaginatedList()
     {
-        Utility.AssertComponent<AlexaPaginatedList>("AlexaPaginatedList.json");
+        Utility.AssertComponent<AlexaPaginatedList>("AlexaPaginatedList.json", _output);
     }
 
     [Fact]
     public void TickHandler()
     {
-        Utility.AssertComponent<Container>("TickHandler.json");
+        Utility.AssertComponent<Container>("TickHandler.json", _output);
     }
 
     [Fact]
     public void ProgressBar()
     {
-        Utility.AssertComponent<AlexaProgressBar>("AlexaProgressBar.json");
+        Utility.AssertComponent<AlexaProgressBar>("AlexaProgressBar.json", _output);
     }
 
     [Fact]
     public void ProgressBarRadial()
     {
-        Utility.AssertComponent<Container>("AlexaProgressBarRadial.json");
+        Utility.AssertComponent<Container>("AlexaProgressBarRadial.json", _output);
     }
 
     [Fact]
     public void ProgressDots()
     {
-        Utility.AssertComponent<AlexaProgressDots>("AlexaProgressDots.json");
+        Utility.AssertComponent<AlexaProgressDots>("AlexaProgressDots.json", _output);
     }
 
     [Fact]
     public void Slider()
     {
-        Utility.AssertComponent<AlexaSlider>("AlexaSlider.json");
+        Utility.AssertComponent<AlexaSlider>("AlexaSlider.json", _output);
     }
 
     [Fact]
     public void SliderRadial()
     {
-        Utility.AssertComponent<Container>("AlexaSliderRadial.json");
+        Utility.AssertComponent<Container>("AlexaSliderRadial.json", _output);
     }
 
     [Fact]
     public void AlexaDetailRecipe()
     {
-        Utility.AssertComponent<AlexaDetail>("AlexaDetailRecipe.json");
+        Utility.AssertComponent<AlexaDetail>("AlexaDetailRecipe.json", _output);
     }
 
     [Fact]
     public void AlexaDetailTv()
     {
-        Utility.AssertComponent<AlexaDetail>("AlexaDetailTv.json");
+        Utility.AssertComponent<AlexaDetail>("AlexaDetailTv.json", _output);
     }
 
     [Fact]

@@ -1,6 +1,13 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Components;
+﻿using System.Text.Json.Serialization;
 
-public class AlexaProgressBarRadial : AlexaProgressBarBase
+namespace AlexaVoxCraft.Model.Apl.Components;
+
+public class AlexaProgressBarRadial : AlexaProgressBarBase, IJsonSerializable<AlexaProgressBarRadial>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(AlexaProgressBarRadial);
+    public new static void RegisterTypeInfo<T>() where T : AlexaProgressBarRadial
+    {
+        AlexaProgressBarBase.RegisterTypeInfo<T>();
+    }
 }

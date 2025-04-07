@@ -1,15 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class IngredientListItem
+public class IngredientListItem : IJsonSerializable<IngredientListItem>
 {
-    [JsonProperty("ingredientsContentText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> IngredientsContentText { get; set; }
+    [JsonPropertyName("ingredientsContentText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? IngredientsContentText { get; set; }
 
-    [JsonProperty("ingredientsPrimaryAction",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> IngredientsPrimaryAction { get; set; }
+    [JsonPropertyName("ingredientsPrimaryAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? IngredientsPrimaryAction { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : IngredientListItem
+    {
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var ingredientsPrimaryActionProp =
+                info.Properties.FirstOrDefault(p => p.Name == "ingredientsPrimaryAction");
+            if (ingredientsPrimaryActionProp is not null)
+            {
+                ingredientsPrimaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

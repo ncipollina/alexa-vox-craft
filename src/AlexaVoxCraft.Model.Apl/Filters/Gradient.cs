@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Filters;
 
 public class Gradient : IImageFilter
 {
-    [JsonProperty("type")]
-    public string Type => nameof(Gradient);
+    [JsonPropertyName("type")] public string Type => nameof(Gradient);
 
-    [JsonProperty("gradient",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<APLGradient> SelectedGradient { get; set; }
+    [JsonPropertyName("gradient")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<APLGradient>? SelectedGradient { get; set; }
 }

@@ -21,7 +21,7 @@ public static class Utility
     {
         // Read expected JSON directly as JsonNode
         var expectedJson = File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
-        var expectedNode = JsonNode.Parse(expectedJson);
+        var expectedNode = JsonSerializer.Deserialize<JsonNode>(expectedJson, AlexaJsonOptions.DefaultOptions);
 
         // Serialize actual object directly into JsonNode
         var actualNode = JsonSerializer.SerializeToNode(actual, AlexaJsonOptions.DefaultOptions);
@@ -188,9 +188,9 @@ public static class Utility
         return File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
     }
 
-    public static T AssertComponent<T>(string expectedFile) where T : APLComponent
+    public static T AssertComponent<T>(string expectedFile, ITestOutputHelper? output = null) where T : APLComponent
     {
-        var component = AssertSerialization<T>(expectedFile);
+        var component = AssertSerialization<T>(expectedFile, output);
         if (component.Properties != null)
         {
             component.Properties.Remove("type");

@@ -1,53 +1,73 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaImageListItem : AlexaPaginatedListItem
+public class AlexaImageListItem : AlexaPaginatedListItem, IJsonSerializable<AlexaImageListItem>
 {
-    [JsonProperty("type")] public override string Type => nameof(AlexaImageListItem);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaImageListItem);
 
-    [JsonProperty("defaultImageSource",NullValueHandling = NullValueHandling.Ignore)]
-    public string DefaultImageSource { get; set; }
+    [JsonPropertyName("defaultImageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? DefaultImageSource { get; set; }
 
-    [JsonProperty("imageAlignment", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<AlexaImageAlignment?> ImageAlignment { get; set; }
+    [JsonPropertyName("imageAlignment")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAlignment?>? ImageAlignment { get; set; }
 
-    [JsonProperty("imageAspectRatio", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<AlexaImageAspectRatio?> ImageAspectRatio { get; set; }
+    [JsonPropertyName("imageAspectRatio")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAspectRatio?>? ImageAspectRatio { get; set; }
 
-    [JsonProperty("imageBlurredBackground", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageBlurredBackground { get; set; }
+    [JsonPropertyName("imageBlurredBackground")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageBlurredBackground { get; set; }
 
-    [JsonProperty("imageHideScim",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageHideScrim { get; set; }
+    [JsonPropertyName("imageHideScim")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageHideScrim { get; set; }
 
-    [JsonProperty("imageMetadataPrimary",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageMetadataPrimary { get; set; }
+    [JsonPropertyName("imageMetadataPrimary")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageMetadataPrimary { get; set; }
 
-    [JsonProperty("imageProgressBarPercentage",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> ImageProgressBarPercentage { get; set; }
+    [JsonPropertyName("imageProgressBarPercentage")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? ImageProgressBarPercentage { get; set; }
 
-    [JsonProperty("imageRoundedCorner",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageRoundedCorner { get; set; }
+    [JsonPropertyName("imageRoundedCorner")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageRoundedCorner { get; set; }
 
-    [JsonProperty("imageScale",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<Scale?> ImageScale { get; set; }
+    [JsonPropertyName("imageScale")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Scale?>? ImageScale { get; set; }
 
-    [JsonProperty("providerText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ProviderText { get; set; }
+    [JsonPropertyName("providerText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ProviderText { get; set; }
 
-    [JsonProperty("hasPlayIcon",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HasPlayIcon { get; set; }
+    [JsonPropertyName("hasPlayIcon")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HasPlayIcon { get; set; }
 
-    [JsonProperty("imageSource", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ImageSource { get; set; }
+    [JsonPropertyName("imageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageSource { get; set; }
 
-    [JsonProperty("imageShadow", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageShadow { get; set; }
+    [JsonPropertyName("imageShadow")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageShadow { get; set; }
 
-    [JsonProperty("contentDirection",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<ContentDirection?> ContentDirection { get; set; }
+    [JsonPropertyName("contentDirection")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<ContentDirection?>? ContentDirection { get; set; }
 
-    [JsonProperty("imageAltText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ImageAltText { get; set; }
+    [JsonPropertyName("imageAltText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageAltText { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : AlexaImageListItem
+    {
+        AlexaPaginatedListItem.RegisterTypeInfo<T>();
+    }
 }

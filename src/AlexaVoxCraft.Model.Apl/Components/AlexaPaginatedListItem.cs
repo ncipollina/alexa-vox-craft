@@ -1,12 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public abstract class AlexaPaginatedListItem:AlexaListItem
+public abstract class AlexaPaginatedListItem : AlexaListItem, IJsonSerializable<AlexaPaginatedListItem>
 {
-    [JsonProperty("secondaryText", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("secondaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> SecondaryText { get; set; }
 
-    [JsonProperty("tertiaryText", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("tertiaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> TertiaryText { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : AlexaPaginatedListItem
+    {
+        AlexaListItem.RegisterTypeInfo<T>();
+    }
 }

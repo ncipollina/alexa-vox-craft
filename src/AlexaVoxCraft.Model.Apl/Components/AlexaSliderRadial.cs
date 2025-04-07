@@ -1,11 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaSliderRadial : AlexaSliderBase
+public class AlexaSliderRadial : AlexaSliderBase, IJsonSerializable<AlexaSliderRadial>
 {
-    public override string Type => nameof(AlexaSliderRadial);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaSliderRadial);
 
-    [JsonProperty("useDefaultSliderExpandTransition", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> UseDefaultSliderExpandTransition { get; set; }
+    [JsonPropertyName("useDefaultSliderExpandTransition")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? UseDefaultSliderExpandTransition { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaSliderRadial
+    {
+        AlexaSliderBase.RegisterTypeInfo<T>();
+    }
 }

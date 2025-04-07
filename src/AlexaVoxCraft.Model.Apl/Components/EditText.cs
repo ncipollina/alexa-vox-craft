@@ -1,84 +1,128 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class EditText:ActionableComponent
+public class EditText : ActionableComponent, IJsonSerializable<EditText>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(EditText);
 
-    [JsonProperty("borderColor",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> BorderColor { get; set; }
+    [JsonPropertyName("borderColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? BorderColor { get; set; }
 
-    [JsonProperty("borderStrokeWidth",NullValueHandling = NullValueHandling.Ignore)]
-    public APLAbsoluteDimensionValue BorderStrokeWidth { get; set; }
+    [JsonPropertyName("borderStrokeWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLAbsoluteDimensionValue? BorderStrokeWidth { get; set; }
 
-    [JsonProperty("borderWidth",NullValueHandling = NullValueHandling.Ignore)]
-    public APLAbsoluteDimensionValue BorderWidth { get; set; }
+    [JsonPropertyName("borderWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLAbsoluteDimensionValue? BorderWidth { get; set; }
 
-    [JsonProperty("color",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Color { get; set; }
+    [JsonPropertyName("color")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Color { get; set; }
 
-    [JsonProperty("fontFamily",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontFamily { get; set; }
+    [JsonPropertyName("fontFamily")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontFamily { get; set; }
 
-    [JsonProperty("fontSize",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> FontSize { get; set; }
+    [JsonPropertyName("fontSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? FontSize { get; set; }
 
-    [JsonProperty("fontStyle",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontStyle { get; set; }
+    [JsonPropertyName("fontStyle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontStyle { get; set; }
 
-    [JsonProperty("fontWeight",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontWeight { get; set; }
+    [JsonPropertyName("fontWeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontWeight { get; set; }
 
-    [JsonProperty("highlightColor",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HighlightColor { get; set; }
+    [JsonPropertyName("highlightColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HighlightColor { get; set; }
 
-    [JsonProperty("hint",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Hint { get; set; }
+    [JsonPropertyName("hint")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Hint { get; set; }
 
-    [JsonProperty("hintColor",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HintColor { get; set; }
+    [JsonPropertyName("hintColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HintColor { get; set; }
 
-    [JsonProperty("hintStyle",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HintStyle { get; set; }
+    [JsonPropertyName("hintStyle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HintStyle { get; set; }
 
-    [JsonProperty("hintWeight",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HintWeight { get; set; }
+    [JsonPropertyName("hintWeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HintWeight { get; set; }
 
-    [JsonProperty("keyboardType",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<KeyboardType?> KeyboardType { get; set; }
+    [JsonPropertyName("keyboardType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<KeyboardType?>? KeyboardType { get; set; }
 
-    [JsonProperty("maxLength",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int> MaxLength { get; set; }
+    [JsonPropertyName("maxLength")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int>? MaxLength { get; set; }
 
-    [JsonProperty("onTextChange",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> OnTextChange { get; set; }
+    [JsonPropertyName("onTextChange")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnTextChange { get; set; }
 
-    [JsonProperty("onSubmit", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> OnSubmit { get; set; }
+    [JsonPropertyName("onSubmit")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnSubmit { get; set; }
 
-    [JsonProperty("secureInput",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> SecureInput { get; set; }
+    [JsonPropertyName("secureInput")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? SecureInput { get; set; }
 
-    [JsonProperty("selectOnFocus",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> SelectOnFocus { get; set; }
+    [JsonPropertyName("selectOnFocus")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? SelectOnFocus { get; set; }
 
-    [JsonProperty("size",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> Size { get; set; }
+    [JsonPropertyName("size")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? Size { get; set; }
 
-    [JsonProperty("submitKeyType", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<SubmitKeyType?> SubmitKeyType { get; set; }
+    [JsonPropertyName("submitKeyType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<SubmitKeyType?>? SubmitKeyType { get; set; }
 
-    [JsonProperty("text",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Text { get; set; }
+    [JsonPropertyName("text")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Text { get; set; }
 
-    [JsonProperty("validCharacters",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ValidCharacters { get; set; }
+    [JsonPropertyName("validCharacters")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ValidCharacters { get; set; }
 
-    [JsonProperty("lang", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Lang { get; set; }
+    [JsonPropertyName("lang")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Lang { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : EditText
+    {
+        ActionableComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var onTextChangeProp = info.Properties.FirstOrDefault(p => p.Name == "onTextChange");
+            if (onTextChangeProp is not null)
+            {
+                onTextChangeProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var onSubmitProp = info.Properties.FirstOrDefault(p => p.Name == "onSubmit");
+            if (onSubmitProp is not null)
+            {
+                onSubmitProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

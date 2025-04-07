@@ -1,41 +1,57 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaRating:APLComponent
+public class AlexaRating : APLComponent, IJsonSerializable<AlexaRating>
 {
-    public override string Type => nameof(AlexaRating);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaRating);
 
-    [JsonProperty("emptyRatingGraphic",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> EmptyRatingGraphic { get; set; }
+    [JsonPropertyName("emptyRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptyRatingGraphic { get; set; }
 
-    [JsonProperty("fullRatingGraphic",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FullRatingGraphic { get; set; }
+    [JsonPropertyName("fullRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FullRatingGraphic { get; set; }
 
-    [JsonProperty("halfRatingGraphic",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HalfRatingGraphic { get; set; }
+    [JsonPropertyName("halfRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HalfRatingGraphic { get; set; }
 
-    [JsonProperty("ratingGraphicType",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingGraphicType?> RatingGraphicType { get; set; }
+    [JsonPropertyName("ratingGraphicType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingGraphicType?>? RatingGraphicType { get; set; }
 
-    [JsonProperty("ratingNumber",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> RatingNumber { get; set; }
+    [JsonPropertyName("ratingNumber")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? RatingNumber { get; set; }
 
-    [JsonProperty("ratingSlotMode",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingSlotMode?> RatingSlotMode { get; set; }
+    [JsonPropertyName("ratingSlotMode")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingSlotMode?>? RatingSlotMode { get; set; }
 
-    [JsonProperty("ratingSlotPadding",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue RatingSlotPadding { get; set; }
+    [JsonPropertyName("ratingSlotPadding")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? RatingSlotPadding { get; set; }
 
-    [JsonProperty("ratingText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> RatingText { get; set; }
+    [JsonPropertyName("ratingText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? RatingText { get; set; }
 
-    [JsonProperty("singleRatingGraphicWidth",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue SingleRatingGraphicWidth { get; set; }
+    [JsonPropertyName("singleRatingGraphicWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? SingleRatingGraphicWidth { get; set; }
 
-    [JsonProperty("singleRatingGraphic",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SingleRatingGraphic { get; set; }
+    [JsonPropertyName("singleRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SingleRatingGraphic { get; set; }
 
-    [JsonProperty("ratingTextOpacity",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> RatingTextOpacity { get; set; }
+    [JsonPropertyName("ratingTextOpacity")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? RatingTextOpacity { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaRating
+    {
+        APLComponent.RegisterTypeInfo<T>();
+    }
 }

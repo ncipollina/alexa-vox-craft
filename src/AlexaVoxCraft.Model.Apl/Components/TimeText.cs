@@ -1,17 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class TimeText:TextBase
+public class TimeText : TextBase, IJsonSerializable<TimeText>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(TimeText);
 
-    [JsonProperty("direction",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("direction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<TimeTextDirection?> Direction { get; set; }
 
-    [JsonProperty("format",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("format")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Format { get; set; }
 
-    [JsonProperty("start",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("start")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public new APLValue<int?> Start { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : TimeText
+    {
+        TextBase.RegisterTypeInfo<T>();
+    }
 }

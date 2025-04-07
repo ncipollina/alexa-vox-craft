@@ -1,29 +1,40 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaSlider : AlexaSliderBase
+public class AlexaSlider : AlexaSliderBase, IJsonSerializable<AlexaSlider>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(AlexaSlider);
 
-    [JsonProperty("sliderId")]
-    public APLValue<string> SliderId { get; set; }
+    [JsonPropertyName("sliderId")] public APLValue<string>? SliderId { get; set; }
 
-    [JsonProperty("metadataPosition", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<MetadataPosition?> MetadataPosition { get; set; }
+    [JsonPropertyName("metadataPosition")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<MetadataPosition?>? MetadataPosition { get; set; }
 
-    [JsonProperty("iconLeftGraphicSource", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> IconLeftGraphicSource { get; set; }
+    [JsonPropertyName("iconLeftGraphicSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? IconLeftGraphicSource { get; set; }
 
-    [JsonProperty("iconRightGraphicSource", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> IconRightGraphicSource { get; set; }
+    [JsonPropertyName("iconRightGraphicSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? IconRightGraphicSource { get; set; }
 
-    [JsonProperty("sliderSize", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<SliderSize?> SliderSize { get; set; }
+    [JsonPropertyName("sliderSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<SliderSize?>? SliderSize { get; set; }
 
-    [JsonProperty("sliderType", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<SliderType?> SliderType { get; set; }
+    [JsonPropertyName("sliderType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<SliderType?>? SliderType { get; set; }
 
-    [JsonProperty("sliderMoveMillisecond", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> SliderMoveMillisecond { get; set; }
+    [JsonPropertyName("sliderMoveMillisecond")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? SliderMoveMillisecond { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaSlider
+    {
+        AlexaSliderBase.RegisterTypeInfo<T>();
+    }
 }

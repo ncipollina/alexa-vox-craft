@@ -1,36 +1,42 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaLists : AlexaImageListBase
+public class AlexaLists : AlexaImageListBase, IJsonSerializable<AlexaLists>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(AlexaLists);
 
-    [JsonProperty("defaultImageSource",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> DefaultImageSource { get; set; }
+    [JsonPropertyName("defaultImageSource")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? DefaultImageSource { get; set; }
 
-    [JsonProperty("emptyPrimaryText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> EmptyPrimaryText { get; set; }
+    [JsonPropertyName("emptyPrimaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptyPrimaryText { get; set; }
 
-    [JsonProperty("emptySecondaryText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> EmptySecondaryText { get; set; }
+    [JsonPropertyName("emptySecondaryText")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptySecondaryText { get; set; }
 
-    [JsonProperty("hideDivider",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HideDivider { get; set; }
+    [JsonPropertyName("hideDivider")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HideDivider { get; set; }
 
-    [JsonProperty("listImagePrimacy",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ListImagePrimacy { get; set; }
+    [JsonPropertyName("listImagePrimacy")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ListImagePrimacy { get; set; }
 
-    [JsonProperty("listItems",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<IList<AlexaListItem>> ListItems { get; set; }
+    [JsonPropertyName("listItems")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<AlexaListItem>>? ListItems { get; set; }
 
-    [JsonProperty("touchForward",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> TouchForward { get; set; }
+    [JsonPropertyName("touchForward")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? TouchForward { get; set; }
 
-    [JsonProperty("imageShadow", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageShadow { get; set; }
+    [JsonPropertyName("imageShadow")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageShadow { get; set; }
 
-    [JsonProperty("lang", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Lang { get; set; }
+    [JsonPropertyName("lang")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Lang { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaLists
+    {
+        AlexaImageListBase.RegisterTypeInfo<T>();
+    }
 }
