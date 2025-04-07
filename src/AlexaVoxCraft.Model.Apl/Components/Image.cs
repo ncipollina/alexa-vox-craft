@@ -19,6 +19,7 @@ public class Image : APLComponent, IJsonSerializable<Image>
     }
 
     public const string ComponentType = "Image";
+    [JsonPropertyName("type")]
     public override string Type => ComponentType;
 
     [JsonPropertyName("align")]

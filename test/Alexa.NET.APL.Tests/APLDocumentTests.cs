@@ -10,12 +10,19 @@ using AlexaVoxCraft.Model.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class APLDocumentTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public APLDocumentTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Theory]
     [InlineData("1.0", APLDocumentVersion.V1)]
     [InlineData("1.1", APLDocumentVersion.V1_1)]
@@ -92,7 +99,7 @@ public class APLDocumentTests
 
         var mount = doc.OnMount.Value.Single();
         Assert.IsType<OpenURL>(mount);
-        Assert.True(Utility.CompareJson(doc, "Example_DailyCheese.json", null));
+        Assert.True(Utility.CompareJson(doc, "Example_DailyCheese.json", _output));
     }
 
     [Fact]
@@ -105,7 +112,7 @@ public class APLDocumentTests
 
         var occ = doc.OnConfigChange.Value.Single();
         Assert.IsType<Reinflate>(occ);
-        Assert.True(Utility.CompareJson(doc, "Example_ChangeDocumentLayout.json", null));
+        Assert.True(Utility.CompareJson(doc, "Example_ChangeDocumentLayout.json", _output));
     }
 
     [Fact]

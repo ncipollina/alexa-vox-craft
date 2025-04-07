@@ -13,6 +13,7 @@ public class Text : TextBase, IJsonSerializable<Text>
         Content = new APLValue<string>(text);
     }
 
+    [JsonPropertyName("type")]
     public override string Type => nameof(Text);
 
     [JsonPropertyName("text")] public APLValue<string> Content { get; set; }

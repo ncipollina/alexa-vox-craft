@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.Helper;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
@@ -35,8 +36,25 @@ public class APLValueConverter<T> : JsonConverter<APLValue<T>>
             returnValue.Expression = root.ValueKind == JsonValueKind.String
                 ? root.GetString()
                 : root.GetRawText();
+            return returnValue;
         }
-        else if (genericType == typeof(object))
+        // Enum with [EnumMember] support
+        if (genericType.IsEnum && root.ValueKind == JsonValueKind.String)
+        {
+            var str = root.GetString();
+            if (EnumHelper.TryParseEnumWithEnumMemberSupport(genericType, str, out var parsedEnum))
+            {
+                returnValue.Value = (T)parsedEnum!;
+            }
+            else
+            {
+                returnValue.Expression = str;
+            }
+
+            return returnValue;
+        }
+
+        if (genericType == typeof(object))
         {
             returnValue.Value = (T)new ObjectConverter().Read(ref reader, typeToConvert, options);
         }

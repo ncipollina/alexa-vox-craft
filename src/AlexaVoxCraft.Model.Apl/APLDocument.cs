@@ -8,7 +8,7 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class APLDocument: APLDocumentBase
+public class APLDocument: APLDocumentBase, IJsonSerializable<APLDocument>
 {
     public const string DocumentType = "APL";
     [JsonPropertyName("type")]
@@ -63,41 +63,47 @@ public class APLDocument: APLDocumentBase
     [JsonPropertyName("onDisplayStateChange")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>> OnDisplayStateChange { get; set; }
-    public static void AddSupport()
+    public new static void RegisterTypeInfo<T>() where T : APLDocument
     {
-        AlexaJsonOptions.RegisterTypeModifier<APLDocument>(info =>
+        APLDocumentBase.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var onDisplayStateChangeProp = info.Properties.FirstOrDefault(p => p.Name == "onDisplayStateChange");
             if (onDisplayStateChangeProp is not null)
             {
                 onDisplayStateChangeProp.CustomConverter = new APLCommandListConverter(true);
             }
+
             var handleKeyUpProp = info.Properties.FirstOrDefault(p => p.Name == "handleKeyUp");
             if (handleKeyUpProp is not null)
             {
                 handleKeyUpProp.CustomConverter = new APLKeyboardHandlerConverter(false);
             }
+
             var handleKeyDownProp = info.Properties.FirstOrDefault(p => p.Name == "handleKeyDown");
             if (handleKeyDownProp is not null)
             {
                 handleKeyDownProp.CustomConverter = new APLKeyboardHandlerConverter(false);
             }
+
             // Configuration from base
             var extensionsProp = info.Properties.FirstOrDefault(p => p.Name == "extensions");
             if (extensionsProp is not null)
             {
                 extensionsProp.ShouldSerialize = ((obj, _) =>
                 {
-                    var document = (APLDocument)obj;
+                    var document = (T)obj;
                     return document.Extensions?.Value?.Any() ?? false;
                 });
                 extensionsProp.CustomConverter = new GenericSingleOrListConverter<APLExtension>(true);
             }
+
             var onConfigChangeProp = info.Properties.FirstOrDefault(p => p.Name == "onConfigChange");
             if (onConfigChangeProp is not null)
             {
                 onConfigChangeProp.CustomConverter = new APLCommandListConverter(true);
             }
+
             var onMountProp = info.Properties.FirstOrDefault(p => p.Name == "onMount");
             if (onMountProp is not null)
             {

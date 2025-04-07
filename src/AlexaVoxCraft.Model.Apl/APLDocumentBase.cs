@@ -6,7 +6,7 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public abstract class APLDocumentBase : APLDocumentReference
+public abstract class APLDocumentBase : APLDocumentReference, IJsonSerializable<APLDocumentBase>
 {
     protected APLDocumentBase()
     {
@@ -70,16 +70,17 @@ public abstract class APLDocumentBase : APLDocumentReference
 
         Handlers.Add(name, commands);
     }
-    public static void AddSupport()
+
+    public static void RegisterTypeInfo<T>() where T : APLDocumentBase
     {
-        AlexaJsonOptions.RegisterTypeModifier<APLDocumentBase>(info =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var extensionsProp = info.Properties.FirstOrDefault(p => p.Name == "extensions");
             if (extensionsProp is not null)
             {
                 extensionsProp.ShouldSerialize = ((obj, _) =>
                 {
-                    var document = (APLDocumentBase)obj;
+                    var document = (T)obj;
                     return document.Extensions?.Value?.Any() ?? false;
                 });
                 extensionsProp.CustomConverter = new GenericSingleOrListConverter<APLExtension>(true);

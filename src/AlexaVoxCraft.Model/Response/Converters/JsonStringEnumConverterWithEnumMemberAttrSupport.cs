@@ -37,4 +37,6 @@ public sealed class JsonStringEnumConverterWithEnumMemberAttrSupport<
             ?.GetCustomAttribute<EnumMemberAttribute>();
         return enumMember?.Value ?? name!;
     }
+    
+    
 }

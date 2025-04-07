@@ -42,14 +42,14 @@ public static class APLSupport
         DynamicIndexList.AddSupport();
         DynamicTokenList.AddSupport();
         Mixer.AddSupport();
-        Style.AddSupport();
+        Style.RegisterTypeInfo<Style>();
         AVG.AddSupport();
-        APLDocument.AddSupport();
+        APLDocument.RegisterTypeInfo<APLDocument>();
         APLKeyboardHandler.AddSupport();
         Import.AddSupport();
         Sequential.AddSupport();
         Parallel.AddSupport();
-        APLDocumentBase.AddSupport();
+        APLDocumentBase.RegisterTypeInfo<APLDocumentBase>();
         APLTDocument.AddSupport();
         Layout.AddSupport();
         APLDocumentEnvironment.AddSupport();
@@ -59,5 +59,6 @@ public static class APLSupport
         Image.RegisterTypeInfo<Image>();
         TextBase.RegisterTypeInfo<TextBase>();
         Text.RegisterTypeInfo<Text>();
+        OpenURL.RegisterTypeInfo<OpenURL>();
     }
 }
