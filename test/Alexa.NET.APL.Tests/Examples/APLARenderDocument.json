@@ -26,7 +26,7 @@
       ]
     }
   },
-  "datasources": {
+  "dataSources": {
     "user": {
       "name": "John"
     }
