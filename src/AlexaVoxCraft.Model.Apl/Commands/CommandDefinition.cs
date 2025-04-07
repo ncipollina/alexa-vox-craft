@@ -6,7 +6,7 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
-public class CommandDefinition
+public class CommandDefinition : IJsonSerializable<CommandDefinition>
 {
     [JsonPropertyName("description")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -20,9 +20,9 @@ public class CommandDefinition
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>>? Commands { get; set; }
 
-    public static void AddSupport()
+    public static void RegisterTypeInfo<T>() where T : CommandDefinition
     {
-        AlexaJsonOptions.RegisterTypeModifier<CommandDefinition>(typeInfo =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(typeInfo =>
         {
             var parameterProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "parameters");
             if (parameterProp is not null)

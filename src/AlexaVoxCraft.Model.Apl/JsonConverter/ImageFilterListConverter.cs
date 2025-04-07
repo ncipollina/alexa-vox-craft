@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using AlexaVoxCraft.Model.Apl.Filters;
-using Newtonsoft.Json;
+﻿using AlexaVoxCraft.Model.Apl.Filters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 

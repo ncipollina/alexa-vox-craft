@@ -7,9 +7,11 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class Import:IEquatable<Import>
+public class Import : IEquatable<Import>, IJsonSerializable<Import>
 {
-    public Import() { }
+    public Import()
+    {
+    }
 
     public Import(string name, string version)
     {
@@ -17,8 +19,7 @@ public class Import:IEquatable<Import>
         Version = version;
     }
 
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
+    [JsonPropertyName("name")] public string Name { get; set; }
 
     [JsonPropertyName("version")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -37,13 +38,13 @@ public class Import:IEquatable<Import>
     public ImportType? Type { get; set; }
 
     [JsonPropertyName("loadAfter")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<string>? LoadAfter { get; set; } = new List<string>();
 
-    public static Import AlexaStyles => new Import("alexa-styles","1.6.0");
+    public static Import AlexaStyles => new Import("alexa-styles", "1.6.0");
     public static Import AlexaViewportProfiles => new Import("alexa-viewport-profiles", "1.6.0");
-    public static Import AlexaLayouts => new Import("alexa-layouts","1.7.0");
-    public static Import AlexaIcon => new Import("alexa-icon","1.0.0");
+    public static Import AlexaLayouts => new Import("alexa-layouts", "1.7.0");
+    public static Import AlexaIcon => new Import("alexa-icon", "1.0.0");
 
     public void Into(APLDocument document)
     {
@@ -70,25 +71,19 @@ public class Import:IEquatable<Import>
         return other.Name == Name && other.Version == Version;
     }
 
-    public bool ShouldSerializeLoadAfter()
+
+    public static void RegisterTypeInfo<T>() where T : Import
     {
-        return LoadAfter?.Any() ?? false;
-    }
-    public static void AddSupport()
-    {
-        AlexaJsonOptions.RegisterTypeModifier<Import>(info =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var loadAfterProp = info.Properties.FirstOrDefault(p => p.Name == "loadAfter");
-            if (loadAfterProp is not null)
+            if (loadAfterProp is null) return;
+            loadAfterProp.ShouldSerialize = (obj, _) =>
             {
-                loadAfterProp.ShouldSerialize = ((obj, _) =>
-                {
-                    var import = (Import)obj;
-                    return import.LoadAfter?.Any() ?? false;
-                });
-                loadAfterProp.CustomConverter = new StringOrArrayConverter(false);
-            }
+                var import = (T)obj;
+                return import.LoadAfter?.Any() ?? false;
+            };
+            loadAfterProp.CustomConverter = new StringOrArrayConverter(false);
         });
     }
-
 }

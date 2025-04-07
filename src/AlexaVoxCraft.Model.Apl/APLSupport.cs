@@ -30,23 +30,23 @@ public static class APLSupport
         // Add global converters
         ObjectConverter.AddSupport();
         // Add support for models
-        Parameter.AddSupport();
-        CommandDefinition.AddSupport();
+        Parameter.RegisterTypeInfo<Parameter>();
+        CommandDefinition.RegisterTypeInfo<CommandDefinition>();
         Select.AddSupport();
-        InsertItem.AddSupport();
+        InsertItem.RegisterTypeInfo<InsertItem>();
         AudioLayout.AddSupport();
         Audio.Audio.AddSupport();
         APLAMultiChildComponent.AddSupport();
         Sequencer.AddSupport();
         Selector.AddSupport();
-        DynamicIndexList.AddSupport();
-        DynamicTokenList.AddSupport();
+        DynamicIndexList.RegisterTypeInfo<DynamicIndexList>();
+        DynamicTokenList.RegisterTypeInfo<DynamicTokenList>();
         Mixer.AddSupport();
         Style.RegisterTypeInfo<Style>();
         AVG.AddSupport();
         APLDocument.RegisterTypeInfo<APLDocument>();
         APLKeyboardHandler.AddSupport();
-        Import.AddSupport();
+        Import.RegisterTypeInfo<Import>();
         Sequential.AddSupport();
         Parallel.AddSupport();
         APLDocumentBase.RegisterTypeInfo<APLDocumentBase>();
@@ -60,5 +60,8 @@ public static class APLSupport
         TextBase.RegisterTypeInfo<TextBase>();
         Text.RegisterTypeInfo<Text>();
         OpenURL.RegisterTypeInfo<OpenURL>();
+        ActionableComponent.RegisterTypeInfo<ActionableComponent>();
+        ScrollView.RegisterTypeInfo<ScrollView>();
+        AnimateItem.RegisterTypeInfo<AnimateItem>();
     }
 }

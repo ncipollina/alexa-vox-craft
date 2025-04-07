@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Alexa.NET.APL.Tests.Extensions;
 using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Commands;
 using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
@@ -152,9 +152,25 @@ public class APLDocumentTests
     [Fact]
     public void Imports()
     {
-        var importText = "{\r\n        \"name\": \"alexa-styles\",\r\n        \"version\" : \"1.0.0\"\r\n    }";
+        var importText = """
+                         {
+                             "name": "alexa-styles",
+                             "version": "1.0.0"
+                         }
+                         """;
+
         var import = new Import("alexa-styles", "1.0.0");
-        Assert.True(JToken.DeepEquals(JObject.Parse(importText), JObject.FromObject(import)));
+
+        // Parse expected and actual JSON into JsonDocument
+        using var expectedDoc = JsonDocument.Parse(importText);
+        var actualJson = JsonSerializer.Serialize(import, AlexaJsonOptions.DefaultOptions);
+        using var actualDoc = JsonDocument.Parse(actualJson);
+
+        // Optional: collect diffs if needed
+        var diffs = new List<string>();
+        var equal = actualDoc.RootElement.JsonElementDeepEquals(expectedDoc.RootElement, diffs: diffs);
+
+        Assert.True(equal, $"JSON mismatch:\n{string.Join("\n", diffs)}");
     }
 
     [Fact]
@@ -185,7 +201,7 @@ public class APLDocumentTests
         Assert.Single(result.DataSources);
         var dataSource = Assert.IsType<ObjectDataSource>(result.DataSources["bodyTemplate7Data"]);
         Assert.True(dataSource.TopLevelData.ContainsKey("backgroundImage"));
-        Assert.IsType<JObject>(dataSource.TopLevelData["backgroundImage"]);
+        Assert.IsType<JsonElement>(dataSource.TopLevelData["backgroundImage"]);
     }
 
     [Fact]
@@ -215,7 +231,7 @@ public class APLDocumentTests
         list.Items.Add(new DynamicListItem { PrimaryText = "item 8"});
         list.Items.Add(new DynamicListItem { PrimaryText = "item 9"});
         list.Items.Add(new DynamicListItem { PrimaryText = "item 10"});
-        Assert.True(Utility.CompareJson(list, "DynamicSourceExample.json", null));
+        Assert.True(Utility.CompareJson(list, "DynamicSourceExample.json", _output));
         var source = Utility.ExampleFileContent<APLDataSource>("DynamicSourceExample.json");
         Assert.IsType<DynamicIndexList>(source);
     }
@@ -224,7 +240,7 @@ public class APLDocumentTests
     public void DynamicTokenList()
     {
         var source = "DataSource_DynamicTokenList.json";
-        Utility.AssertSerialization<APLDataSource, DynamicTokenList>(source);
+        Utility.AssertSerialization<APLDataSource, DynamicTokenList>(source, _output);
     }
 
     [Fact]
@@ -248,19 +264,19 @@ public class APLDocumentTests
 
 internal class DynamicListItem
 {
-    [JsonProperty("primaryText")]
+    [JsonPropertyName("primaryText")]
     public string PrimaryText { get; set; }
 }
 
 public class TestListItem
 {
-    [JsonProperty("listItemIdentifier")]
+    [JsonPropertyName("listItemIdentifier")]
     public string ListItemIdentifier { get; }
 
-    [JsonProperty("token")]
+    [JsonPropertyName("token")]
     public string Token { get; }
 
-    [JsonProperty("ordinalNumber")]
+    [JsonPropertyName("ordinalNumber")]
     public int Ordinal { get; }
 
     public TestListItem(string identifier, int ordinal)

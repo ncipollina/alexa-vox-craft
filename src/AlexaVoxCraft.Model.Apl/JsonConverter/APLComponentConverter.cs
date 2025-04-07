@@ -15,6 +15,7 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         [nameof(Container)] = typeof(Container),
         [nameof(Image)] = typeof(Image),
         [nameof(Text)] = typeof(Text),
+        [nameof(ScrollView)] = typeof(ScrollView),
     };
     protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)

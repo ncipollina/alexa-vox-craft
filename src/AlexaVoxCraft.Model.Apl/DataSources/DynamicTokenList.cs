@@ -5,9 +5,10 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataSources;
 
-public class DynamicTokenList : APLDataSource
+public class DynamicTokenList : APLDataSource, IJsonSerializable<DynamicTokenList>
 {
     public const string DataSourceType = "dynamicTokenList";
+    [JsonPropertyName("type")]
     public override string Type => DataSourceType;
 
     [JsonPropertyName("listId")]
@@ -27,16 +28,17 @@ public class DynamicTokenList : APLDataSource
     [JsonPropertyName("items")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<object>? Items { get; set; } = new List<object>();
-    public static void AddSupport()
+
+    public static void RegisterTypeInfo<T>() where T : DynamicTokenList
     {
-        AlexaJsonOptions.RegisterTypeModifier<DynamicTokenList>(info =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var prop = info.Properties.FirstOrDefault(p => p.Name == "items");
             if (prop is not null)
             {
                 prop.ShouldSerialize = (obj, _) =>
                 {
-                    var dynamicIndexList = (DynamicTokenList)obj;
+                    var dynamicIndexList = (T)obj;
                     return dynamicIndexList.Items?.Any() ?? false;
                 };
             }

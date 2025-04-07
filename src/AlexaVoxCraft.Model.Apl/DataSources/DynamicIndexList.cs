@@ -5,7 +5,7 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataSources;
 
-public class DynamicIndexList : APLDataSource
+public class DynamicIndexList : APLDataSource, IJsonSerializable<DynamicIndexList>
 {
     public DynamicIndexList()
     {
@@ -18,6 +18,7 @@ public class DynamicIndexList : APLDataSource
     }
 
     public const string DataSourceType = "dynamicIndexList";
+    [JsonPropertyName("type")]
     public override string Type => DataSourceType;
 
     [JsonPropertyName("listId")] public string ListId { get; set; }
@@ -26,26 +27,26 @@ public class DynamicIndexList : APLDataSource
 
     [JsonPropertyName("minimumInclusiveIndex")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public int MinimumInclusiveIndex { get; set; }
+    public int? MinimumInclusiveIndex { get; set; }
 
     [JsonPropertyName("maximumExclusiveIndex")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public int MaximumExclusiveIndex { get; set; }
+    public int? MaximumExclusiveIndex { get; set; }
 
     [JsonPropertyName("items")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<object>? Items { get; set; } = new List<object>();
 
-    public static void AddSupport()
+    public static void RegisterTypeInfo<T>() where T : DynamicIndexList
     {
-        AlexaJsonOptions.RegisterTypeModifier<DynamicIndexList>(info =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var prop = info.Properties.FirstOrDefault(p => p.Name == "items");
             if (prop is not null)
             {
                 prop.ShouldSerialize = (obj, _) =>
                 {
-                    var dynamicIndexList = (DynamicIndexList)obj;
+                    var dynamicIndexList = (T)obj;
                     return dynamicIndexList.Items?.Any() ?? false;
                 };
             }

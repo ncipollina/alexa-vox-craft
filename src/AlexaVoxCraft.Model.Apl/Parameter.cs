@@ -7,7 +7,7 @@ using AlexaVoxCraft.Model.Serialization;
 namespace AlexaVoxCraft.Model.Apl;
 
 [JsonConverter(typeof(ParameterConverter))]
-public class Parameter
+public class Parameter : IJsonSerializable<Parameter>
 {
     public Parameter() { }
 
@@ -46,18 +46,18 @@ public class Parameter
         };
     }
 
-    public static void AddSupport()
+    public static void RegisterTypeInfo<T>() where T : Parameter
     {
-        AlexaJsonOptions.RegisterTypeModifier<Parameter>(info =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var prop = info.Properties.FirstOrDefault(p => p.Name == "type");
             if (prop is not null)
             {
-                prop.ShouldSerialize = ((obj, _) =>
+                prop.ShouldSerialize = (obj, _) =>
                 {
-                    var parameter = (Parameter)obj;
+                    var parameter = (T)obj;
                     return parameter.Type != ParameterType.any;
-                });
+                };
             }
         });
     }

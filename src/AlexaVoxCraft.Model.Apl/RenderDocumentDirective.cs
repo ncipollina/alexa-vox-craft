@@ -46,7 +46,7 @@ public class RenderDocumentDirective : IDirective
     [JsonPropertyName("document")]
     public APLDocumentReference Document { get; set; }
 
-    [JsonPropertyName("datasources")]
+    [JsonPropertyName("dataSources")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, APLDataSource>? DataSources { get; set; }
 

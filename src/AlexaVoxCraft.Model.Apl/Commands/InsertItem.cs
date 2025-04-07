@@ -6,7 +6,7 @@ using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
-public class InsertItem : APLCommand
+public class InsertItem : APLCommand, IJsonSerializable<InsertItem>
 {
     [JsonPropertyName("type")] public override string Type => nameof(InsertItem);
 
@@ -22,9 +22,9 @@ public class InsertItem : APLCommand
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<object>>? Items { get; set; }
 
-    public static void AddSupport()
+    public static void RegisterTypeInfo<T>() where T : InsertItem
     {
-        AlexaJsonOptions.RegisterTypeModifier<InsertItem>(typeInfo =>
+        AlexaJsonOptions.RegisterTypeModifier<T>(typeInfo =>
         {
             var parameterProp = typeInfo.Properties.FirstOrDefault(p => p.Name == "items");
             if (parameterProp is not null)

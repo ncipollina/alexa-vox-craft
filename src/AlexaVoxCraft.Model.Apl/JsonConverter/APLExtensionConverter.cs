@@ -5,8 +5,6 @@ using AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 using AlexaVoxCraft.Model.Apl.Extensions.EntitySensing;
 using AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
