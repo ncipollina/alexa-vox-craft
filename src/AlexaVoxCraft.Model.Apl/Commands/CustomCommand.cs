@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
@@ -13,7 +13,7 @@ public class CustomCommand:APLCommand
         Type = type;
     }
 
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public override string Type { get; }
 
     [JsonExtensionData]
