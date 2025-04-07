@@ -1,34 +1,59 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public abstract class TextBase : APLComponent
+public abstract class TextBase : APLComponent, IJsonSerializable<TextBase>
 {
-    [JsonProperty("fontFamily", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontFamily { get; set; }
+    [JsonPropertyName("fontFamily")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontFamily { get; set; }
 
-    [JsonProperty("color", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Color { get; set; }
-    [JsonProperty("fontSize", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue FontSize { get; set; }
-    [JsonProperty("fontStyle", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontStyle { get; set; }
-    [JsonProperty("fontWeight", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FontWeight { get; set; }
-    [JsonProperty("letterSpacing", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue LetterSpacing { get; set; }
-    [JsonProperty("lineHeight", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> LineHeight { get; set; }
-    [JsonProperty("maxLines", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> MaxLines { get; set; }
-    [JsonProperty("textAlign", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TextAlign { get; set; }
-    [JsonProperty("textAlignVertical", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TextAlignVertical { get; set; }
+    [JsonPropertyName("color")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Color { get; set; }
 
-    [JsonProperty("overflow",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<TextOverflow?> TextOverflow { get; set; }
+    [JsonPropertyName("fontSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? FontSize { get; set; }
 
-    [JsonProperty("msPerCharacter",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> MsPerCharacter { get; set; }
+    [JsonPropertyName("fontStyle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontStyle { get; set; }
+
+    [JsonPropertyName("fontWeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FontWeight { get; set; }
+
+    [JsonPropertyName("letterSpacing")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? LetterSpacing { get; set; }
+
+    [JsonPropertyName("lineHeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? LineHeight { get; set; }
+
+    [JsonPropertyName("maxLines")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? MaxLines { get; set; }
+
+    [JsonPropertyName("textAlign")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TextAlign { get; set; }
+
+    [JsonPropertyName("textAlignVertical")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TextAlignVertical { get; set; }
+
+    [JsonPropertyName("overflow")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<TextOverflow?>? TextOverflow { get; set; }
+
+    [JsonPropertyName("msPerCharacter")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? MsPerCharacter { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : TextBase
+    {
+        APLComponent.RegisterTypeInfo<T>();
+    }
 }

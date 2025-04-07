@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
+[JsonConverter(typeof(APLAbsoluteDimensionValueConverter))]
 public class APLAbsoluteDimensionValue : APLDimensionValue<AbsoluteDimension>
 {
     public APLAbsoluteDimensionValue()

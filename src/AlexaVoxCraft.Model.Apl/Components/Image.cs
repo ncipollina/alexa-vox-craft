@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Filters;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class Image:APLComponent
+public class Image : APLComponent, IJsonSerializable<Image>
 {
-    public Image() { }
+    public Image()
+    {
+    }
 
     public Image(params string[] sources)
     {
@@ -17,24 +21,50 @@ public class Image:APLComponent
     public const string ComponentType = "Image";
     public override string Type => ComponentType;
 
-    [JsonProperty("align",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Align { get; set; }
 
-    [JsonProperty("borderRadius",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("borderRadius")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLDimensionValue BorderRadius { get; set; }
 
-    [JsonProperty("overlayGradient",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("overlayGradient")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<APLGradient> OverlayGradient { get; set; }
 
-    [JsonProperty("overlayColor",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("overlayColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> OverlayColor { get; set; }
 
-    [JsonProperty("scale",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("scale")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<Scale?> Scale { get; set; }
 
-    [JsonProperty("sources",NullValueHandling = NullValueHandling.Ignore),JsonConverter(typeof(StringOrArrayConverter))]
-    public APLValue<IList<string>> Sources{ get; set; }
+    [JsonPropertyName("sources")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<string>>? Sources { get; set; }
 
-    [JsonProperty("filters",NullValueHandling = NullValueHandling.Ignore),JsonConverter(typeof(ImageFilterListConverter))]
+    [JsonPropertyName("filters")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<IImageFilter>> Filters { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : Image
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var sourcesProp = info.Properties.FirstOrDefault(p => p.Name == "sources");
+            if (sourcesProp is not null)
+            {
+                sourcesProp.CustomConverter = new StringOrArrayConverter(false);
+            }
+
+            var filtersProp = info.Properties.FirstOrDefault(p => p.Name == "filters");
+            if (filtersProp is not null)
+            {
+                filtersProp.CustomConverter = new ImageFilterListConverter(false);
+            }
+        });
+    }
 }

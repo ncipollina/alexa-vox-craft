@@ -1,5 +1,9 @@
-﻿namespace AlexaVoxCraft.Model.Apl;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
+namespace AlexaVoxCraft.Model.Apl;
+
+[JsonConverter(typeof(APLDimensionValueConverter))]
 public class APLDimensionValue : APLDimensionValue<Dimension>
 {
     public APLDimensionValue()

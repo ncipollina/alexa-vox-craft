@@ -1,64 +1,90 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
 using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class Container:APLComponent
+public class Container : APLComponent, IJsonSerializable<Container>
 {
-    public Container() { }
+    public Container()
+    {
+    }
 
-    public Container(params APLComponent[] items) : this((IEnumerable<APLComponent>)items) { }
+    public Container(params APLComponent[] items) : this((IEnumerable<APLComponent>)items)
+    {
+    }
 
     public Container(IEnumerable<APLComponent> items)
     {
         Items = items.ToList();
     }
 
-    [JsonProperty("type")]
-    public override string Type => nameof(Container);
-        
-    [JsonProperty("alignItems",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("type")] public override string Type => nameof(Container);
+
+    [JsonPropertyName("alignItems")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> AlignItems { get; set; }
 
-    [JsonProperty("data",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(GenericLegacySingleOrListConverter<object>))]
+    [JsonPropertyName("data")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<object>> Data { get; set; }
 
-    [JsonProperty("direction",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("direction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Direction { get; set; }
 
-    [JsonProperty("firstItem",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("firstItem")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<APLComponent>> FirstItem { get; set; }
 
-    [JsonProperty("lastItem",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("lastItem")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<APLComponent>> LastItem { get; set; }
 
-    [JsonProperty("items", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLComponentListConverter))]
+    [JsonPropertyName("items")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLComponent>> Items { get; set; }
 
-    [JsonProperty("justifyContent",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("justifyContent")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> JustifyContent { get; set; }
 
-    [JsonProperty("numbered",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("numbered")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> Numbered { get; set; }
 
-    [JsonProperty("wrap",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("wrap")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<ContainerWrap?> Wrap { get; set; }
 
+    public new static void RegisterTypeInfo<T>() where T : Container
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var dataProp = info.Properties.FirstOrDefault(p => p.Name == "data");
+            if (dataProp is not null)
+            {
+                dataProp.CustomConverter = new GenericSingleOrListConverter<object>(false);
+            }
+
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.CustomConverter = new APLComponentListConverter(false);
+            }
+        });
+    }
 }
 
-[System.Text.Json.Serialization.JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<ContainerWrap>))]
+[JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<ContainerWrap>))]
 public enum ContainerWrap
 {
-    [EnumMember(Value="wrapReverse")]
-    WrapReverse,
-    [EnumMember(Value="noWrap")]
-    NoWrap,
-    [EnumMember(Value="wrap")]
-    Wrap
+    [EnumMember(Value = "wrapReverse")] WrapReverse,
+    [EnumMember(Value = "noWrap")] NoWrap,
+    [EnumMember(Value = "wrap")] Wrap
 }

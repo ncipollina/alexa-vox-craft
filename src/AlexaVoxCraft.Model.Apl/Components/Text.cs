@@ -1,20 +1,28 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class Text:TextBase
+public class Text : TextBase, IJsonSerializable<Text>
 {
-    public Text() { }
+    public Text()
+    {
+    }
 
     public Text(string text)
     {
         Content = new APLValue<string>(text);
     }
+
     public override string Type => nameof(Text);
 
-    [JsonProperty("text")]
-    public APLValue<string> Content { get; set; }
+    [JsonPropertyName("text")] public APLValue<string> Content { get; set; }
 
-    [JsonProperty("lang", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Lang { get; set; }
+    [JsonPropertyName("lang")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Lang { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : Text
+    {
+        TextBase.RegisterTypeInfo<T>();
+    }
 }

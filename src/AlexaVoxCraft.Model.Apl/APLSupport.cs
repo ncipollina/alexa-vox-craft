@@ -1,5 +1,6 @@
 ﻿using AlexaVoxCraft.Model.Apl.Audio;
 using AlexaVoxCraft.Model.Apl.Commands;
+using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Apl.DataStore;
 using AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
@@ -54,5 +55,9 @@ public static class APLSupport
         APLDocumentEnvironment.AddSupport();
         APLComponentBase.RegisterTypeInfo<APLComponentBase>();
         APLComponent.RegisterTypeInfo<APLComponent>();
+        Container.RegisterTypeInfo<Container>();
+        Image.RegisterTypeInfo<Image>();
+        TextBase.RegisterTypeInfo<TextBase>();
+        Text.RegisterTypeInfo<Text>();
     }
 }

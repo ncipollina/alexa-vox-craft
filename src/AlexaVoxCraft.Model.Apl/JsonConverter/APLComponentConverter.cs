@@ -10,11 +10,13 @@ namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
 public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
 {
-    public static ConcurrentDictionary<string, Type> APLComponentLookup = new()
+    private static readonly ConcurrentDictionary<string, Type> AplComponentLookup = new()
     {
-
+        [nameof(Container)] = typeof(Container),
+        [nameof(Image)] = typeof(Image),
+        [nameof(Text)] = typeof(Text),
     };
-    protected override IDictionary<string, Type> DerivedTypes => APLComponentLookup;
+    protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)
     {
         var obj = original.Deserialize<JsonObject>() ?? new JsonObject();

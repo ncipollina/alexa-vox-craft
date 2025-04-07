@@ -96,7 +96,7 @@ public abstract class APLComponent : APLComponentBase, IJsonSerializable<APLComp
 
     [JsonPropertyName("position")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public APLValue<string> Position { get; set; }
+    public APLValue<string>? Position { get; set; }
 
     [JsonPropertyName("right")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -210,7 +210,7 @@ public abstract class APLComponent : APLComponentBase, IJsonSerializable<APLComp
 
     public new static void RegisterTypeInfo<T>() where T : APLComponent
     {
-        APLComponentBase.RegisterTypeInfo<APLComponent>();
+        APLComponentBase.RegisterTypeInfo<T>();
         AlexaJsonOptions.RegisterTypeModifier<T>(info =>
         {
             var paddingProp = info.Properties.FirstOrDefault(p => p.Name == "padding");

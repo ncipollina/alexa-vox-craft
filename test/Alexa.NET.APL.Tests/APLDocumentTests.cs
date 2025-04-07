@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using Alexa.NET.APL.Tests.Extensions;
 using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Commands;
 using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.DataSources;
+using AlexaVoxCraft.Model.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Alexa.NET.APL.Tests;
 
@@ -40,20 +44,40 @@ public class APLDocumentTests
     [Fact]
     public void HandleInvalidDocumentVersion()
     {
+        // Arrange
         var doc = GetDocument();
-        var jobject = JObject.FromObject(doc);
-        jobject["version"] = "1.21";
-        var newDoc = JsonConvert.DeserializeObject<APLDocument>(jobject.ToString());
-        Assert.Equal(APLDocumentVersion.Unknown,newDoc.Version);
+
+        // Serialize and manipulate JSON manually
+        var json = System.Text.Json.JsonSerializer.Serialize(doc, AlexaJsonOptions.DefaultOptions);
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement.Clone().AsObjectNode();
+
+        // Overwrite the version
+        root["version"] = "1.21";
+
+        // Deserialize modified JSON
+        var modifiedJson = root.ToJsonString();
+        var newDoc =
+            System.Text.Json.JsonSerializer.Deserialize<APLDocument>(modifiedJson, AlexaJsonOptions.DefaultOptions);
+
+        // Assert fallback behavior
+        Assert.Equal(APLDocumentVersion.Unknown, newDoc.Version);
     }
 
     [Fact]
     public void HandleValidDocumentVersion()
     {
+        // Arrange
         var doc = GetDocument(APLDocumentVersion.V1_2);
-        var jobject = JObject.FromObject(doc);
-        var newDoc = JsonConvert.DeserializeObject<APLDocument>(jobject.ToString());
-        Assert.Equal(APLDocumentVersion.V1_2, newDoc.Version);
+
+        // Serialize to JSON
+        var json = System.Text.Json.JsonSerializer.Serialize(doc, AlexaJsonOptions.DefaultOptions);
+
+        // Deserialize
+        var newDoc = System.Text.Json.JsonSerializer.Deserialize<APLDocument>(json, AlexaJsonOptions.DefaultOptions);
+
+        // Assert
+        Assert.Equal(APLDocumentVersion.V1_2, newDoc?.Version);
     }
 
 

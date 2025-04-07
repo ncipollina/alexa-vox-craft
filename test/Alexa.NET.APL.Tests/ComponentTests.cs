@@ -150,18 +150,20 @@ public class ComponentTests
             Left = new AbsoluteDimension(24, "vw"),
             PaddingLeft = new RelativeDimension(5),
             Top = "${top}",
-            Right = new APLDimensionValue(new AbsoluteDimension(345,"dp")),
+            Right = new APLDimensionValue(new AbsoluteDimension(345, "dp")),
             Bottom = new APLDimensionValue("test")
-
         };
 
-        var jobject = JObject.FromObject(text);
-        Assert.Equal("24dp", jobject.Value<string>("fontSize"));
-        Assert.Equal("24vw", jobject.Value<string>("left"));
-        Assert.Equal("5%", jobject.Value<string>("paddingLeft"));
-        Assert.Equal("${top}", jobject.Value<string>("top"));
-        Assert.Equal("345dp", jobject.Value<string>("right"));
-        Assert.Equal("test", jobject.Value<string>("bottom"));
+        var json = JsonSerializer.Serialize(text, AlexaJsonOptions.DefaultOptions);
+        using var doc = JsonDocument.Parse(json);
+        var root = doc.RootElement;
+
+        Assert.Equal("24dp", root.GetProperty("fontSize").GetString());
+        Assert.Equal("24vw", root.GetProperty("left").GetString());
+        Assert.Equal("5%", root.GetProperty("paddingLeft").GetString());
+        Assert.Equal("${top}", root.GetProperty("top").GetString());
+        Assert.Equal("345dp", root.GetProperty("right").GetString());
+        Assert.Equal("test", root.GetProperty("bottom").GetString());
     }
 
     [Fact]
@@ -440,7 +442,12 @@ public class ComponentTests
 
     private APLComponent GenerateComponent(string componentType)
     {
-        var json = new JObject { { "type", componentType }, { "numbered", true } };
-        return JsonConvert.DeserializeObject<APLComponent>(json.ToString());
+        var json = $$"""
+                     {
+                         "type": "{{componentType}}",
+                         "numbered": true
+                     }
+                     """;
+        return JsonSerializer.Deserialize<APLComponent>(json, AlexaJsonOptions.DefaultOptions)!;
     }
 }
