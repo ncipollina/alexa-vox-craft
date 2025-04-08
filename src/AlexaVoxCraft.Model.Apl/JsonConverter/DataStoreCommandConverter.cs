@@ -1,70 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Text.Json;
 using AlexaVoxCraft.Model.Apl.DataStore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
-public class DataStoreCommandConverter : Newtonsoft.Json.JsonConverter
+public class DataStoreCommandConverter : BasePolymorphicConverter<DataStoreCommand>
 {
-    public override bool CanWrite => false;
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    private static readonly Dictionary<string, Type> DataStoreCommandLookup = new()
     {
-
-    }
-
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-    {
-
-        var jObject = JObject.Load(reader);
-        var commandType = jObject.Value<string>("type");
-
-        object target;
-        if (commandType == PutObject.CommandType)
-        {
-            if (jObject.GetValue("content") is JArray)
-            {
-                target = new PutObjectArray();
-            }
-            else
-            {
-                target = new PutObject();
-            }
-        }
-        else
-        {
-            target = GetCommand(commandType);
-        }
-
-        if (target != null)
-        {
-            serializer.Populate(jObject.CreateReader(), target);
-            return target;
-        }
-
-        throw new ArgumentOutOfRangeException($"Command type {commandType} not supported");
-    }
-
-    public static Dictionary<string, Type> DataStoreCommandLookup = new Dictionary<string, Type>
-    {
-        {PutNamespace.CommandType, typeof(PutNamespace)},
-        {RemoveNamespace.CommandType, typeof(RemoveNamespace)},
-        {Clear.CommandType, typeof(Clear)}
+        { PutNamespace.CommandType, typeof(PutNamespace) },
+        { RemoveNamespace.CommandType, typeof(RemoveNamespace) },
+        { Clear.CommandType, typeof(Clear) }
     };
 
-    private DataStoreCommand GetCommand(string commandType)
-    {
-        return (DataStoreCommand)(
-            DataStoreCommandLookup.ContainsKey(commandType)
-                ? Activator.CreateInstance(DataStoreCommandLookup[commandType])
-                : null);
-    }
+    protected override IDictionary<string, Type> DerivedTypes => DataStoreCommandLookup;
 
-    public override bool CanConvert(Type objectType)
-    {
-        return objectType.GetTypeInfo().IsSubclassOf(typeof(DataStoreCommand));
-    }
+    protected override IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories =>
+        new Dictionary<string, Func<JsonElement, Type>>
+        {
+            [PutObject.CommandType] = element =>
+            {
+                if (element.TryGetProperty("content", out var contentElement) &&
+                    contentElement.ValueKind == JsonValueKind.Array)
+                {
+                    return typeof(PutObjectArray);
+                }
+
+                return typeof(PutObject);
+            },
+        };
 }

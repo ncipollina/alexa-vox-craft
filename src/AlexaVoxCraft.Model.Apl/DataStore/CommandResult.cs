@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class CommandResult
 {
-    [JsonProperty("deviceId")]
-    public string DeviceId { get; set; }
+    [JsonPropertyName("deviceId")] public string DeviceId { get; set; }
 
-    [JsonProperty("message", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("message")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Message { get; set; }
 
-    [JsonProperty("type")]
-    [JsonConverter(typeof(StringEnumConverter))]
-    public CommandResultType Type { get; set; }
+    [JsonPropertyName("type")] public CommandResultType Type { get; set; }
 }

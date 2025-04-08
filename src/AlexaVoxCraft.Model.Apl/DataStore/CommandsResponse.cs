@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class CommandsResponse
 {
-    [JsonProperty("results")]
+    [JsonPropertyName("results")]
     public CommandResult[] Results { get; set; }
 
-    [JsonProperty("queuedResultId")]
+    [JsonPropertyName("queuedResultId")]
     public string QueuedResultId { get; set; }
 }

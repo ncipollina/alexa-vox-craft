@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
@@ -9,13 +9,13 @@ public class PutObject : DataStoreCommand
 
     public PutObject():base(CommandType){}
 
-    [JsonProperty("content")]
-    public JObject Content { get; set; }
+    [JsonPropertyName("content")]
+    public JsonElement Content { get; set; }
 
-    [JsonProperty("namespace")]
+    [JsonPropertyName("namespace")]
     public string Namespace { get; set; }
 
-    [JsonProperty("key")]
+    [JsonPropertyName("key")]
     public string Key { get; set; }
 }
 
@@ -23,12 +23,12 @@ public class PutObjectArray : DataStoreCommand
 {
     public PutObjectArray() : base(PutObject.CommandType) { }
 
-    [JsonProperty("content")]
-    public JObject[] Content { get; set; }
+    [JsonPropertyName("content")]
+    public JsonElement[] Content { get; set; }
 
-    [JsonProperty("namespace")]
+    [JsonPropertyName("namespace")]
     public string Namespace { get; set; }
 
-    [JsonProperty("key")]
+    [JsonPropertyName("key")]
     public string Key { get; set; }
 }

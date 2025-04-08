@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
+[JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<CommandResultType>))]
 public enum CommandResultType
 {
     [EnumMember(Value="SUCCESS")]
@@ -10,7 +13,7 @@ public enum CommandResultType
     InvalidDevice,
     [EnumMember(Value="DEVICE_UNAVAILABLE")]
     DeviceUnavailable,
-    [EnumMember(Value= "DEVICE_PERMANENTLY_UNAVAILABLE ")]
+    [EnumMember(Value= "DEVICE_PERMANENTLY_UNAVAILABLE")]
     DevicePermanentlyUnavailable,
     [EnumMember(Value="CONCURRENCY_ERROR")]
     ConcurrencyError,

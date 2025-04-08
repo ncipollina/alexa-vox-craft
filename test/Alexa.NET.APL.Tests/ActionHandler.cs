@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Net.Http;
+﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace Alexa.NET.APL.Tests;
 
@@ -11,12 +13,17 @@ public class ActionHandler : HttpMessageHandler
 {
     public Func<HttpRequestMessage, Task<HttpResponseMessage>> Run { get; }
 
+    private static readonly JsonSerializerOptions _jsonOptions = AlexaJsonOptions.DefaultOptions;
+
     public ActionHandler(Action<HttpRequestMessage> run, object response, HttpStatusCode code = HttpStatusCode.OK)
     {
         Run = req =>
         {
             run(req);
-            return Task.FromResult(new HttpResponseMessage(code) { Content = new StringContent(JObject.FromObject(response).ToString()) });
+            return Task.FromResult(new HttpResponseMessage(code)
+            {
+                Content = SerializeToJsonContent(response)
+            });
         };
     }
 
@@ -34,7 +41,10 @@ public class ActionHandler : HttpMessageHandler
         Run = async req =>
         {
             await run(req);
-            return new HttpResponseMessage(code) { Content = new StringContent(response is string ? response.ToString() : JObject.FromObject(response).ToString()) };
+            return new HttpResponseMessage(code)
+            {
+                Content = SerializeToJsonContent(response)
+            };
         };
     }
 
@@ -55,5 +65,14 @@ public class ActionHandler : HttpMessageHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         return await Run(request);
+    }
+
+    private static StringContent SerializeToJsonContent(object response)
+    {
+        var json = response is string s
+            ? s
+            : JsonSerializer.Serialize(response, _jsonOptions);
+
+        return new StringContent(json, Encoding.UTF8, "application/json");
     }
 }

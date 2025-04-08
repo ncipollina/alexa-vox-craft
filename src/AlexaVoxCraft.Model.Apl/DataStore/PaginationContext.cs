@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class PaginationContext
 {
-    [JsonProperty("totalCount")]
-    public int TotalCount { get; set; }
+    [JsonPropertyName("totalCount")] public int TotalCount { get; set; }
 
-    [JsonProperty("nextToken",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("nextToken")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string NextToken { get; set; }
 
-    [JsonProperty("previousToken",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("previousToken")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string PreviousToken { get; set; }
 }

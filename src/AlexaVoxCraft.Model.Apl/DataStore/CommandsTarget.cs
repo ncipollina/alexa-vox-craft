@@ -1,22 +1,43 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Linq;
+using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
-public class CommandsTarget
+public class CommandsTarget : IJsonSerializable<CommandsTarget>
 {
-    [JsonProperty("type")]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("type")]
     public TargetType Type { get; set; }
 
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
-    [JsonProperty("items")]
+    [JsonPropertyName("items")]
     public List<string> Items { get; set; }
 
-    public bool ShouldSerializeItems() => Type == TargetType.Devices;
-    public bool ShouldSerializeId() => Type == TargetType.User;
-
+    public static void RegisterTypeInfo<T>() where T : CommandsTarget
+    {
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.ShouldSerialize = (obj, _) =>
+                {
+                    var commandsTarget = (T)obj;
+                    return commandsTarget.Type == TargetType.Devices;
+                };
+            }
+            var idProp = info.Properties.FirstOrDefault(p => p.Name == "id");
+            if (idProp is not null)
+            {
+                idProp.ShouldSerialize = (obj, _) =>
+                {
+                    var commandsTarget = (T)obj;
+                    return commandsTarget.Type == TargetType.User;
+                };
+            }
+        });
+    }
 }

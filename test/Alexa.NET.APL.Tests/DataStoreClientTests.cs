@@ -1,31 +1,42 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AlexaVoxCraft.Model.Apl.DataStore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class DataStoreClientTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public DataStoreClientTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public async Task AccessTokenAsksForTheCorrectToken()
     {
-        var client = new AccessTokenClient(new HttpClient(new ActionHandler(async hr => 
-        {
-            Assert.Equal("https://api.amazon.com/auth/O2/token",hr.RequestUri.ToString());
-            var content = await hr.Content.ReadAsStringAsync();
-            Assert.Equal("client_id=x&client_secret=y&grant_type=client_credentials&scope=alexa%3A%3Adatastore", content);
+        var client = new AccessTokenClient(new HttpClient(new ActionHandler(
+            async hr =>
+            {
+                Assert.Equal("https://api.amazon.com/auth/O2/token", hr.RequestUri!.ToString());
 
-        },new JObject(
-            new JProperty("access_token","xxx"),
-            new JProperty("expires_in",3600),
-            new JProperty("scope", "alexa::datastore"),
-            new JProperty("token_type", "bearer")
-        ))));
+                var content = await hr.Content!.ReadAsStringAsync();
+                Assert.Equal("client_id=x&client_secret=y&grant_type=client_credentials&scope=alexa%3A%3Adatastore",
+                    content);
+            },
+            new
+            {
+                access_token = "xxx",
+                expires_in = 3600,
+                scope = "alexa::datastore",
+                token_type = "bearer"
+            }
+        )));
 
         var result = await client.Send("x", "y");
         Assert.Equal("xxx", result.Token);
@@ -78,13 +89,13 @@ public class DataStoreClientTests
             Assert.Equal("xxx", hr.Headers.Authorization.Parameter);
 
             var raw = await hr.Content.ReadAsStringAsync();
-            var content = new JsonSerializer().Deserialize<CommandsRequest>(new JsonTextReader(new StringReader(raw)));
-            Assert.True(Utility.CompareJson(content, "DataStore_CommandsRequest.json", null));
+            var content = System.Text.Json.JsonSerializer.Deserialize<CommandsRequest>(raw, AlexaJsonOptions.DefaultOptions);
+            Assert.True(Utility.CompareJson(content, "DataStore_CommandsRequest.json", _output));
 
         }, Utility.ExampleFileContent<CommandsResponse>("DataStore_CommandsResponse.json"))), "https://example.com", "xxx");
 
         var req = Utility.ExampleFileContent<CommandsRequest>("DataStore_CommandsRequest.json");
         var result = await client.Commands(req);
-        Assert.True(Utility.CompareJson(result, "DataStore_CommandsResponse.json", null));
+        Assert.True(Utility.CompareJson(result, "DataStore_CommandsResponse.json", _output));
     }
 }

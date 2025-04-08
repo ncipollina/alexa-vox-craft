@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
@@ -8,6 +8,6 @@ public class RemoveNamespace : DataStoreCommand
 
     public RemoveNamespace():base(CommandType){}
 
-    [JsonProperty("namespace")]
+    [JsonPropertyName("namespace")]
     public string Namespace { get; set; }
 }

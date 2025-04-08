@@ -20,7 +20,7 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
     };
 
     protected virtual Func<JsonElement, Type?>? CustomTypeResolver => null;
-    
+
     protected virtual JsonElement TransformJson(JsonElement original)
     {
         return original; // No-op by default
@@ -64,16 +64,7 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
 
         // Allow subclasses to mutate the element
         var transformed = TransformJson(root);
-        try
-        {
-            return (T)JsonSerializer.Deserialize(transformed.GetRawText(), resultType, options)!;
-
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return (T)JsonSerializer.Deserialize(transformed.GetRawText(), resultType, options)!;
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

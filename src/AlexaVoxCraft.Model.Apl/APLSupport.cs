@@ -110,5 +110,6 @@ public static class APLSupport
         AlexaImageCaption.RegisterTypeInfo<AlexaImageCaption>();
         AlexaPhoto.RegisterTypeInfo<AlexaPhoto>();
         AlexaTextWrapping.RegisterTypeInfo<AlexaTextWrapping>();
+        CommandsTarget.RegisterTypeInfo<CommandsTarget>();
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class CommandsRequest
 {
-    [JsonProperty("commands")]
-    public List<DataStoreCommand> Commands = new();
+    [JsonPropertyName("commands")] public List<DataStoreCommand> Commands { get; set; } = [];
 
-    [JsonProperty("target")] public CommandsTarget Target { get; set; } = new();
+    [JsonPropertyName("target")] public CommandsTarget Target { get; set; } = new();
 
-    [JsonProperty("attemptDeliveryUntil", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("attemptDeliveryUntil")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string AttemptDeliveryUntil { get; set; }
 }

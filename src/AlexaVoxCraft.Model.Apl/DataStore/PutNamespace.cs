@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
@@ -8,6 +8,6 @@ public class PutNamespace : DataStoreCommand
 
     public PutNamespace() : base(CommandType){}
 
-    [JsonProperty("namespace")]
+    [JsonPropertyName("namespace")]
     public string Namespace { get; set; }
 }

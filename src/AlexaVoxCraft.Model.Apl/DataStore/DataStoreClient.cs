@@ -1,13 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AlexaVoxCraft.Model.Request;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
@@ -16,8 +15,6 @@ public class DataStoreClient
     public HttpClient Client { get; }
     public Uri BaseAddress { get; }
     private string Token { get; }
-
-    private JsonSerializer Serializer = JsonSerializer.Create();
 
     public DataStoreClient(SkillRequest request) : this(
         request.Context.System.ApiEndpoint,
@@ -69,28 +66,34 @@ public class DataStoreClient
 
         var msg = new HttpRequestMessage(HttpMethod.Get, new Uri(BaseAddress, url + query));
         msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
         var response = await Client.SendAsync(msg);
         response.EnsureSuccessStatusCode();
-        using var body = await response.Content.ReadAsStreamAsync();
-        using var sr = new JsonTextReader(new StreamReader(body));
-        return Serializer.Deserialize<QueuedResultResponse>(sr);
+
+        await using var body = await response.Content.ReadAsStreamAsync();
+        var result = await JsonSerializer.DeserializeAsync<QueuedResultResponse>(body, AlexaJsonOptions.DefaultOptions);
+        return result!;
+        
     }
 
     public async Task<CommandsResponse> Commands(CommandsRequest request)
     {
-        var content = JObject.FromObject(request).ToString(Formatting.None);
+        // Serialize request using System.Text.Json
+        var json = JsonSerializer.Serialize(request, AlexaJsonOptions.DefaultOptions);
+
         var msg = new HttpRequestMessage(HttpMethod.Post, new Uri(BaseAddress, "/v1/datastore/commands"))
         {
-            Content = new StringContent(content, Encoding.UTF8, "application/json")
+            Content = new StringContent(json, Encoding.UTF8, "application/json")
         };
         msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+
         var response = await Client.SendAsync(msg);
         response.EnsureSuccessStatusCode();
-        using var body = await response.Content.ReadAsStreamAsync();
-        using var sr = new JsonTextReader(new StreamReader(body));
-        return Serializer.Deserialize<CommandsResponse>(sr);
-    }
 
+        await using var body = await response.Content.ReadAsStreamAsync();
+        var result = await JsonSerializer.DeserializeAsync<CommandsResponse>(body, AlexaJsonOptions.DefaultOptions);
+        return result!;
+    }
     public async Task<bool> Cancel(string queuedResultId)
     {
         var url = $"/v1/datastore/queue/{queuedResultId}/cancel";
