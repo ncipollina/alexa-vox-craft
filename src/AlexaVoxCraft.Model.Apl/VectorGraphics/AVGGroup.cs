@@ -1,27 +1,45 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.VectorGraphics;
 
-public class AVGGroup : AVGItem
+public class AVGGroup : AVGItem, IJsonSerializable<AVGGroup>
 {
-    [JsonProperty("type")] public override string Type => "group";
+    [JsonPropertyName("type")] public override string Type => "group";
 
-    [JsonProperty("opacity",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("opacity")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<double?> Opacity { get; set; }
 
-    [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("style")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Style { get; set; }
 
-    [JsonProperty("clipPath",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("clipPath")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ClipPath { get; set; }
 
-    [JsonProperty("transform",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("transform")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Transform { get; set; }
 
-    [JsonProperty("items", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(AVGItemListConverter))]
+    [JsonPropertyName("items")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<IAVGItem>> Items { get; set; }
 
+    public new static void RegisterTypeInfo<T>() where T : AVGGroup
+    {
+        AVGItem.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.CustomConverter = new AVGItemListConverter(false);
+            }
+        });
+    }
 }

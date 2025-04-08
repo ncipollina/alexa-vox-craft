@@ -1,21 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.VectorGraphics.Filters;
 
-public class DropShadow:IAVGFilter
+public class DropShadow : IAVGFilter
 {
-    [JsonProperty("type")] 
-    public string Type => nameof(DropShadow);
+    [JsonPropertyName("type")] public string Type => nameof(DropShadow);
 
-    [JsonProperty("color",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("color")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> Color { get; set; }
 
-    [JsonProperty("horizontalOffset",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("horizontalOffset")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<int?> HorizontalOffset { get; set; }
 
-    [JsonProperty("radius",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("radius")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<int?> Radius { get; set; }
 
-    [JsonProperty("verticalOffset",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("verticalOffset")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<int?> VerticalOffset { get; set; }
 }

@@ -1,11 +1,11 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl.VectorGraphics.Filters;
 
 [JsonConverter(typeof(IAVGFilterConverter))]
 public interface IAVGFilter
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     string Type { get; }
 }

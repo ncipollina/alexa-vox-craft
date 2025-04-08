@@ -4,9 +4,7 @@ using AlexaVoxCraft.Model.Response;
 using AlexaVoxCraft.Model.Response.Directive;
 using AlexaVoxCraft.Model.Response.Directive.Templates;
 using AlexaVoxCraft.Model.Response.Ssml;
-using Newtonsoft.Json.Linq;
 using Xunit;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AlexaVoxCraft.Tests;
 
@@ -659,11 +657,5 @@ public class ResponseTests
         Assert.Equal("AskFor",askFor.Name);
         Assert.Equal("alexa::alerts:reminders:skill:readwrite",askFor.Payload.PermissionScope);
         Utility.CompareJson(askFor, "AskForPermissionsConsentDirective.json");
-    }
-
-    private bool CompareJson(object actual, JObject expected)
-    {
-        var actualJObject = JObject.FromObject(actual);
-        return JToken.DeepEquals(expected, actualJObject);
     }
 }

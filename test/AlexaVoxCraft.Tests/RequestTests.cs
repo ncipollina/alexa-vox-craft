@@ -3,9 +3,8 @@ using AlexaVoxCraft.Model;
 using AlexaVoxCraft.Model.Request;
 using AlexaVoxCraft.Model.Request.Type;
 using AlexaVoxCraft.Model.Serialization;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Tests.Extensions;
 using Xunit;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AlexaVoxCraft.Tests;
 
@@ -180,8 +179,8 @@ public class RequestTests
 
 
 
-        Assert.True(CompareObjectJson(mediaTypeSlot.Resolution, mediaTypeResolutionAuthority));
-        Assert.True(CompareObjectJson(mediaTitleSlot.Resolution, mediaTitleResolutionAuthority));
+        Assert.True(mediaTypeSlot.Resolution.JsonDeepEquals(mediaTypeResolutionAuthority));
+        Assert.True(mediaTitleSlot.Resolution.JsonDeepEquals(mediaTitleResolutionAuthority));
     }
 
     [Fact]
@@ -207,15 +206,6 @@ public class RequestTests
     {
         var convertedObj = GetObjectFromExample<SkillRequest>("SkillEventEnabled.json");
         var request = Assert.IsAssignableFrom<SkillEventRequest>(convertedObj.Request);
-    }
-
-    private bool CompareObjectJson(object actual, object expected)
-    {
-
-        var actualJObject = JObject.FromObject(actual);
-        var expectedJObject = JObject.FromObject(expected);
-
-        return JToken.DeepEquals(expectedJObject, actualJObject);
     }
 
     private bool CompareJson(object actual, string expectedFile)

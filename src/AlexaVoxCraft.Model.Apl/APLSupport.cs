@@ -117,5 +117,9 @@ public static class APLSupport
         ListDataDirective.RegisterTypeInfo<ListDataDirective>();
         SendIndexListDataDirective.RegisterTypeInfo<SendIndexListDataDirective>();
         SendTokenListDataDirective.RegisterTypeInfo<SendTokenListDataDirective>();
+        AVGItem.RegisterTypeInfo<AVGItem>();
+        AVGPath.RegisterTypeInfo<AVGPath>();
+        AVGGroup.RegisterTypeInfo<AVGGroup>();
+        AVGText.RegisterTypeInfo<AVGText>();
     }
 }

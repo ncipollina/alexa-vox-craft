@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Xunit.Sdk;
 
-namespace Alexa.NET.APL.Tests.Extensions;
+namespace AlexaVoxCraft.Tests.Extensions;
 
 public static class JsonExtensions
 {
@@ -11,7 +10,7 @@ public static class JsonExtensions
     {
         return JsonNode.Parse(element.GetRawText())!.AsObject();
     }
-    
+
     public static void AssertJsonEqual(this JsonElement actual, JsonElement expected, string? messagePrefix = null)
     {
         var diffs = new List<string>();
@@ -25,7 +24,8 @@ public static class JsonExtensions
         }
     }
 
-    public static void AssertJsonEqual<T>(this T actualObject, string expectedJson, JsonSerializerOptions? options = null)
+    public static void AssertJsonEqual<T>(this T actualObject, string expectedJson,
+        JsonSerializerOptions? options = null)
     {
         options ??= new JsonSerializerOptions { WriteIndented = true };
 
