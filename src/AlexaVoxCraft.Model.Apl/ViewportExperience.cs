@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class ViewportExperience
 {
-    [JsonProperty("canResize")]
+    [JsonPropertyName("canResize")]
     public bool CanResize { get; set; }
 
-    [JsonProperty("canRotate")]
+    [JsonPropertyName("canRotate")]
     public bool CanRotate { get; set; }
 
-    [JsonProperty("arcMinuteWidth")]
+    [JsonPropertyName("arcMinuteWidth")]
     public int ArcMinuteWidth { get; set; }
 
-    [JsonProperty("arcMinuteHeight")]
+    [JsonPropertyName("arcMinuteHeight")]
     public int ArcMinuteHeight { get; set; }
 }

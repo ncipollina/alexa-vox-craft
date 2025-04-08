@@ -1,15 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLViewportSize
 {
-    [JsonProperty("type")]
-    public string Type { get; set; }
+    [JsonPropertyName("type")] public string Type { get; set; }
 
-    [JsonProperty("pixelHeight")]
-    public int PixelHeight { get; set; }
+    [JsonPropertyName("pixelHeight")] public int PixelHeight { get; set; }
 
-    [JsonProperty("pixelWidth")]
-    public int PixelWidth { get; set; }
+    [JsonPropertyName("pixelWidth")] public int PixelWidth { get; set; }
 }

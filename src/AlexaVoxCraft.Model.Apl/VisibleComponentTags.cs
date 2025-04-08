@@ -1,42 +1,56 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentTags
 {
-    [JsonProperty("focused",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("focused")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Focused { get; set; }
 
-    [JsonProperty("clickable",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("clickable")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Clickable { get; set; }
 
-    [JsonProperty("checked",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("checked")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Checked { get; set; }
 
-    [JsonProperty("disabled",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("disabled")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Disabled { get; set; }
 
-    [JsonProperty("spoken",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("spoken")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Spoken { get; set; }
 
-    [JsonProperty("ordinal",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("ordinal")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Ordinal { get; set; }
 
-    [JsonProperty("list",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentListTag List { get; set; }
+    [JsonPropertyName("list")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentListTag? List { get; set; }
 
-    [JsonProperty("list_item",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentListItemTag ListItem { get; set; }
+    [JsonPropertyName("list_item")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentListItemTag? ListItem { get; set; }
 
-    [JsonProperty("media",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentMediaTag Media { get; set; }
+    [JsonPropertyName("media")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentMediaTag? Media { get; set; }
 
-    [JsonProperty("pager",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentPagerTag Pager { get; set; }
+    [JsonPropertyName("pager")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentPagerTag? Pager { get; set; }
 
-    [JsonProperty("scrollable",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentScrollableTag Scrollable { get; set; }
+    [JsonPropertyName("scrollable")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentScrollableTag? Scrollable { get; set; }
 
-    [JsonProperty("viewport",NullValueHandling = NullValueHandling.Ignore)]
-    public APLViewport Viewport { get; set; }
+    [JsonPropertyName("viewport")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonConverter(typeof(NullIfEmptyObjectConverter<APLViewport>))]
+    public APLViewport? Viewport { get; set; }
 }

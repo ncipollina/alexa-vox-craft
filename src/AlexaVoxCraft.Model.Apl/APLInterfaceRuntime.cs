@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Helpers;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -12,34 +9,23 @@ public class APLInterfaceRuntime
     public APLDocumentVersion MaxVersion
     {
         get => ToEnum(MaxVersionString);
-        set => MaxVersionString = ToEnumString(typeof(APLDocumentVersion), value);
+        set => MaxVersionString = EnumHelper.ToEnumString(value);
     }
 
-    private static string ToEnumString(System.Type enumType, object type)
+    private static APLDocumentVersion ToEnum(string? str)
     {
-        var name = Enum.GetName(enumType, type);
-        var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetTypeInfo().GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).FirstOrDefault();
-        return enumMemberAttribute?.Value ?? type.ToString();
-    }
-
-    private static APLDocumentVersion ToEnum(string str)
-    {
-        var enumType = typeof(APLDocumentVersion);
         if (string.IsNullOrWhiteSpace(str))
         {
             return APLDocumentVersion.Unknown;
         }
 
-        foreach (var name in Enum.GetNames(enumType))
-
-        {
-            var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetTypeInfo().GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).FirstOrDefault();
-            if (enumMemberAttribute != null && enumMemberAttribute.Value == str) return (APLDocumentVersion)Enum.Parse(enumType, name);
-        }
-        return APLDocumentVersion.Unknown;
+        return EnumHelper.TryParseEnumWithEnumMemberSupport<APLDocumentVersion>(str, out var parsed)
+            ? parsed
+            : APLDocumentVersion.Unknown;
     }
 
 
-    [JsonProperty("maxVersion", NullValueHandling = NullValueHandling.Ignore)]
-    public string MaxVersionString { get; set; }
+    [JsonPropertyName("maxVersion")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? MaxVersionString { get; set; }
 }

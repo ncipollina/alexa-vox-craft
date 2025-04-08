@@ -16,7 +16,7 @@ public class APLDataSourceConverter : BasePolymorphicConverter<APLDataSource>
         { DynamicTokenList.DataSourceType, typeof(DynamicTokenList) }
     };
 
-    public override Type? DefaultType => typeof(KeyValueDataSource);
+    protected override Type? DefaultType => typeof(KeyValueDataSource);
     protected override Func<JsonElement, string?> KeyResolver => element =>
     {
         var typeValue = element.TryGetProperty(TypeDiscriminatorPropertyName, out var typeProp)

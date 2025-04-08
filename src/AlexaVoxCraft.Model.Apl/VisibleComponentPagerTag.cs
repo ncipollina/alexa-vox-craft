@@ -1,18 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentPagerTag
 {
-    [JsonProperty("index",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("index")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Index { get; set; }
 
-    [JsonProperty("page_count",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("page_count")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? PageCount { get; set; }
 
-    [JsonProperty("allow_forward",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_forward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowForward { get; set; }
 
-    [JsonProperty("allow_backwards",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_backwards")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowBackwards { get; set; }
 }

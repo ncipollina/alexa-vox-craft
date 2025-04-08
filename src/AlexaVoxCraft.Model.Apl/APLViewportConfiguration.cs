@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLViewportConfiguration
 {
-    [JsonProperty("video", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("video")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public VideoSupport Video { get; set; }
 
-    [JsonProperty("size",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("size")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLViewportSize Size { get; set; }
 }

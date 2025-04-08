@@ -1,25 +1,25 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLTViewport : Viewport
 {
-    public override string Type => "APLT";
+    public const string ViewportType = "APLT";
+    [JsonPropertyName("type")]
+    public override string Type => ViewportType;
 
-    [JsonProperty("supportedProfiles")]
+    [JsonPropertyName("supportedProfiles")]
     public APLTProfile[] SupportedProfiles { get; set; }
 
-    [JsonProperty("lineLength")]
+    [JsonPropertyName("lineLength")]
     public int LineLength { get; set; }
 
-    [JsonProperty("lineCount")]
+    [JsonPropertyName("lineCount")]
     public int LineCount { get; set; }
 
-    [JsonProperty("format")]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("format")]
     public APLTFormat Format { get; set; }
 
-    [JsonProperty("interSegments")]
+    [JsonPropertyName("interSegments")]
     public InterSegment[] InterSegments { get; set; }
 }

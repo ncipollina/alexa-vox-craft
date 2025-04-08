@@ -1,5 +1,6 @@
-﻿using AlexaVoxCraft.Model.Request;
-using Newtonsoft.Json;
+﻿using System.Text.Json;
+using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
@@ -20,7 +21,10 @@ public static class APLInterface
     public static APLInterfaceDetails APLInterfaceDetails(this SkillRequest request)
     {
         var raw = GetAPLInterfaceObject(request);
-        return raw == null ? null : JsonConvert.DeserializeObject<APLInterfaceDetails>(raw.ToString());
+        return raw == null
+            ? null
+            : JsonSerializer.Deserialize<APLInterfaceDetails>(raw.ToString(),
+                AlexaJsonOptions.DefaultOptions); 
     }
 
     private static object GetAPLInterfaceObject(SkillRequest request)

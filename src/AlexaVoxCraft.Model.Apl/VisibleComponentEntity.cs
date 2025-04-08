@@ -1,15 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentEntity
 {
-    [JsonProperty("type",NullValueHandling = NullValueHandling.Ignore)]
-    public string Type { get; set; }
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Type { get; set; }
 
-    [JsonProperty("value",NullValueHandling = NullValueHandling.Ignore)]
-    public string Value { get; set; }
+    [JsonPropertyName("value")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Value { get; set; }
 
-    [JsonProperty("id",NullValueHandling = NullValueHandling.Ignore)]
-    public string Id { get; set; }
+    [JsonPropertyName("id")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Id { get; set; }
 }

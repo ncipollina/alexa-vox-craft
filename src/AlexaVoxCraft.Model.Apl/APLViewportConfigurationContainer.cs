@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLViewportConfigurationContainer
 {
-    [JsonProperty("current",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("current")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLViewportConfiguration Current { get; set; }
 }

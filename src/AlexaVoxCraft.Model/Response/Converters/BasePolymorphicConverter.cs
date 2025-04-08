@@ -26,7 +26,9 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
         return original; // No-op by default
     }
 
-    public virtual Type? DefaultType => null;
+    protected virtual Type? DefaultType => null;
+
+    protected virtual bool EmptyObjectIsNull => false;
 
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -64,11 +66,17 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
 
         // Allow subclasses to mutate the element
         var transformed = TransformJson(root);
+        
         return (T)JsonSerializer.Deserialize(transformed.GetRawText(), resultType, options)!;
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value, value.GetType(), options);
+    }
+    
+    private bool IsEmptyObject(JsonElement element)
+    {
+        return element.ValueKind == JsonValueKind.Object && !element.EnumerateObject().Any();
     }
 }

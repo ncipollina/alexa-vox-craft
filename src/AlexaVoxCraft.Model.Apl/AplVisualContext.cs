@@ -1,18 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class AplVisualContext
 {
-    [JsonProperty("presentationUri",NullValueHandling = NullValueHandling.Ignore)]
-    public string PresentationUri { get; set; }
+    [JsonPropertyName("presentationUri")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? PresentationUri { get; set; }
 
-    [JsonProperty("token",NullValueHandling = NullValueHandling.Ignore)]
-    public string Token { get; set; }
+    [JsonPropertyName("token")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Token { get; set; }
 
-    [JsonProperty("version",NullValueHandling = NullValueHandling.Ignore)]
-    public string Version { get; set; }
+    [JsonPropertyName("version")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Version { get; set; }
 
-    [JsonProperty("componentsVisibleOnScreen", NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponent[] ComponentsVisibleOnScreen { get; set; }
+    [JsonPropertyName("componentsVisibleOnScreen")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponent[]? ComponentsVisibleOnScreen { get; set; }
 }

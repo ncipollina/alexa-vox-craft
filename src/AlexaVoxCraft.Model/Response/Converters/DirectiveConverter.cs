@@ -45,5 +45,5 @@ public class DirectiveConverter : BasePolymorphicConverter<IDirective>
 
 
     protected override Func<JsonElement, Type?>? CustomTypeResolver => null;
-    public override Type? DefaultType => typeof(JsonDirective);
+    protected override Type? DefaultType => typeof(JsonDirective);
 }

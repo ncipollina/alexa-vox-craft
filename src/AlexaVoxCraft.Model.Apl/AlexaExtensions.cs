@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class AlexaExtensions
 {
-    [JsonProperty("available",NullValueHandling = NullValueHandling.Ignore)]
-    public Dictionary<string,object> Available { get; set; }
+    [JsonPropertyName("available")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, object> Available { get; set; }
 }

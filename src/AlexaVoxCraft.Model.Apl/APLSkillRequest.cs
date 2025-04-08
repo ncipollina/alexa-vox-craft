@@ -3,7 +3,7 @@ using AlexaVoxCraft.Model.Request;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class APLSkillRequest:SkillRequest
+public class APLSkillRequest : SkillRequest
 {
     private APLContext _context;
 

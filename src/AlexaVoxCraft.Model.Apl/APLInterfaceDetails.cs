@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLInterfaceDetails
 {
-    [JsonProperty("runtime", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("runtime")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLInterfaceRuntime Runtime { get; set; }
 }

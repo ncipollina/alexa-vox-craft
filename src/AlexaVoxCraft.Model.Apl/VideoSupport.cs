@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VideoSupport
 {
-    [JsonProperty("codecs")]
+    [JsonPropertyName("codecs")]
     public string[] Codecs { get; set; }
 }

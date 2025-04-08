@@ -49,5 +49,5 @@ public class APLCommandConverter : BasePolymorphicConverter<APLCommand>
         [nameof(UpdateArrayBindingRangeCommand)] = typeof(UpdateArrayBindingRangeCommand),
     };    
     protected override IDictionary<string, Type> DerivedTypes => _derivedTypes;
-    public override Type? DefaultType => typeof(CustomCommand);
+    protected override Type? DefaultType => typeof(CustomCommand);
 }

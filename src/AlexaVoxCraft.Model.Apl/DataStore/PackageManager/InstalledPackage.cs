@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 
 public class InstalledPackage
 {
-    [JsonProperty("packageId")]
+    [JsonPropertyName("packageId")]
     public string PackageId { get; set; }
 
-    [JsonProperty("packageVersion")]
+    [JsonPropertyName("packageVersion")]
     public string PackageVersion { get; set; }
 }

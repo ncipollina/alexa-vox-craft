@@ -1,27 +1,34 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponent
 {
-    [JsonProperty("id",NullValueHandling = NullValueHandling.Ignore)]
-    public string Id { get; set; }
+    [JsonPropertyName("id")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Id { get; set; }
 
-    [JsonProperty("uid",NullValueHandling = NullValueHandling.Ignore)]
-    public string Uid { get; set; }
+    [JsonPropertyName("uid")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Uid { get; set; }
 
-    [JsonProperty("position",NullValueHandling = NullValueHandling.Ignore)]
-    public string Position { get; set; }
+    [JsonPropertyName("position")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Position { get; set; }
 
-    [JsonProperty("type",NullValueHandling = NullValueHandling.Ignore)]
-    public string Type { get; set; }
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Type { get; set; }
 
-    [JsonProperty("tags", NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentTags Tags { get; set; }
+    [JsonPropertyName("tags")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentTags? Tags { get; set; }
 
-    [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponent[] Children { get; set; }
+    [JsonPropertyName("children")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponent[]? Children { get; set; }
 
-    [JsonProperty("entities",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentEntity[] Entities { get; set; }
+    [JsonPropertyName("entities")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentEntity[]? Entities { get; set; }
 }

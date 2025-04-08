@@ -1,24 +1,19 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLViewport : Viewport
 {
-    public override string Type => "APL";
+    public const string ViewportType = "APL";
+    [JsonPropertyName("type")] public override string Type => ViewportType;
 
-    [JsonProperty("shape"), JsonConverter(typeof(StringEnumConverter))]
-    public ViewportShape Shape { get; set; }
+    [JsonPropertyName("shape")] public ViewportShape Shape { get; set; }
 
-    [JsonProperty("dpi")]
-    public int DPI { get; set; }
+    [JsonPropertyName("dpi")] public int DPI { get; set; }
 
-    [JsonProperty("presentationType")]
-    public string PresentationType { get; set; }
+    [JsonPropertyName("presentationType")] public string PresentationType { get; set; }
 
-    [JsonProperty("canRotate")]
-    public bool CanRotate { get; set; }
+    [JsonPropertyName("canRotate")] public bool CanRotate { get; set; }
 
-    [JsonProperty("configuration")]
-    public APLViewportConfigurationContainer Configuration { get; set; }
+    [JsonPropertyName("configuration")] public APLViewportConfigurationContainer Configuration { get; set; }
 }

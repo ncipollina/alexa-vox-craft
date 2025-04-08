@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class InterSegment
 {
-    [JsonProperty("x")]
+    [JsonPropertyName("x")]
     public int X { get; set; }
 
-    [JsonProperty("y")]
+    [JsonPropertyName("y")]
     public int Y { get; set; }
 
-    [JsonProperty("characters")]
+    [JsonPropertyName("characters")]
     public string Characters { get; set; }
 }

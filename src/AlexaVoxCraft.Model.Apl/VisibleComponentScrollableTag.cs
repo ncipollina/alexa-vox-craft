@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentScrollableTag
 {
-    [JsonProperty("direction",NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("direction")]
     public ScrollableTagDirection Direction { get; set; }
 
-    [JsonProperty("allow_forward",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_forward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowForward { get; set; }
 
-    [JsonProperty("allow_backward",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_backward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowBackward { get; set; }
 }

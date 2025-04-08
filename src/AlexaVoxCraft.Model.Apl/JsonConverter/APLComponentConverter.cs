@@ -98,5 +98,5 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         }
     }
 
-    public override Type? DefaultType => typeof(CustomComponent);
+    protected override Type? DefaultType => typeof(CustomComponent);
 }

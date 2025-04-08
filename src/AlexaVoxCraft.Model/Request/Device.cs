@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Request;
 
@@ -8,7 +9,7 @@ public class Device
     public string DeviceID { get; set; }
 
     [JsonPropertyName("supportedInterfaces")]
-    public Dictionary<string, object> SupportedInterfaces { get; set; }
+    public Dictionary<string, JsonElement> SupportedInterfaces { get; set; }
 
     public bool IsInterfaceSupported(string interfaceName)
     {

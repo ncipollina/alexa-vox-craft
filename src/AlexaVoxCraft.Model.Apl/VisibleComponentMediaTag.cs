@@ -1,32 +1,38 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentMediaTag
 {
-    [JsonProperty("position_in_milliseconds",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("position_in_milliseconds")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? PositionInMilliseconds { get; set; }
 
-    [JsonProperty("allow_adjust_seek_position_forward",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_adjust_seek_position_forward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowAdjustSeekPositionForward { get; set; }
 
-    [JsonProperty("allow_adjust_seek_position_backwards",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_adjust_seek_position_backwards")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowAdjustSeekPositionBackwards { get; set; }
 
-    [JsonProperty("allow_next",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_next")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowNext { get; set; }
 
-    [JsonProperty("allow_previous",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("allow_previous")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? AllowPrevious { get; set; }
 
-    [JsonProperty("url",NullValueHandling = NullValueHandling.Ignore)]
-    public string Url { get; set; }
+    [JsonPropertyName("url")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Url { get; set; }
 
-    [JsonProperty("state",NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("state")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public MediaTagState? State { get; set; }
 
-    [JsonProperty("entities",NullValueHandling = NullValueHandling.Ignore)]
-    public VisibleComponentEntity[] Entities { get; set; }
+    [JsonPropertyName("entities")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public VisibleComponentEntity[]? Entities { get; set; }
 }

@@ -1,21 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class VisibleComponentListTag
 {
-    [JsonProperty("item_count",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("item_count")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ItemCount { get; set; }
 
-    [JsonProperty("lowest_index_seen",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("lowest_index_seen")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? LowestIndexSeen { get; set; }
 
-    [JsonProperty("highest_index_seen",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("highest_index_seen")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? HighestIndexSeen { get; set; }
 
-    [JsonProperty("lowest_ordinal_seen",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("lowest_ordinal_seen")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? LowestOrdinalSeen { get; set; }
 
-    [JsonProperty("highest_ordinal_seen",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("highest_ordinal_seen")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? HighestOrdinalSeen { get; set; }
 }

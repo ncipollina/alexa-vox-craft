@@ -25,5 +25,5 @@ public class APLAFilterConverter: BasePolymorphicConverter<APLAFilter>
         new Dictionary<string, Func<JsonElement, Type>>();
 
     protected override Func<JsonElement, Type?>? CustomTypeResolver => null;
-    public override Type? DefaultType => null;
+    protected override Type? DefaultType => null;
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AlexaVoxCraft.Model.Response.Converters;
+using AlexaVoxCraft.Model.Helpers;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
@@ -65,7 +65,7 @@ public class ParameterConverter : JsonConverter<Parameter>
 
         if (value.Type != ParameterType.any)
         {
-            var enumName = JsonStringEnumConverterWithEnumMemberAttrSupport<ParameterType>.ToEnumString(value.Type);
+            var enumName = EnumHelper.ToEnumString(value.Type);
             writer.WriteString("type", enumName);
         }
 
