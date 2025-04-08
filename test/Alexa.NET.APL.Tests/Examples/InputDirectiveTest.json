@@ -361,7 +361,7 @@
     }
   },
 
-  "dataSources": {
+  "datasources": {
 
     "StreamPlayerData": {
       "type": "object",

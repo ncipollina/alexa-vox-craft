@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Operation;
 
@@ -13,11 +13,8 @@ public class InsertMultipleItems : Operation
     }
 
     public const string OperationType = "InsertMultipleItems";
+    [JsonPropertyName("type")]
     public override string Type => OperationType;
-
-    [JsonProperty("index")]
-    public int Index { get; set; }
-
-    [JsonProperty("items")]
+    [JsonPropertyName("items")]
     public object[] Items { get; set; }
 }

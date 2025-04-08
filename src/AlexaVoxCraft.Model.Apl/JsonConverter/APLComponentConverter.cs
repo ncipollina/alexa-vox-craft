@@ -45,6 +45,7 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         [nameof(AlexaImageCaption)] = typeof(AlexaImageCaption),
         [nameof(AlexaPhoto)] = typeof(AlexaPhoto),
         [nameof(AlexaTextWrapping)] = typeof(AlexaTextWrapping),
+        [nameof(AlexaFooter)] = typeof(AlexaFooter),
     };
     protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)
@@ -90,9 +91,9 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
 
     private static void Move(JsonObject json, string from, string to)
     {
-        if (json.ContainsKey(from))
+        if (json.TryGetPropertyValue(from, out var value))
         {
-            json[to] = json[from];
+            json[to] = value!.DeepClone(); // 👈 Clone before reassigning
             json.Remove(from);
         }
     }

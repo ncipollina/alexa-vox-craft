@@ -1,7 +1,8 @@
-﻿using AlexaVoxCraft.Model.Apl.DataStore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using AlexaVoxCraft.Model.Apl.DataStore;
+using AlexaVoxCraft.Model.Serialization;
 using Xunit;
+using JsonDocument = System.Text.Json.JsonDocument;
 
 namespace Alexa.NET.APL.Tests;
 
@@ -10,27 +11,64 @@ public class DataStoreCommandTests
     [Fact]
     public void PutNamespaceCommand()
     {
-        var raw = new JObject(new JProperty("namespace", "test"),new JProperty("type", "PUT_NAMESPACE"));
-        var cmd = Assert.IsType<PutNamespace>(JsonConvert.DeserializeObject<DataStoreCommand>(raw.ToString()));
-        Assert.Equal("test", cmd.Namespace);
-        Assert.Equal(JObject.FromObject(cmd).ToString(), raw.ToString());
+        var rawJson = """
+                      {
+                          "namespace": "test",
+                          "type": "PUT_NAMESPACE"
+                      }
+                      """;
+
+        var cmd = JsonSerializer.Deserialize<DataStoreCommand>(rawJson, AlexaJsonOptions.DefaultOptions);
+        var typedCmd = Assert.IsType<PutNamespace>(cmd);
+
+        Assert.Equal("test", typedCmd.Namespace);
+
+        var serialized = JsonSerializer.Serialize(typedCmd, AlexaJsonOptions.DefaultOptions);
+        var reparsed = JsonDocument.Parse(serialized).RootElement;
+        var original = JsonDocument.Parse(rawJson).RootElement;
+
+        Assert.True(reparsed.JsonElementDeepEquals(original), "Serialized JSON does not match original input.");
     }
 
     [Fact]
     public void RemoveNamespaceCommand()
     {
-        var raw = new JObject(new JProperty("namespace", "test"), new JProperty("type", "REMOVE_NAMESPACE"));
-        var cmd = Assert.IsType<RemoveNamespace>(JsonConvert.DeserializeObject<DataStoreCommand>(raw.ToString()));
-        Assert.Equal("test", cmd.Namespace);
-        Assert.Equal(JObject.FromObject(cmd).ToString(), raw.ToString());
+        var rawJson = """
+                      {
+                          "namespace": "test",
+                          "type": "REMOVE_NAMESPACE"
+                      }
+                      """;
+
+        var cmd = JsonSerializer.Deserialize<DataStoreCommand>(rawJson, AlexaJsonOptions.DefaultOptions);
+        var typedCmd = Assert.IsType<RemoveNamespace>(cmd);
+
+        Assert.Equal("test", typedCmd.Namespace);
+
+        var serialized = JsonSerializer.Serialize(typedCmd, AlexaJsonOptions.DefaultOptions);
+        var reparsed = JsonDocument.Parse(serialized).RootElement;
+        var original = JsonDocument.Parse(rawJson).RootElement;
+
+        Assert.True(reparsed.JsonElementDeepEquals(original), "Serialized JSON does not match original input.");
     }
 
     [Fact]
     public void ClearCommand()
     {
-        var raw = new JObject(new JProperty("type", "CLEAR"));
-        var cmd = Assert.IsType<Clear>(JsonConvert.DeserializeObject<DataStoreCommand>(raw.ToString()));
-        Assert.Equal(JObject.FromObject(cmd).ToString(), raw.ToString());
+        var rawJson = """
+                      {
+                          "type": "CLEAR"
+                      }
+                      """;
+
+        var cmd = JsonSerializer.Deserialize<DataStoreCommand>(rawJson, AlexaJsonOptions.DefaultOptions);
+        var typedCmd = Assert.IsType<Clear>(cmd);
+
+        var serialized = JsonSerializer.Serialize(typedCmd, AlexaJsonOptions.DefaultOptions);
+        var reparsed = JsonDocument.Parse(serialized).RootElement;
+        var original = JsonDocument.Parse(rawJson).RootElement;
+
+        Assert.True(reparsed.JsonElementDeepEquals(original), "Serialized JSON does not match original input.");
     }
 
     [Fact]

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Response;
 using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class UpdateIndexListDataDirective:IDirective
+public class UpdateIndexListDataDirective : IDirective
 {
     public const string DirectiveType = "Alexa.Presentation.APL.UpdateIndexListData";
 
@@ -14,17 +14,21 @@ public class UpdateIndexListDataDirective:IDirective
         DirectiveConverter.RegisterDirectiveDerivedType<UpdateIndexListDataDirective>(DirectiveType);
     }
 
-    [JsonProperty("type")] public string Type => DirectiveType;
+    [JsonPropertyName("type")] public string Type => DirectiveType;
 
-    [JsonProperty("token",NullValueHandling = NullValueHandling.Ignore)]
-    public string Token { get; set; }
+    [JsonPropertyName("token")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Token { get; set; }
 
-    [JsonProperty("listId",NullValueHandling = NullValueHandling.Ignore)]
-    public string ListId { get; set; }
+    [JsonPropertyName("listId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ListId { get; set; }
 
-    [JsonProperty("listVersion",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("listVersion")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ListVersion { get; set; }
 
-    [JsonProperty("operations",NullValueHandling = NullValueHandling.Ignore)]
-    public IList<Operation.Operation> Operations { get; set; } = new List<Operation.Operation>();
+    [JsonPropertyName("operations")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<Operation.Operation>? Operations { get; set; } = [];
 }

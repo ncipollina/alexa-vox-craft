@@ -1,9 +1,9 @@
-﻿using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class SendTokenListDataDirective : ListDataDirective
+public class SendTokenListDataDirective : ListDataDirective, IJsonSerializable<SendTokenListDataDirective>
 {
     public const string DirectiveType = "Alexa.Presentation.APL.SendTokenListData";
 
@@ -12,11 +12,17 @@ public class SendTokenListDataDirective : ListDataDirective
         DirectiveConverter.RegisterDirectiveDerivedType<SendTokenListDataDirective>(DirectiveType);
     }
 
+    [JsonPropertyName("type")]
     public override string Type => DirectiveType;
 
-    [JsonProperty("pageToken")]
-    public string PageToken { get; set; }
+    [JsonPropertyName("pageToken")] public string PageToken { get; set; }
 
-    [JsonProperty("nextPageToken",NullValueHandling = NullValueHandling.Ignore)]
-    public string NextPageToken { get; set; }
+    [JsonPropertyName("nextPageToken")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? NextPageToken { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : SendTokenListDataDirective
+    {
+        ListDataDirective.RegisterTypeInfo<T>();
+    }
 }

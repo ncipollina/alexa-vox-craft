@@ -113,7 +113,7 @@ public class ComponentTests
             
         // Serialize dataSources to JsonElement
         var dataSourcesElement = JsonSerializer.SerializeToElement(sources, AlexaJsonOptions.DefaultOptions);
-        directive.Properties.Add("dataSources", dataSourcesElement);
+        directive.Properties.Add("datasources", dataSourcesElement);
 
         return directive;
     }

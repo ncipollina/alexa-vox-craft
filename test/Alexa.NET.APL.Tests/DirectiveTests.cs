@@ -6,15 +6,22 @@ using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Apl.Operation;
 using AlexaVoxCraft.Model.Response;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using AlexaVoxCraft.Model.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 using InsertItem = AlexaVoxCraft.Model.Apl.Operation.InsertItem;
 
 namespace Alexa.NET.APL.Tests;
 
 public class DirectiveTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public DirectiveTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void RenderDocument()
     {
@@ -55,8 +62,13 @@ public class DirectiveTests
         Assert.Equal("catFactSpeech", transformer.OutputName);
         Assert.Equal("ssmlToSpeech", transformer.Transformer);
 
-        var random =
-            JsonConvert.DeserializeObject<APLDataSource>(new JObject(new JProperty("test", "random")).ToString());
+        var rawJson = """
+                      {
+                        "test": "random"
+                      }
+                      """;
+        
+        var random = System.Text.Json.JsonSerializer.Deserialize<APLDataSource>(rawJson, AlexaJsonOptions.DefaultOptions);
         Assert.IsType<KeyValueDataSource>(random);
         Assert.Single(((KeyValueDataSource)random).Properties);
     }
@@ -68,13 +80,12 @@ public class DirectiveTests
         directive.Commands = new List<APLCommand>();
         directive.Commands.Add(new Idle());
 
-        Assert.True(Utility.CompareJson(directive, "ExecuteCommands.json", null));
+        Assert.True(Utility.CompareJson(directive, "ExecuteCommands.json", _output));
     }
 
     [Fact]
     public void SendIndexListData()
     {
-        SendIndexListDataDirective.AddSupport();
         var dir = Utility.ExampleFileContent<IDirective>("SendIndexListDataDirective.json");
         Assert.IsType<SendIndexListDataDirective>(dir);
 
@@ -101,14 +112,13 @@ public class DirectiveTests
                 new DynamicListItem{PrimaryText = "item 20"},
             }
         };
-        Assert.True(Utility.CompareJson(directive, "SendIndexListDataDirective.json", null));
+        Assert.True(Utility.CompareJson(directive, "SendIndexListDataDirective.json", _output));
     }
 
     [Fact]
     public void SendTokenListData()
     {
-        SendTokenListDataDirective.AddSupport();
-        Utility.AssertSerialization<IDirective, SendTokenListDataDirective>("SendTokenListDataDirective.json");
+        Utility.AssertSerialization<IDirective, SendTokenListDataDirective>("SendTokenListDataDirective.json", _output);
     }
 
     [Fact]

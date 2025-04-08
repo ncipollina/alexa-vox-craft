@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Operation;
 
@@ -12,11 +12,9 @@ public class DeleteMultipleItems : Operation
     }
 
     public const string OperationType = "DeleteMultipleItems";
+    [JsonPropertyName("type")]
     public override string Type => OperationType;
 
-    [JsonProperty("index")]
-    public int Index { get; set; }
-
-    [JsonProperty("count")]
+    [JsonPropertyName("count")]
     public int Count { get; set; }
 }

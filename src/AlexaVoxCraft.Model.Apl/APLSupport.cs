@@ -17,6 +17,7 @@ public static class APLSupport
         RenderDocumentDirective.AddSupport();
         ExecuteCommandsDirective.AddSupport();
         SendIndexListDataDirective.AddSupport();
+        SendTokenListDataDirective.AddSupport();
         UpdateIndexListDataDirective.AddSupport();
         UserEventRequestHandler.AddToRequestConverter();
         LoadIndexListDataRequestHandler.AddToRequestConverter();
@@ -111,5 +112,10 @@ public static class APLSupport
         AlexaPhoto.RegisterTypeInfo<AlexaPhoto>();
         AlexaTextWrapping.RegisterTypeInfo<AlexaTextWrapping>();
         CommandsTarget.RegisterTypeInfo<CommandsTarget>();
+        AlexaFooter.RegisterTypeInfo<AlexaFooter>();
+        ExecuteCommandsDirective.RegisterTypeInfo<ExecuteCommandsDirective>();
+        ListDataDirective.RegisterTypeInfo<ListDataDirective>();
+        SendIndexListDataDirective.RegisterTypeInfo<SendIndexListDataDirective>();
+        SendTokenListDataDirective.RegisterTypeInfo<SendTokenListDataDirective>();
     }
 }

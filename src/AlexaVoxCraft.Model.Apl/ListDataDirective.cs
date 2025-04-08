@@ -1,29 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Response;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public abstract class ListDataDirective : IDirective
+public abstract class ListDataDirective : IDirective, IJsonSerializable<ListDataDirective>
 {
-    [JsonProperty("type")]
-    public abstract string Type { get; }
+    [JsonPropertyName("type")] public abstract string Type { get; }
 
-    [JsonProperty("token", NullValueHandling = NullValueHandling.Ignore)]
-    public string Token { get; set; }
+    [JsonPropertyName("token")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? Token { get; set; }
 
-    [JsonProperty("correlationToken", NullValueHandling = NullValueHandling.Ignore)]
-    public string CorrelationToken { get; set; }
+    [JsonPropertyName("correlationToken")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? CorrelationToken { get; set; }
 
-    [JsonProperty("listId", NullValueHandling = NullValueHandling.Ignore)]
-    public string ListId { get; set; }
+    [JsonPropertyName("listId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? ListId { get; set; }
 
-    [JsonProperty("items", NullValueHandling = NullValueHandling.Ignore)]
-    public IList<object> Items { get; set; } = new List<object>();
+    [JsonPropertyName("items")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public IList<object>? Items { get; set; } = new List<object>();
 
-    public bool ShouldSerializeItems()
+    public static void RegisterTypeInfo<T>() where T : ListDataDirective
     {
-        return Items?.Any() ?? false;
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var itemsProp = info.Properties.FirstOrDefault(p => p.Name == "items");
+            if (itemsProp is not null)
+            {
+                itemsProp.ShouldSerialize = (obj, _) =>
+                {
+                    var listDataDirective = (T)obj;
+                    return listDataDirective.Items?.Any() ?? false;
+                };
+            }
+        });
     }
 }

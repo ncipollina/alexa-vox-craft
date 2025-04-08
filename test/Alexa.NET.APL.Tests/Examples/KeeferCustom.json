@@ -164,7 +164,7 @@
       ]
     }
   },
-  "dataSources": {
+  "datasources": {
     "bodyTemplate7Data": {
       "type": "object",
       "objectId": "bt7Sample",

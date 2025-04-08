@@ -1,18 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class ExportList
 {
-    [JsonProperty("graphics",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("graphics")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Export[] Graphics { get; set; }
 
-    [JsonProperty("layouts",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("layouts")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Export[] Layouts { get; set; }
 
-    [JsonProperty("resources",NullValueHandling = NullValueHandling.Ignore)]
-    public Export[] Resources{ get; set; }
+    [JsonPropertyName("resources")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Export[] Resources { get; set; }
 
-    [JsonProperty("styles",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("styles")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Export[] Styles { get; set; }
 }

@@ -1,9 +1,9 @@
-﻿using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class SendIndexListDataDirective:ListDataDirective
+public class SendIndexListDataDirective : ListDataDirective, IJsonSerializable<SendIndexListDataDirective>
 {
     public const string DirectiveType = "Alexa.Presentation.APL.SendIndexListData";
 
@@ -12,19 +12,26 @@ public class SendIndexListDataDirective:ListDataDirective
         DirectiveConverter.RegisterDirectiveDerivedType<SendIndexListDataDirective>(DirectiveType);
     }
 
-    [JsonProperty("type")]
-    public override string Type => DirectiveType;
+    [JsonPropertyName("type")] public override string Type => DirectiveType;
 
-    [JsonProperty("listVersion",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("listVersion")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? ListVersion { get; set; }
 
-    [JsonProperty("startIndex",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("startIndex")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? StartIndex { get; set; }
 
-    [JsonProperty("minimumInclusiveIndex",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("minimumInclusiveIndex")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? MinimumInclusiveIndex { get; set; }
 
-    [JsonProperty("maximumExclusiveIndex",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("maximumExclusiveIndex")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? MaximumExclusiveIndex { get; set; }
 
+    public new static void RegisterTypeInfo<T>() where T : SendIndexListDataDirective
+    {
+        ListDataDirective.RegisterTypeInfo<T>();
+    }
 }
