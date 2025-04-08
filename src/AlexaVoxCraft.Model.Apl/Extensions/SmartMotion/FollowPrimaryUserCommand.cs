@@ -1,6 +1,8 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
+﻿using System.Text.Json.Serialization;
 
-public class FollowPrimaryUserCommand:APLCommand
+namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
+
+public class FollowPrimaryUserCommand : APLCommand
 {
     private string _extensionName;
 
@@ -14,5 +16,5 @@ public class FollowPrimaryUserCommand:APLCommand
         _extensionName = extensionName;
     }
 
-    public override string Type => $"{_extensionName}:FollowPrimaryUser";
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:FollowPrimaryUser";
 }

@@ -2,7 +2,7 @@
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
-public class SmartMotionExtension:APLExtension
+public class SmartMotionExtension : APLExtension
 {
     public const string URL = "alexaext:smartmotion:10";
     public const string DeviceStateChangedEventName = "OnDeviceStateChanged";

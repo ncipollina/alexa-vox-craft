@@ -1,6 +1,6 @@
 ﻿namespace AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 
-public class BackstackExtension:APLExtension
+public class BackstackExtension : APLExtension
 {
     public const string URL = "aplext:backstack:10";
 
@@ -9,7 +9,7 @@ public class BackstackExtension:APLExtension
         Uri = URL;
     }
 
-    public BackstackExtension(string name):this()
+    public BackstackExtension(string name) : this()
     {
         Name = name;
     }

@@ -1,4 +1,6 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
+﻿using System.Text.Json.Serialization;
+
+namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
 public class TurnToPrimaryUserCommand : APLCommand
 {
@@ -14,5 +16,5 @@ public class TurnToPrimaryUserCommand : APLCommand
         _extensionName = extensionName;
     }
 
-    public override string Type => $"{_extensionName}:TurnToPrimaryUser";
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:TurnToPrimaryUser";
 }

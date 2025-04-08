@@ -1,50 +1,75 @@
-﻿using AlexaVoxCraft.Model.Apl;
+﻿using Alexa.NET.APL.Tests.Extensions;
+using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 using AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 using AlexaVoxCraft.Model.Apl.Extensions.EntitySensing;
 using AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
-using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class ExtensionTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public ExtensionTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void BackStackExtension()
     {
         var backstack = new BackstackExtension("Back");
         var doc = new APLDocument(APLDocumentVersion.V1_4);
         doc.Extensions.Value.Add(backstack);
-        doc.Settings = new APLDocumentSettings(); 
-        doc.Settings.Add(backstack.Name, new BackStackSettings{BackstackId = "myDocument"});
-        Assert.True(Utility.CompareJson(doc, "ExtensionBackStack.json", null));
+        doc.Settings = new APLDocumentSettings();
+        doc.Settings.Add(backstack.Name, new BackStackSettings { BackstackId = "myDocument" });
+        Assert.True(Utility.CompareJson(doc, "ExtensionBackStack.json", _output));
     }
 
     [Fact]
     public void BackStackGoBack()
     {
-        var expected = new JObject {{"type", "Back:GoBack"}};
+        var expected = """
+                       {
+                           "type": "Back:GoBack"
+                       }
+                       """;
+
         var goBack = GoBackCommand.For(new BackstackExtension("Back"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(goBack)));
+        goBack.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void BackStackGoBackFull()
     {
-        var expected = new JObject {{"type", "Back:GoBack"}, {"backType", "id"}, {"backValue", "myDocument"}};
+        var expected = """
+                       {
+                           "type": "Back:GoBack",
+                           "backType": "id",
+                           "backValue": "myDocument"
+                       }
+                       """;
+
         var goBack = GoBackCommand.For(new BackstackExtension("Back"));
         goBack.BackType = BackTypeKind.Id;
         goBack.BackValue = "myDocument";
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(goBack)));
+
+        goBack.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void BackstackClear()
     {
-        var expected = new JObject { { "type", "Back:Clear" } };
-        var goBack = ClearCommand.For(new BackstackExtension("Back"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(goBack)));
+        var expexted = """
+                       {
+                            "type": "Back:Clear"
+                       }
+                       """;
+        var clear = ClearCommand.For(new BackstackExtension("Back"));
+        clear.AssertJsonEqual(expexted);
     }
 
     [Fact]
@@ -65,50 +90,77 @@ public class ExtensionTests
     [Fact]
     public void FollowPrimaryUser()
     {
-        var expected = new JObject { { "type", "SmartMotion:FollowPrimaryUser" } };
-        var goBack = FollowPrimaryUserCommand.For(new SmartMotionExtension("SmartMotion"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(goBack)));
+        var expected = """ 
+                       {
+                           "type": "SmartMotion:FollowPrimaryUser"
+                       }
+                       """;
+            
+        var followPrimaryUser = FollowPrimaryUserCommand.For(new SmartMotionExtension("SmartMotion"));
+        followPrimaryUser.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void GoToCenter()
     {
-        var expected = new JObject { { "type", "SmartMotion:GoToCenter" } };
-        var goBack = GoToCenterCommand.For(new SmartMotionExtension("SmartMotion"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(goBack)));
+        var expected = """
+                       {
+                           "type": "SmartMotion:GoToCenter"
+                       }
+                       """; 
+        var goToCenter = GoToCenterCommand.For(new SmartMotionExtension("SmartMotion"));
+        goToCenter.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void SetWakeWordResponse()
     {
-        var expected = new JObject { { "type", "SmartMotion:SetWakeWordResponse" }, {"wakeWordResponse", "turnToWakeWord"} };
+        var expected = """
+                          {
+                            "type": "SmartMotion:SetWakeWordResponse",
+                            "wakeWordResponse": "turnToWakeWord"
+                          }
+                       """;
         var setWake = SetWakeWordResponseCommand.For(new SmartMotionExtension("SmartMotion"));
         setWake.WakeWordResponse = WakeWordResponse.TurnToWakeWord;
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(setWake)));
+        setWake.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void StopMotion()
     {
-        var expected = new JObject { { "type", "SmartMotion:StopMotion" } };
+        var expected = """
+                       {
+                           "type": "SmartMotion:StopMotion"
+                       }
+                       """; 
         var stopMotion = StopMotionCommand.For(new SmartMotionExtension("SmartMotion"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(stopMotion)));
+        stopMotion.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void TurnToPrimaryUser()
     {
-        var expected = new JObject { { "type", "SmartMotion:TurnToPrimaryUser" } };
-        var TurnToPrimaryUser = TurnToPrimaryUserCommand.For(new SmartMotionExtension("SmartMotion"));
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(TurnToPrimaryUser)));
+        var expected = """
+                       {
+                           "type": "SmartMotion:TurnToPrimaryUser"
+                       }
+                       """; 
+        var turnToPrimaryUser = TurnToPrimaryUserCommand.For(new SmartMotionExtension("SmartMotion"));
+        turnToPrimaryUser.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void PlayNamedChoreo()
     {
-        var expected = new JObject { { "type", "SmartMotion:PlayNamedChoreo" }, {"name","ScreenImpactCenter"} };
-        var PlayNamedChoreo = PlayNamedChoreoCommand.For(new SmartMotionExtension("SmartMotion"), "ScreenImpactCenter");
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(PlayNamedChoreo)));
+        var expected = """
+                       {
+                           "type": "SmartMotion:PlayNamedChoreo",
+                           "name": "ScreenImpactCenter"
+                       }
+                       """; 
+        var playNamedChoreo = PlayNamedChoreoCommand.For(new SmartMotionExtension("SmartMotion"), "ScreenImpactCenter");
+        playNamedChoreo.AssertJsonEqual(expected);
     }
 
     [Fact]
@@ -132,7 +184,7 @@ public class ExtensionTests
             EntitySensingStateName = "EntitySensingState",
             PrimaryUserName = "User"
         });
-        Assert.True(Utility.CompareJson(doc, "ExtensionEntitySensing.json", null));
+        Assert.True(Utility.CompareJson(doc, "ExtensionEntitySensing.json", _output));
     }
 
     [Fact]
@@ -167,7 +219,7 @@ public class ExtensionTests
                 new DataBinding
                 {
                     Namespace = "LocationWeather",
-                    Key="weather",
+                    Key = "weather",
                     DataBindingName = "DS_Weather"
                 }
             }
@@ -178,56 +230,61 @@ public class ExtensionTests
     [Fact]
     public void DataStoreGetObject()
     {
-        var expected = new JObject
-        {
-            { "type", "DataStore:GetObject" }, 
-            { "namespace", "LocationWeather" },
-            { "key", "weather" },
-            { "token", "thisIsADummyToken" }
-        };
-        var getobj = GetObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather",
+        var expected = """
+                       {
+                           "type": "DataStore:GetObject",
+                           "namespace": "LocationWeather",
+                           "key": "weather",
+                           "token": "thisIsADummyToken"
+                       }
+                       """; 
+        var getObject = GetObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather",
             "weather", "thisIsADummyToken");
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(getobj)));
+        getObject.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void DataStoreWatchObject()
     {
-        var expected = new JObject
-        {
-            { "type", "DataStore:WatchObject" },
-            { "namespace", "LocationWeather" },
-            { "key", "weather" },
-        };
-        var getobj = WatchObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather", "weather");
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(getobj)));
+        var expected = """
+                       {
+                           "type": "DataStore:WatchObject",
+                           "namespace": "LocationWeather",
+                           "key": "weather"
+                       }
+                       """; 
+        var watchObject = WatchObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather", "weather");
+        watchObject.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void DataStoreUnwatchObject()
     {
-        var expected = new JObject
-        {
-            { "type", "DataStore:UnwatchObject" },
-            { "namespace", "LocationWeather" },
-            { "key", "weather" },
-        };
-        var getobj = UnwatchObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather", "weather");
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(getobj)));
+        var expected = """
+                       {
+                           "type": "DataStore:UnwatchObject",
+                           "namespace": "LocationWeather",
+                           "key": "weather"
+                       }
+                       """; 
+        var unwatchObject = UnwatchObjectCommand.For(new DataStoreExtension("DataStore"), "LocationWeather", "weather");
+        unwatchObject.AssertJsonEqual(expected);
     }
 
     [Fact]
     public void DataStoreUpdateArrayBindingRange()
     {
-        var expected = new JObject
-        {
-            { "type", "DataStore:UpdateArrayBindingRange" },
-            { "dataBindingName", "ToDoNotes" },
-            { "startIndex", "${test}"},
-            { "endIndex", 5},
-        };
-        var getobj = UpdateArrayBindingRangeCommand.For(new DataStoreExtension("DataStore"), "ToDoNotes",APLValue.To<int?>("${test}"),5);
-        Assert.True(JToken.DeepEquals(expected, JObject.FromObject(getobj)));
+        var expected = """
+                       {
+                           "type": "DataStore:UpdateArrayBindingRange",
+                           "dataBindingName": "ToDoNotes",
+                           "startIndex": "${test}",
+                           "endIndex": 5
+                       }
+                       """; 
+        var updateArrayBindingRange = UpdateArrayBindingRangeCommand.For(new DataStoreExtension("DataStore"), "ToDoNotes",
+            APLValue.To<int?>("${test}"), 5);
+        updateArrayBindingRange.AssertJsonEqual(expected);
     }
 
     [Fact]

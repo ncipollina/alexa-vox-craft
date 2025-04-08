@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 
 public class BackStackSettings
 {
-    [JsonProperty("backstackId", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("backstackId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string BackstackId { get; set; }
 }

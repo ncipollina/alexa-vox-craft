@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.EntitySensing;
 
 public class EntitySensingSettings
 {
-    [JsonProperty("entitySensingStateName", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("entitySensingStateName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string EntitySensingStateName { get; set; }
 
-    [JsonProperty("primaryUserName", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("primaryUserName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string PrimaryUserName { get; set; }
 }

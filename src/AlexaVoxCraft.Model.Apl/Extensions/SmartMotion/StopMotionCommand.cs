@@ -1,4 +1,6 @@
-﻿namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
+﻿using System.Text.Json.Serialization;
+
+namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
 public class StopMotionCommand : APLCommand
 {
@@ -14,5 +16,5 @@ public class StopMotionCommand : APLCommand
         _extensionName = extensionName;
     }
 
-    public override string Type => $"{_extensionName}:StopMotion";
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:StopMotion";
 }

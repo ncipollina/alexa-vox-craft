@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
 public class SmartMotionSettings
 {
-    [JsonProperty("deviceStateName",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("deviceStateName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string DeviceStateName { get; set; }
 
-    [JsonProperty("wakeWordResponse",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("wakeWordResponse")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public WakeWordResponse? WakeWordResponse { get; set; }
 }

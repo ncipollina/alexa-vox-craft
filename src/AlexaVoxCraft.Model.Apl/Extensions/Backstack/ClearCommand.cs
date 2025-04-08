@@ -1,4 +1,5 @@
-﻿
+﻿using System.Text.Json.Serialization;
+
 namespace AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 
 public class ClearCommand : APLCommand
@@ -15,5 +16,6 @@ public class ClearCommand : APLCommand
         _extensionName = extensionName;
     }
 
+    [JsonPropertyName("type")]
     public override string Type => $"{_extensionName}:Clear";
 }

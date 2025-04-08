@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 
-public class UnwatchObjectCommand:APLCommand
+public class UnwatchObjectCommand : APLCommand
 {
     private readonly string _extensionName;
 
@@ -21,17 +21,14 @@ public class UnwatchObjectCommand:APLCommand
         _extensionName = extensionName;
     }
 
-    public UnwatchObjectCommand(string extensionName, string @namespace, string key):this(extensionName)
+    public UnwatchObjectCommand(string extensionName, string @namespace, string key) : this(extensionName)
     {
         Namespace = @namespace;
         Key = key;
     }
 
-    [JsonProperty("namespace")]
-    public string Namespace { get; set; }
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
 
-    [JsonProperty("key")]
-    public string Key { get; set; }
-
-    public override string Type => $"{_extensionName}:UnwatchObject";
+    [JsonPropertyName("key")] public string Key { get; set; }
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:UnwatchObject";
 }

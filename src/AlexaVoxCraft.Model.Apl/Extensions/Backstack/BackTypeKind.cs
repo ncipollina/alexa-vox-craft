@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Response.Converters;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 
+[JsonConverter(typeof(JsonStringEnumConverterWithEnumMemberAttrSupport<BackTypeKind>))]
 public enum BackTypeKind
 {
     [EnumMember(Value="count")]

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
@@ -17,8 +17,9 @@ public class PlayNamedChoreoCommand : APLCommand
         Name = choreoName;
     }
 
-    [JsonProperty("name",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("name")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Name { get; set; }
 
-    public override string Type => $"{_extensionName}:PlayNamedChoreo";
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:PlayNamedChoreo";
 }

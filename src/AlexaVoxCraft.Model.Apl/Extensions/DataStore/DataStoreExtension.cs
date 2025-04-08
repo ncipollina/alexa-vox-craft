@@ -2,7 +2,7 @@
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 
-public class DataStoreExtension:APLExtension
+public class DataStoreExtension : APLExtension
 {
     public const string URL = "alexaext:datastore:10";
     public const string ObjectChangedEventName = "OnObjectChanged";

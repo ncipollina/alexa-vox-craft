@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.SmartMotion;
 
@@ -17,9 +16,9 @@ public class SetWakeWordResponseCommand : APLCommand
         _extensionName = extensionName;
     }
 
-    public override string Type => $"{_extensionName}:SetWakeWordResponse";
+    [JsonPropertyName("type")] public override string Type => $"{_extensionName}:SetWakeWordResponse";
 
-    [JsonProperty("wakeWordResponse",NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("wakeWordResponse")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public WakeWordResponse? WakeWordResponse { get; set; }
 }

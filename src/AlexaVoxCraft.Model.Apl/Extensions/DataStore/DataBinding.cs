@@ -1,26 +1,24 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 
 public class DataBinding
 {
-    [JsonProperty("namespace")]
-    public string Namespace { get; set; }
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
 
-    [JsonProperty("key")]
-    public string Key { get; set; }
+    [JsonPropertyName("key")] public string Key { get; set; }
 
-    [JsonProperty("dataBindingName")]
-    public string DataBindingName { get; set; }
+    [JsonPropertyName("dataBindingName")] public string DataBindingName { get; set; }
 
-    [JsonProperty("dataType", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("dataType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DataBindingDataType? DataType { get; set; }
 
-    [JsonProperty("startIndex",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("startIndex")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? StartIndex { get; set; }
 
-    [JsonProperty("endIndex",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("endIndex")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? EndIndex { get; set; }
 }

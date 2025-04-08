@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.Backstack;
 
-public class GoBackCommand:APLCommand
+public class GoBackCommand : APLCommand
 {
     private readonly string _extensionName;
 
@@ -17,11 +16,14 @@ public class GoBackCommand:APLCommand
         _extensionName = extensionName;
     }
 
+    [JsonPropertyName("type")]
     public override string Type => $"{_extensionName}:GoBack";
 
-    [JsonProperty("backType",NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(StringEnumConverter))]
+    [JsonPropertyName("backType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public BackTypeKind? BackType { get; set; }
 
-    [JsonProperty("backValue",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("backValue")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object BackValue { get; set; }
 }

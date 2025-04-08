@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Extensions.DataStore;
 
-public class GetObjectCommand:APLCommand
+public class GetObjectCommand : APLCommand
 {
     private readonly string _extensionName;
 
@@ -21,21 +21,21 @@ public class GetObjectCommand:APLCommand
         _extensionName = extensionName;
     }
 
-    public GetObjectCommand(string extensionName, string @namespace, string key, string token = null):this(extensionName)
+    public GetObjectCommand(string extensionName, string @namespace, string key, string token = null) : this(
+        extensionName)
     {
         Namespace = @namespace;
         Key = key;
         Token = token;
     }
 
-    [JsonProperty("namespace")]
-    public string Namespace { get; set; }
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
 
-    [JsonProperty("key")]
-    public string Key { get; set; }
+    [JsonPropertyName("key")] public string Key { get; set; }
 
-    [JsonProperty("token",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("token")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Token { get; set; }
-
+    [JsonPropertyName("type")]
     public override string Type => $"{_extensionName}:GetObject";
 }
