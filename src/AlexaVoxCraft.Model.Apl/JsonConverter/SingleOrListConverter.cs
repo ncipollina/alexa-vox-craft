@@ -14,6 +14,8 @@ public abstract class SingleOrListConverter<TValue> : JsonConverter<object>
     protected virtual bool AlwaysOutputArray { get; }
 
     protected virtual object OutputArrayItem(TValue value) => value;
+    
+    protected virtual JsonTokenType SingleTokenType => JsonTokenType.StartObject;
 
     protected virtual void ReadSingle(ref Utf8JsonReader reader, JsonSerializerOptions options, List<TValue> list)
     {
@@ -25,7 +27,7 @@ public abstract class SingleOrListConverter<TValue> : JsonConverter<object>
     }
 
     protected virtual bool IsStringExpression(ref Utf8JsonReader reader) =>
-        reader.TokenType == JsonTokenType.String && reader.GetString()?.TrimStart().StartsWith("@") == true;
+        reader.TokenType == JsonTokenType.String;
 
     public override bool CanConvert(Type typeToConvert) =>
         typeToConvert == typeof(APLValue<IList<TValue>>) || typeToConvert == typeof(IList<TValue>);
@@ -34,7 +36,11 @@ public abstract class SingleOrListConverter<TValue> : JsonConverter<object>
     {
         var list = new List<TValue>();
 
-        if (IsStringExpression(ref reader))
+        if (reader.TokenType == SingleTokenType)
+        {
+            ReadSingle(ref reader, options, list);
+        }
+        else if (IsStringExpression(ref reader))
         {
             var expr = reader.GetString();
             return APLValue.To<IList<TValue>>(expr);
@@ -46,10 +52,6 @@ public abstract class SingleOrListConverter<TValue> : JsonConverter<object>
             {
                 list.Add(JsonSerializer.Deserialize<TValue>(ref reader, options)!);
             }
-        }
-        else
-        {
-            ReadSingle(ref reader, options, list);
         }
 
         if (typeToConvert == typeof(APLValue<IList<TValue>>))

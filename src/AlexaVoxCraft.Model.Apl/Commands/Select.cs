@@ -8,6 +8,7 @@ namespace AlexaVoxCraft.Model.Apl.Commands;
 
 public class Select : APLCommand
 {
+    [JsonPropertyName("type")]
     public override string Type => "Select";
 
     [JsonPropertyName("commands")]

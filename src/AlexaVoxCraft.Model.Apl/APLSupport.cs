@@ -102,5 +102,13 @@ public static class APLSupport
         AlexaRadioButton.RegisterTypeInfo<AlexaRadioButton>();
         AlexaCheckbox.RegisterTypeInfo<AlexaCheckbox>();
         AlexaSwitch.RegisterTypeInfo<AlexaSwitch>();
+        GridSequence.RegisterTypeInfo<GridSequence>();
+        Pager.RegisterTypeInfo<Pager>();
+        APLPageMoveHandler.RegisterTypeInfo<APLPageMoveHandler>();
+        AlexaIcon.RegisterTypeInfo<AlexaIcon>();
+        AlexaCard.RegisterTypeInfo<AlexaCard>();
+        AlexaImageCaption.RegisterTypeInfo<AlexaImageCaption>();
+        AlexaPhoto.RegisterTypeInfo<AlexaPhoto>();
+        AlexaTextWrapping.RegisterTypeInfo<AlexaTextWrapping>();
     }
 }

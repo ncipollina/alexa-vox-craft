@@ -1,21 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
-public class APLPageMoveHandler
+public class APLPageMoveHandler : IJsonSerializable<APLPageMoveHandler>
 {
-    [JsonProperty("when", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> When { get; set; }
+    [JsonPropertyName("when")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? When { get; set; }
 
-    [JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> Commands { get; set; }
+    [JsonPropertyName("commands")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? Commands { get; set; }
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Description { get; set; }
 
-    [JsonProperty("drawOrder",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<DrawOrder?> DrawOrder { get; set; }
+    [JsonPropertyName("drawOrder")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<DrawOrder?>? DrawOrder { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : APLPageMoveHandler
+    {
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var commandsProp = info.Properties.FirstOrDefault(p => p.Name == "commands");
+            if (commandsProp is not null)
+            {
+                commandsProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

@@ -1,44 +1,70 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaImageCaption:ResponsiveTemplate
+public class AlexaImageCaption : ResponsiveTemplate, IJsonSerializable<AlexaImageCaption>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(AlexaImageCaption);
 
-    [JsonProperty("attributionImage",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("attributionImage")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> AttributionImage { get; set; }
 
-    [JsonProperty("buttonStyle",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("buttonStyle")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ButtonStyle { get; set; }
 
-    [JsonProperty("buttonText",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("buttonText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ButtonText { get; set; }
 
-    [JsonProperty("headerTitleCanUseTwoLines",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("headerTitleCanUseTwoLines")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> HeaderTitleCanUseTwoLines { get; set; }
 
-    [JsonProperty("imageAccessibilityLabel",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("imageAccessibilityLabel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ImageAccessibilityLabel { get; set; }
 
-    [JsonProperty("imageScrim",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("imageScrim")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> ImageScrim { get; set; }
 
-    [JsonProperty("imageSource",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("imageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ImageSource { get; set; }
 
-    [JsonProperty("primaryText",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("primaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> PrimaryText { get; set; }
 
-    [JsonProperty("secondaryText",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("secondaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> SecondaryText { get; set; }
 
-    [JsonProperty("primaryAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
+    [JsonPropertyName("primaryAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>> PrimaryAction { get; set; }
 
-    [JsonProperty("touchForward",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("touchForward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> TouchForward { get; set; }
+
+    public static void RegisterTypeInfo<T>() where T : AlexaImageCaption
+    {
+        ResponsiveTemplate.RegisterTypeInfo<ResponsiveTemplate>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var primaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "primaryAction");
+            if (primaryActionProp is not null)
+            {
+                primaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

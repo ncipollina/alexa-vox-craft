@@ -9,8 +9,6 @@ using AlexaVoxCraft.Model.Apl.DataSources;
 using AlexaVoxCraft.Model.Response;
 using AlexaVoxCraft.Model.Response.Directive;
 using AlexaVoxCraft.Model.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -334,49 +332,49 @@ public class ComponentTests
     [Fact]
     public void AlexaGridList()
     {
-        Utility.AssertComponent<AlexaGridList>("AlexaGridList.json");
+        Utility.AssertComponent<AlexaGridList>("AlexaGridList.json", _output);
     }
 
     [Fact]
     public void EditText()
     {
-        Utility.AssertComponent<EditText>("EditText.json");
+        Utility.AssertComponent<EditText>("EditText.json", _output);
     }
 
     [Fact]
     public void SwipeToAction()
     {
-        Utility.AssertComponent<AlexaSwipeToAction>("AlexaSwipeToAction.json");
+        Utility.AssertComponent<AlexaSwipeToAction>("AlexaSwipeToAction.json", _output);
     }
 
     [Fact]
     public void AlexaRadioButton()
     {
-        Utility.AssertComponent<AlexaRadioButton>("AlexaRadioButton.json");
+        Utility.AssertComponent<AlexaRadioButton>("AlexaRadioButton.json", _output);
     }
 
     [Fact]
     public void AlexaCheckbox()
     {
-        Utility.AssertComponent<AlexaCheckbox>("AlexaCheckbox.json");
+        Utility.AssertComponent<AlexaCheckbox>("AlexaCheckbox.json", _output);
     }
 
     [Fact]
     public void AlexaSwitch()
     {
-        Utility.AssertComponent<AlexaSwitch>("AlexaSwitch.json");
+        Utility.AssertComponent<AlexaSwitch>("AlexaSwitch.json", _output);
     }
 
     [Fact]
     public void GridSequence()
     {
-        Utility.AssertComponent<GridSequence>("GridSequence.json");
+        Utility.AssertComponent<GridSequence>("GridSequence.json", _output);
     }
 
     [Fact]
     public void Pager()
     {
-        Utility.AssertComponent<Pager>("Pager.json");
+        Utility.AssertComponent<Pager>("Pager.json", _output);
     }
 
     [Fact]
@@ -415,28 +413,60 @@ public class ComponentTests
         Utility.AssertComponent<Frame>("Frame.json");
     }
 
+    // [Fact]
+    // public void DictionaryBindingTest()
+    // {
+    //     var rawContainer = new Container
+    //     {
+    //         Data = new[]{new Dictionary<string, object> { { "test", "thing" } }},
+    //     };
+    //     var dataBoundContainer = new Container
+    //     {
+    //         Data = APLValue.To<IList<object>>("$data.random.stuff")
+    //     };
+    //
+    //     var rawJson = JsonConvert.SerializeObject(rawContainer);
+    //     var boundJson = JsonConvert.SerializeObject(dataBoundContainer);
+    //
+    //     var newRaw = JsonConvert.DeserializeObject<APLComponent>(rawJson);
+    //     var newBound = JsonConvert.DeserializeObject<APLComponent>(boundJson);
+    //
+    //     var newRawContainer = Assert.IsType<Container>(newRaw);
+    //     var newBoundContainer = Assert.IsType<Container>(newBound);
+    //
+    //     Assert.Single((JObject)newRawContainer.Data.Value.First());
+    //     Assert.Equal("$data.random.stuff", newBoundContainer.Data.Expression);
+    // }
+
     [Fact]
     public void DictionaryBindingTest()
     {
+        var options = AlexaJsonOptions.DefaultOptions;
+
         var rawContainer = new Container
         {
-            Data = new[]{new Dictionary<string, object> { { "test", "thing" } }},
+            Data = new[] { new Dictionary<string, object> { { "test", "thing" } } }
         };
         var dataBoundContainer = new Container
         {
             Data = APLValue.To<IList<object>>("$data.random.stuff")
         };
 
-        var rawJson = JsonConvert.SerializeObject(rawContainer);
-        var boundJson = JsonConvert.SerializeObject(dataBoundContainer);
+        var rawJson = JsonSerializer.Serialize(rawContainer, options);
+        var boundJson = JsonSerializer.Serialize(dataBoundContainer, options);
 
-        var newRaw = JsonConvert.DeserializeObject<APLComponent>(rawJson);
-        var newBound = JsonConvert.DeserializeObject<APLComponent>(boundJson);
+        var newRaw = JsonSerializer.Deserialize<APLComponent>(rawJson, options);
+        var newBound = JsonSerializer.Deserialize<APLComponent>(boundJson, options);
 
         var newRawContainer = Assert.IsType<Container>(newRaw);
         var newBoundContainer = Assert.IsType<Container>(newBound);
 
-        Assert.Single((JObject)newRawContainer.Data.Value.First());
+        var dataValue = Assert.IsAssignableFrom<IList<object>>(newRawContainer.Data.Value);
+        var dict = Assert.IsType<Dictionary<string, object>>(dataValue.First());
+
+        Assert.Single(dict);
+        Assert.Equal("thing", dict["test"]);
+
         Assert.Equal("$data.random.stuff", newBoundContainer.Data.Expression);
     }
 

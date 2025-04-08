@@ -1,95 +1,138 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaCard:ResponsiveTemplate
+public class AlexaCard : ResponsiveTemplate, IJsonSerializable<AlexaCard>
 {
+    [JsonPropertyName("type")]
     public override string Type => nameof(AlexaCard);
 
-    [JsonProperty("cardBackgroundColor",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> CardBackgroundColor { get; set; }
+    [JsonPropertyName("cardBackgroundColor")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? CardBackgroundColor { get; set; }
 
-    [JsonProperty("cardId",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> CardId { get; set; }
+    [JsonPropertyName("cardId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? CardId { get; set; }
 
-    [JsonProperty("cardRoundedCorner",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> CardRoundedCorner { get; set; }
+    [JsonPropertyName("cardRoundedCorner")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? CardRoundedCorner { get; set; }
 
-    [JsonProperty("cardShadow",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> CardShadow { get; set; }
+    [JsonPropertyName("cardShadow")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? CardShadow { get; set; }
 
-    [JsonProperty("emptyRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> EmptyRatingGraphic { get; set; }
+    [JsonPropertyName("emptyRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? EmptyRatingGraphic { get; set; }
 
-    [JsonProperty("fullRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> FullRatingGraphic { get; set; }
+    [JsonPropertyName("fullRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? FullRatingGraphic { get; set; }
 
-    [JsonProperty("halfRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HalfRatingGraphic { get; set; }
+    [JsonPropertyName("halfRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HalfRatingGraphic { get; set; }
 
-    [JsonProperty("headerText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> HeaderText { get; set; }
+    [JsonPropertyName("headerText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? HeaderText { get; set; }
 
-    [JsonProperty("imageAltText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ImageAltText { get; set; }
+    [JsonPropertyName("imageAltText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageAltText { get; set; }
 
-    [JsonProperty("imageCaption", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageCaption { get; set; }
+    [JsonPropertyName("imageCaption")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageCaption { get; set; }
 
-    [JsonProperty("imageHideScrim", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageHideScrim { get; set; }
+    [JsonPropertyName("imageHideScrim")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageHideScrim { get; set; }
 
-    [JsonProperty("imageProgressBarPercentage", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<int?> ImageProgressBarPercentage { get; set; }
+    [JsonPropertyName("imageProgressBarPercentage")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<int?>? ImageProgressBarPercentage { get; set; }
 
-    [JsonProperty("imageShowProgressBar", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageShowProgressBar { get; set; }
+    [JsonPropertyName("imageShowProgressBar")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageShowProgressBar { get; set; }
 
-    [JsonProperty("imageSource",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ImageSource { get; set; }
+    [JsonPropertyName("imageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageSource { get; set; }
 
-    [JsonProperty("primaryAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> PrimaryAction { get; set; }
+    [JsonPropertyName("primaryAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? PrimaryAction { get; set; }
 
-    [JsonProperty("primaryText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> PrimaryText { get; set; }
+    [JsonPropertyName("primaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? PrimaryText { get; set; }
 
-    [JsonProperty("ratingGraphicType", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingGraphicType?> RatingGraphicType { get; set; }
+    [JsonPropertyName("ratingGraphicType")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingGraphicType?>? RatingGraphicType { get; set; }
 
-    [JsonProperty("ratingNumber", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<double?> RatingNumber { get; set; }
+    [JsonPropertyName("ratingNumber")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<double?>? RatingNumber { get; set; }
 
-    [JsonProperty("ratingSlotMode", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<RatingSlotMode?> RatingSlotMode { get; set; }
+    [JsonPropertyName("ratingSlotMode")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<RatingSlotMode?>? RatingSlotMode { get; set; }
 
-    [JsonProperty("ratingText", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> RatingText { get; set; }
+    [JsonPropertyName("ratingText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? RatingText { get; set; }
 
-    [JsonProperty("secondaryIconName",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryIconName { get; set; }
+    [JsonPropertyName("secondaryIconName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryIconName { get; set; }
 
-    [JsonProperty("secondaryIconSource",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryIconSource { get; set; }
+    [JsonPropertyName("secondaryIconSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryIconSource { get; set; }
 
-    [JsonProperty("secondaryText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryText { get; set; }
+    [JsonPropertyName("secondaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryText { get; set; }
 
-    [JsonProperty("singleRatingGraphicWidth", NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue SingleRatingGraphicWidth { get; set; }
+    [JsonPropertyName("singleRatingGraphicWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? SingleRatingGraphicWidth { get; set; }
 
-    [JsonProperty("singleRatingGraphic", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SingleRatingGraphic { get; set; }
+    [JsonPropertyName("singleRatingGraphic")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SingleRatingGraphic { get; set; }
 
-    [JsonProperty("tertiaryIconName",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TertiaryIconName { get; set; }
+    [JsonPropertyName("tertiaryIconName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TertiaryIconName { get; set; }
 
-    [JsonProperty("tertiaryIconSource",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TertiaryIconSource { get; set; }
+    [JsonPropertyName("tertiaryIconSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TertiaryIconSource { get; set; }
 
-    [JsonProperty("tertiaryText",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TertiaryText { get; set; }
+    [JsonPropertyName("tertiaryText")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TertiaryText { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaCard
+    {
+        ResponsiveTemplate.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var primaryActionProp = info.Properties.FirstOrDefault(p => p.Name == "primaryAction");
+            if (primaryActionProp is not null)
+            {
+                primaryActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

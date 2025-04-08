@@ -6,6 +6,8 @@ namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 
 public class StringOrArrayConverter : SingleOrListConverter<string>
 {
+    protected override JsonTokenType SingleTokenType => JsonTokenType.String;
+
     public StringOrArrayConverter(bool alwaysOutputArray) : base(alwaysOutputArray)
     {
     }

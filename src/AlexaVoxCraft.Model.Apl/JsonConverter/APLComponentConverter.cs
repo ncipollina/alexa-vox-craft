@@ -38,6 +38,13 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         [nameof(AlexaRadioButton)] = typeof(AlexaRadioButton),
         [nameof(AlexaCheckbox)] = typeof(AlexaCheckbox),
         [nameof(AlexaSwitch)] = typeof(AlexaSwitch),
+        [nameof(GridSequence)] = typeof(GridSequence),
+        [nameof(Pager)] = typeof(Pager),
+        [nameof(AlexaIcon)] = typeof(AlexaIcon),
+        [nameof(AlexaCard)] = typeof(AlexaCard),
+        [nameof(AlexaImageCaption)] = typeof(AlexaImageCaption),
+        [nameof(AlexaPhoto)] = typeof(AlexaPhoto),
+        [nameof(AlexaTextWrapping)] = typeof(AlexaTextWrapping),
     };
     protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)
