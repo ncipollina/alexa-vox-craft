@@ -8,7 +8,7 @@ using Serilog;
 
 namespace Sample.Apl.Function;
 
-public class Function : AlexaSkillFunction
+public class Function : AlexaSkillFunction<APLSkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {

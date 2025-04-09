@@ -47,7 +47,7 @@ await LambdaHostExtensions.RunAlexaSkill<YourAlexaSkillFunction>();
 ### 3. Create Your Function Class
 
 ```csharp
-public sealed class YourAlexaSkillFunction : AlexaSkillFunction
+public sealed class YourAlexaSkillFunction : AlexaSkillFunction<SkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {

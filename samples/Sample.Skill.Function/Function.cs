@@ -10,7 +10,7 @@ using Serilog;
 namespace Sample.Skill.Function;
 
 [ExcludeFromCodeCoverage]
-public class Function : AlexaSkillFunction
+public class Function : AlexaSkillFunction<SkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {

@@ -10,10 +10,12 @@ namespace AlexaVoxCraft.MediatR.Lambda;
 
 public static class LambdaHostExtensions
 {
-    public static async Task<int> RunAlexaSkill<T>(
-        Func<T, IServiceProvider, Func<SkillRequest, ILambdaContext, Task<SkillResponse>>>? handlerBuilder = null,
+    public static async Task<int> RunAlexaSkill<T, TRequest, TResponse>(
+        Func<T, IServiceProvider, Func<TRequest, ILambdaContext, Task<TResponse>>>? handlerBuilder = null,
         Func<IServiceProvider, ILambdaSerializer>? serializerFactory = null
-    ) where T : AlexaSkillFunction, new()
+    ) where T : AlexaSkillFunction<TRequest, TResponse>, new()
+        where TRequest : SkillRequest
+        where TResponse : SkillResponse
     {
         try
         {
