@@ -136,4 +136,14 @@ public class RequestTests
         Assert.NotNull(request.Session.Attributes);
     }
 
+    [Fact]
+    public void AbleToConfirmInterfaceName()
+    {
+        var request = Utility.ExampleFileContent<SkillRequest>("LaunchRequest.json");
+        Assert.True(request.Context.System.Device.SupportedInterfaces.ContainsKey(APLInterface.InterfaceName));
+
+        var result = request.Context.System.Device.SupportedInterfaces[APLInterface.InterfaceName];
+        Assert.NotNull(result);
+    }
+
 }
