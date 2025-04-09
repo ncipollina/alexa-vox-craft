@@ -17,7 +17,8 @@ public class LaunchRequestTests
         Assert.NotNull(result);
     }
 
-    [Fact(Skip = "Temporarily skipping due to CI issues")]
+    // [Fact(Skip = "Temporarily skipping due to CI issues")]
+    [Fact]
     public void SupportsHelperMethodConfirms()
     {
         var request = Utility.ExampleFileContent<SkillRequest>("LaunchRequest.json");
