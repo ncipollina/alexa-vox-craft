@@ -18,15 +18,19 @@ public static class APLTInterface
         return request.Context.System.Device.SupportedInterfaces.ContainsKey(InterfaceName);
     }
 
-    public static APLInterfaceDetails APLTInterfaceDetails(this SkillRequest request)
+    public static APLInterfaceDetails? APLTInterfaceDetails(this SkillRequest request)
     {
         var raw = GetAPLTInterfaceObject(request);
-        return raw == null
-            ? null
-            : JsonSerializer.Deserialize<APLInterfaceDetails>(raw.ToString(),
-                AlexaJsonOptions.DefaultOptions);     }
+        if (raw is null)
+        {
+            return null;
+        }
 
-    private static object GetAPLTInterfaceObject(SkillRequest request)
+        var json = JsonSerializer.Serialize(raw, AlexaJsonOptions.DefaultOptions);
+        return JsonSerializer.Deserialize<APLInterfaceDetails>(json, AlexaJsonOptions.DefaultOptions);
+    }
+
+    private static object? GetAPLTInterfaceObject(SkillRequest request)
     {
         var interfaces = request.Context.System.Device.SupportedInterfaces;
         return interfaces.ContainsKey(InterfaceName) ? interfaces[InterfaceName] : null;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataSources;
@@ -25,7 +24,7 @@ public class ObjectDataSource:APLDataSource
     public virtual Dictionary<string,object> Properties { get; set; }
 
     [JsonExtensionData]
-    public virtual Dictionary<string, JsonElement> TopLevelData { get; set; }
+    public virtual Dictionary<string, object> TopLevelData { get; set; }
 
     [JsonPropertyName("transformers")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

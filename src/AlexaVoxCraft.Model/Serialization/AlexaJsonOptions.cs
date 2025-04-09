@@ -29,6 +29,8 @@ public static class AlexaJsonOptions
                 TypeInfoResolver = resolver
             };
             
+            options.Converters.Add(new ObjectConverter());
+            
             foreach (var converter in AdditionalConverters.ToList())
             {
                 options.Converters.Add(converter);

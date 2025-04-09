@@ -18,16 +18,20 @@ public static class APLInterface
         return request.Context.System.Device.SupportedInterfaces.ContainsKey(InterfaceName);
     }
 
-    public static APLInterfaceDetails APLInterfaceDetails(this SkillRequest request)
+    public static APLInterfaceDetails? APLInterfaceDetails(this SkillRequest request)
     {
         var raw = GetAPLInterfaceObject(request);
-        return raw == null
-            ? null
-            : JsonSerializer.Deserialize<APLInterfaceDetails>(raw.ToString(),
-                AlexaJsonOptions.DefaultOptions); 
+
+        if (raw is null)
+        {
+            return null;
+        }
+
+        var json = JsonSerializer.Serialize(raw, AlexaJsonOptions.DefaultOptions);
+        return JsonSerializer.Deserialize<APLInterfaceDetails>(json, AlexaJsonOptions.DefaultOptions);
     }
 
-    private static object GetAPLInterfaceObject(SkillRequest request)
+    private static object? GetAPLInterfaceObject(SkillRequest request)
     {
         var interfaces = request.Context.System.Device.SupportedInterfaces;
         return interfaces.ContainsKey(InterfaceName) ? interfaces[InterfaceName] : null;

@@ -13,7 +13,7 @@ public class UserEventRequest : Request.Type.Request
 
     [JsonPropertyName("arguments")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string[]? Arguments { get; set; }
+    public object[]? Arguments { get; set; }
 
     [JsonPropertyName("source")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

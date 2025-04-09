@@ -29,8 +29,6 @@ public static class APLSupport
         InstallationErrorHandler.AddToRequestConverter();
         DataStoreErrorHandler.AddToRequestConverter();
         FixedDecimalJsonConverter.AddSupport();
-        // Add global converters
-        ObjectConverter.AddSupport();
         // Add support for models
         Parameter.RegisterTypeInfo<Parameter>();
         CommandDefinition.RegisterTypeInfo<CommandDefinition>();

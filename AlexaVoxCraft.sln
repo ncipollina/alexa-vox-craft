@@ -31,11 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.MediatR", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model", "src\AlexaVoxCraft.Model\AlexaVoxCraft.Model.csproj", "{EA630F7D-E396-4842-8527-7A8FF4BBBF26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Tests", "test\AlexaVoxCraft.Tests\AlexaVoxCraft.Tests.csproj", "{F55FF113-034C-4479-BCD2-6817D4D1FB48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model.Tests", "test\AlexaVoxCraft.Model.Tests\AlexaVoxCraft.Model.Tests.csproj", "{F55FF113-034C-4479-BCD2-6817D4D1FB48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model.Apl", "src\AlexaVoxCraft.Model.Apl\AlexaVoxCraft.Model.Apl.csproj", "{8A9C259D-5C9C-4D85-9D57-BDBFBE42A0DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alexa.NET.APL.Tests", "test\Alexa.NET.APL.Tests\Alexa.NET.APL.Tests.csproj", "{EF036596-6667-4979-AE3A-18D63A354F45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model.Apl.Tests", "test\AlexaVoxCraft.Model.Apl.Tests\AlexaVoxCraft.Model.Apl.Tests.csproj", "{EF036596-6667-4979-AE3A-18D63A354F45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
