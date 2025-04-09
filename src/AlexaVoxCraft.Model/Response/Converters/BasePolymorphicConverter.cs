@@ -5,9 +5,11 @@ namespace AlexaVoxCraft.Model.Response.Converters;
 
 public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
 {
-    protected abstract string TypeDiscriminatorPropertyName { get; }
+    protected virtual string TypeDiscriminatorPropertyName => "type";
     protected abstract IDictionary<string, Type> DerivedTypes { get; }
-    protected abstract IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories { get; }
+
+    protected virtual IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories =>
+        new Dictionary<string, Func<JsonElement, Type>>();
 
     protected virtual Func<JsonElement, string?> KeyResolver => element =>
     {
@@ -16,10 +18,17 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
             : null;
         return typeValue;
     };
-    
-    protected abstract Func<JsonElement, Type?>? CustomTypeResolver { get; }
 
-    public abstract Type? DefaultType { get; }
+    protected virtual Func<JsonElement, Type?>? CustomTypeResolver => null;
+
+    protected virtual JsonElement TransformJson(JsonElement original)
+    {
+        return original; // No-op by default
+    }
+
+    protected virtual Type? DefaultType => null;
+
+    protected virtual bool EmptyObjectIsNull => false;
 
     public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
@@ -50,13 +59,24 @@ public abstract class BasePolymorphicConverter<T> : JsonConverter<T>
             }
         }
 
-        return resultType is not null
-            ? (T)JsonSerializer.Deserialize(root.GetRawText(), resultType, options)!
-            : throw new JsonException($"Unrecognized type '{typeValue}'");
+        if (resultType is null)
+        {
+            throw new JsonException($"Unrecognized type '{typeValue}'");
+        }
+
+        // Allow subclasses to mutate the element
+        var transformed = TransformJson(root);
+        
+        return (T)JsonSerializer.Deserialize(transformed.GetRawText(), resultType, options)!;
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value, value.GetType(), options);
+    }
+    
+    private bool IsEmptyObject(JsonElement element)
+    {
+        return element.ValueKind == JsonValueKind.Object && !element.EnumerateObject().Any();
     }
 }

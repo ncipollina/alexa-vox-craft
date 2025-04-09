@@ -56,5 +56,5 @@ public class ConnectionTaskConverter : BasePolymorphicConverter<IConnectionTask>
     protected override IDictionary<string, Func<JsonElement, Type>> DataDrivenTypeFactories =>
         new Dictionary<string, Func<JsonElement, Type>>();
 
-    public override Type? DefaultType => null;
+    protected override Type? DefaultType => null;
 }

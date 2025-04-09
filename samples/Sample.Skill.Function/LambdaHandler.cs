@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using AlexaVoxCraft.MediatR;
+﻿using AlexaVoxCraft.MediatR;
 using AlexaVoxCraft.MediatR.Lambda.Abstractions;
 using AlexaVoxCraft.Model.Request;
 using AlexaVoxCraft.Model.Request.Type;

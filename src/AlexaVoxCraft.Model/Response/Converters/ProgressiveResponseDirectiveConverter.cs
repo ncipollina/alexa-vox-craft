@@ -21,5 +21,5 @@ public class ProgressiveResponseDirectiveConverter : BasePolymorphicConverter<IP
         DataDrivenTypeFactories => ProgressiveResponseDataDrivenTypeFactories;
 
     protected override Func<JsonElement, Type?>? CustomTypeResolver => null;
-    public override Type? DefaultType => typeof(VoicePlayerSpeakDirective);
+    protected override Type? DefaultType => typeof(VoicePlayerSpeakDirective);
 }
