@@ -1,60 +1,108 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Commands;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaTransportControls:APLComponent
+public class AlexaTransportControls : APLComponent, IJsonSerializable<AlexaTransportControls>
 {
-    [JsonProperty("type")] public override string Type => nameof(AlexaTransportControls);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaTransportControls);
 
-    [JsonProperty("secondaryControls",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryControls { get; set; }
+    [JsonPropertyName("secondaryControls")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryControls { get; set; }
 
-    [JsonProperty("primaryControlSize",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue PrimaryControlSize { get; set; }
+    [JsonPropertyName("primaryControlSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? PrimaryControlSize { get; set; }
 
-    [JsonProperty("secondaryControlSize",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue SecondaryControlSize { get; set; }
+    [JsonPropertyName("secondaryControlSize")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? SecondaryControlSize { get; set; }
 
-    [JsonProperty("mediaComponentId",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> MediaComponentId { get; set; }
+    [JsonPropertyName("mediaComponentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? MediaComponentId { get; set; }
 
-    [JsonProperty("autoplay",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> Autoplay { get; set; }
+    [JsonPropertyName("autoplay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? Autoplay { get; set; }
 
-    [JsonProperty("playPauseToggleButtonId",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> PlayPauseToggleButtonId { get; set; }
+    [JsonPropertyName("playPauseToggleButtonId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? PlayPauseToggleButtonId { get; set; }
 
-    [JsonProperty("theme", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Theme { get; set; }
+    [JsonPropertyName("theme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Theme { get; set; }
 
-    [JsonProperty("primaryControlPauseAction",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<ControlMediaCommand> PrimaryControlPauseAction { get; set; }
+    [JsonPropertyName("primaryControlPauseAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<ControlMediaCommand>? PrimaryControlPauseAction { get; set; }
 
-    [JsonProperty("primaryControlPlayAction", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<ControlMediaCommand> PrimaryControlPlayAction { get; set; }
+    [JsonPropertyName("primaryControlPlayAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<ControlMediaCommand>? PrimaryControlPlayAction { get; set; }
 
-    [JsonProperty("secondaryControlsAVGLeft",NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> SecondaryControlsAVGLeft { get; set; }
+    [JsonPropertyName("secondaryControlsAVGLeft")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? SecondaryControlsAVGLeft { get; set; }
 
-    [JsonProperty("secondaryControlsAVGRight", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> SecondaryControlsAVGRight { get; set; }
+    [JsonPropertyName("secondaryControlsAVGRight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? SecondaryControlsAVGRight { get; set; }
 
-    [JsonProperty("secondaryControlsLeftAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> SecondaryControlsLeftAction { get; set; }
+    [JsonPropertyName("secondaryControlsLeftAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? SecondaryControlsLeftAction { get; set; }
 
-    [JsonProperty("secondaryControlsRightAction", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
-    public APLValue<IList<APLCommand>> SecondaryControlsRightAction{ get; set; }
+    [JsonPropertyName("secondaryControlsRightAction")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? SecondaryControlsRightAction { get; set; }
 
-    [JsonProperty("secondaryControlsLeftAccessibilityLabel",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryControlsLeftAccessibilityLabel { get; set; }
+    [JsonPropertyName("secondaryControlsLeftAccessibilityLabel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryControlsLeftAccessibilityLabel { get; set; }
 
-    [JsonProperty("secondaryControlsRightAccessibilityLabel", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryControlsRightAccessibilityLabel { get; set; }
+    [JsonPropertyName("secondaryControlsRightAccessibilityLabel")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryControlsRightAccessibilityLabel { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaTransportControls
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var secondaryControlsAVGLeftProp =
+                info.Properties.FirstOrDefault(p => p.Name == "secondaryControlsAVGLeft");
+            if (secondaryControlsAVGLeftProp is not null)
+            {
+                secondaryControlsAVGLeftProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var secondaryControlsAVGRightProp =
+                info.Properties.FirstOrDefault(p => p.Name == "secondaryControlsAVGRight");
+            if (secondaryControlsAVGRightProp is not null)
+            {
+                secondaryControlsAVGRightProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var secondaryControlsLeftActionProp =
+                info.Properties.FirstOrDefault(p => p.Name == "secondaryControlsLeftAction");
+            if (secondaryControlsLeftActionProp is not null)
+            {
+                secondaryControlsLeftActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+
+            var secondaryControlsRightActionProp =
+                info.Properties.FirstOrDefault(p => p.Name == "secondaryControlsRightAction");
+            if (secondaryControlsRightActionProp is not null)
+            {
+                secondaryControlsRightActionProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

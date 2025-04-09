@@ -123,5 +123,18 @@ public static class APLSupport
         AVGText.RegisterTypeInfo<AVGText>();
         AlexaHeader.RegisterTypeInfo<AlexaHeader>();
         AlexaImage.RegisterTypeInfo<AlexaImage>();
+        VisibilityChangeHandler.RegisterTypeInfo<VisibilityChangeHandler>();
+        PlayMedia.RegisterTypeInfo<PlayMedia>();
+        AlexaBackground.RegisterTypeInfo<AlexaBackground>();
+        AlexaButton.RegisterTypeInfo<AlexaButton>();
+        AlexaDivider.RegisterTypeInfo<AlexaDivider>();
+        AlexaHeadline.RegisterTypeInfo<AlexaHeadline>();
+        AlexaOrdinal.RegisterTypeInfo<AlexaOrdinal>();
+        AlexaPageCounter.RegisterTypeInfo<AlexaPageCounter>();
+        AlexaTextList.RegisterTypeInfo<AlexaTextList>();
+        AlexaTextListItem.RegisterTypeInfo<AlexaTextListItem>();
+        AlexaTransportControls.RegisterTypeInfo<AlexaTransportControls>();
+        Sequence.RegisterTypeInfo<Sequence>();
+        VectorGraphic.RegisterTypeInfo<VectorGraphic>();
     }
 }

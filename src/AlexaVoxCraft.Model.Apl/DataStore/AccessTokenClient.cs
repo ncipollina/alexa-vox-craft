@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
@@ -14,18 +14,20 @@ public class AccessTokenClient
     public const string ClientCredentials = "client_credentials";
 
     public HttpClient Client { get; set; }
-    private static readonly JsonSerializer Serializer = JsonSerializer.Create();
-
-
     private string BaseAddress { get; }
 
-    public AccessTokenClient():this(new HttpClient(),null){}
+    private static readonly JsonSerializerOptions Options = new(JsonSerializerDefaults.Web)
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
-    public AccessTokenClient(string baseAddress) : this(null, baseAddress){}
+    public AccessTokenClient() : this(new HttpClient(), null) { }
 
-    public AccessTokenClient(HttpClient client):this(client,null){}
+    public AccessTokenClient(string baseAddress) : this(null, baseAddress) { }
 
-    public AccessTokenClient(HttpClient client, string baseAddress)
+    public AccessTokenClient(HttpClient client) : this(client, null) { }
+
+    public AccessTokenClient(HttpClient? client, string? baseAddress)
     {
         BaseAddress = baseAddress ?? ApiDomainBaseAddress;
         Client = client ?? new HttpClient();
@@ -35,46 +37,37 @@ public class AccessTokenClient
     {
         var content = new FormUrlEncodedContent(new Dictionary<string, string>
         {
-            {"client_id",clientId},
-            {"client_secret",clientSecret},
-            {"grant_type",ClientCredentials},
-            {"scope",DataStoreScope}
+            { "client_id", clientId },
+            { "client_secret", clientSecret },
+            { "grant_type", ClientCredentials },
+            { "scope", DataStoreScope }
         });
 
-
-        var msg = new HttpRequestMessage(HttpMethod.Post, new Uri(new Uri(BaseAddress), "/auth/O2/token")){Content = content};
-        var response = await Client.SendAsync(msg);
-        using (var reader = new JsonTextReader(new StreamReader(await response.Content.ReadAsStreamAsync())))
+        var msg = new HttpRequestMessage(HttpMethod.Post, new Uri(new Uri(BaseAddress), "/auth/O2/token"))
         {
-            return Serializer.Deserialize<AccessToken>(reader);
-        }
+            Content = content
+        };
+
+        var response = await Client.SendAsync(msg);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync();
+        return await JsonSerializer.DeserializeAsync<AccessToken>(stream, Options)
+               ?? throw new InvalidOperationException("Failed to deserialize access token.");
     }
 }
 
 public class AccessToken
-
 {
+    [JsonPropertyName("access_token")]
+    public string Token { get; set; } = string.Empty;
 
-    [JsonProperty("access_token")]
-
-    public string Token { get; set; }
-
-
-
-    [JsonProperty("expires_in")]
-
+    [JsonPropertyName("expires_in")]
     public int ExpiresIn { get; set; }
 
+    [JsonPropertyName("scope")]
+    public string Scope { get; set; } = string.Empty;
 
-
-    [JsonProperty("scope")]
-
-    public string Scope { get; set; }
-
-
-
-    [JsonProperty("token_type")]
-
-    public string TokenType { get; set; }
-
+    [JsonPropertyName("token_type")]
+    public string TokenType { get; set; } = string.Empty;
 }

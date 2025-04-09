@@ -1,24 +1,34 @@
 ﻿using System.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaTextListItem: AlexaPaginatedListItem
+public class AlexaTextListItem : AlexaPaginatedListItem, IJsonSerializable<AlexaTextListItem>
 {
-    [JsonProperty("type")] public override string Type => nameof(AlexaTextListItem);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaTextListItem);
 
-    [JsonProperty("hideDivider",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> HideDivider { get; set; }
+    [JsonPropertyName("hideDivider")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HideDivider { get; set; }
 
-    [JsonProperty("secondaryTextPosition",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> SecondaryTextPosition { get; set; }
+    [JsonPropertyName("secondaryTextPosition")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? SecondaryTextPosition { get; set; }
 
-    [JsonProperty("tertiaryTextPosition",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TertiaryTextPosition { get; set; }
-        
-    [JsonProperty("touchForward", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> TouchForward { get; set; }
+    [JsonPropertyName("tertiaryTextPosition")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TertiaryTextPosition { get; set; }
 
-    [JsonProperty("componentSlot", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<Component> ComponentSlot { get; set; }
+    [JsonPropertyName("touchForward")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? TouchForward { get; set; }
+
+    [JsonPropertyName("componentSlot")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Component>? ComponentSlot { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaTextListItem
+    {
+        AlexaPaginatedListItem.RegisterTypeInfo<T>();
+    }
 }

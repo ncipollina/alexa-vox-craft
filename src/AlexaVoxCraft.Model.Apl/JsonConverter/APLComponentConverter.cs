@@ -48,6 +48,17 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         [nameof(AlexaFooter)] = typeof(AlexaFooter),
         [nameof(AlexaHeader)] = typeof(AlexaHeader),
         [nameof(AlexaImage)] = typeof(AlexaImage),
+        [nameof(AlexaBackground)] = typeof(AlexaBackground),
+        [nameof(AlexaButton)] = typeof(AlexaButton),
+        [nameof(AlexaDivider)] = typeof(AlexaDivider),
+        [nameof(AlexaHeadline)] = typeof(AlexaHeadline),
+        [nameof(AlexaOrdinal)] = typeof(AlexaOrdinal),
+        [nameof(AlexaPageCounter)] = typeof(AlexaPageCounter),
+        [nameof(AlexaTextList)] = typeof(AlexaTextList),
+        [nameof(AlexaTextListItem)] = typeof(AlexaTextListItem),
+        [nameof(AlexaTransportControls)] = typeof(AlexaTransportControls),
+        [nameof(Sequence)] = typeof(Sequence),
+        [nameof(VectorGraphic)] = typeof(VectorGraphic),
     };
     protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)

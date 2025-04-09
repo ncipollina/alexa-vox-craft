@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
 
 namespace AlexaVoxCraft.Model.Apl;
 

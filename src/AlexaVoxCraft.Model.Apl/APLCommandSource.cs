@@ -1,15 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl;
 
 public class APLCommandSource
 {
-    [JsonProperty("type",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Type { get; set; }
 
-    [JsonProperty("handler",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("handler")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Handler { get; set; }
 
-    [JsonProperty("id",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("id")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string ComponentId { get; set; }
 }

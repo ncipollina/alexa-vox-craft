@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
-using JsonException = Newtonsoft.Json.JsonException;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 

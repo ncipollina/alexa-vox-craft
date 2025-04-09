@@ -1,28 +1,51 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class VectorGraphic: TouchComponent
+public class VectorGraphic : TouchComponent, IJsonSerializable<VectorGraphic>
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(VectorGraphic);
+    [JsonPropertyName("type")] public override string Type => nameof(VectorGraphic);
 
-    [JsonProperty("align",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Align { get; set; }
+    [JsonPropertyName("align")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Align { get; set; }
 
-    [JsonProperty("scale", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<Scale> Scale { get; set; }
+    [JsonPropertyName("scale")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Scale>? Scale { get; set; }
 
-    [JsonProperty("source",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Source { get; set; }
+    [JsonPropertyName("source")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Source { get; set; }
 
-    [JsonProperty("onLoad", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnLoad { get; set; }
+    [JsonPropertyName("onLoad")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnLoad { get; set; }
 
-    [JsonProperty("onFail", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnFail { get; set; }
+    [JsonPropertyName("onFail")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnFail { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : VectorGraphic
+    {
+        TouchComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var onLoadProp = info.Properties.FirstOrDefault(p => p.Name == "onLoad");
+            if (onLoadProp is not null)
+            {
+                onLoadProp.CustomConverter = new APLCommandListConverter(true);
+            }
+
+            var onFailProp = info.Properties.FirstOrDefault(p => p.Name == "onFail");
+            if (onFailProp is not null)
+            {
+                onFailProp.CustomConverter = new APLCommandListConverter(true);
+            }
+        });
+    }
 }

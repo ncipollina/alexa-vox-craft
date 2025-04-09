@@ -1,25 +1,32 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaBackground : ResponsiveTemplate
+public class AlexaBackground : ResponsiveTemplate, IJsonSerializable<AlexaBackground>
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(AlexaBackground);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaBackground);
 
-    [JsonProperty("colorOverlay", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ColorOverlay { get; set; }
-
-
-    [JsonProperty("overlayGradient", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> OverlayGradient { get; set; }
+    [JsonPropertyName("colorOverlay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ColorOverlay { get; set; }
 
 
-    [JsonProperty("videoAudioTrack", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> VideoAudioTrack { get; set; } = "foreground";
+    [JsonPropertyName("overlayGradient")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? OverlayGradient { get; set; }
 
 
-    [JsonProperty("videoAutoPlay", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> VideoAutoPlay { get; set; }
+    [JsonPropertyName("videoAudioTrack")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? VideoAudioTrack { get; set; } = "foreground";
 
+
+    [JsonPropertyName("videoAutoPlay")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? VideoAutoPlay { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaBackground
+    {
+        ResponsiveTemplate.RegisterTypeInfo<T>();
+    }
 }

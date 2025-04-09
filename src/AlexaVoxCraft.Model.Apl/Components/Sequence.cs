@@ -1,48 +1,74 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class Sequence : ActionableComponent
+public class Sequence : ActionableComponent, IJsonSerializable<Sequence>
 {
-    public Sequence() { }
+    public Sequence()
+    {
+    }
 
-    public Sequence(params APLComponent[] items) : this((IEnumerable<APLComponent>)items) { }
+    public Sequence(params APLComponent[] items) : this((IEnumerable<APLComponent>)items)
+    {
+    }
 
     public Sequence(IEnumerable<APLComponent> items)
     {
         Items = items.ToList();
     }
 
-    public override string Type => nameof(Sequence);
+    [JsonPropertyName("type")] public override string Type => nameof(Sequence);
 
-    [JsonProperty("data",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("data")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<object>> Data { get; set; }
 
-    [JsonProperty("scrollDirection",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("scrollDirection")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ScrollDirection { get; set; }
 
-    [JsonProperty("firstItem",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("firstItem")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<APLComponent>> FirstItem { get; set; }
 
-    [JsonProperty("lastItem", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("lastItem")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<APLComponent>> LastItem { get; set; }
 
-    [JsonProperty("items", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("items")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<List<APLComponent>> Items { get; set; }
 
-    [JsonProperty("numbered",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("numbered")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<bool?> Numbered { get; set; }
 
-    [JsonProperty("onScroll", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter))]
+    [JsonPropertyName("onScroll")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<IList<APLCommand>> OnScroll { get; set; }
 
-    [JsonProperty("scaling",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("scaling")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<int?> Scaling { get; set; }
 
-    [JsonProperty("snap", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("snap")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<Snap?> Snap { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : Sequence
+    {
+        ActionableComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var onScrollProp = info.Properties.FirstOrDefault(p => p.Name == "onScroll");
+            if (onScrollProp is not null)
+            {
+                onScrollProp.CustomConverter = new APLCommandListConverter(false);
+            }
+        });
+    }
 }

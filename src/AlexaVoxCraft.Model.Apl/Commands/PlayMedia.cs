@@ -1,22 +1,37 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
-public class PlayMedia:APLCommand
+public class PlayMedia : APLCommand, IJsonSerializable<PlayMedia>
 {
+    [JsonPropertyName("type")]
     public override string Type => "PlayMedia";
 
-    [JsonProperty("audioTrack", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> AudioTrack { get; set; } = "foreground";
+    [JsonPropertyName("audioTrack")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? AudioTrack { get; set; } = "foreground";
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ComponentId { get; set; }
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ComponentId { get; set; }
 
-    [JsonProperty("source"),
-     JsonConverter(typeof(GenericLegacySingleOrListConverter<VideoSource>))]
+    [JsonPropertyName("source")]
     public APLValue<IList<VideoSource>> Value { get; set; }
 
+    public static void RegisterTypeInfo<T>() where T : PlayMedia
+    {
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var prop = info.Properties.FirstOrDefault(p => p.Name == "source");
+            if (prop is not null)
+            {
+                prop.CustomConverter = new GenericSingleOrListConverter<VideoSource>(false);
+            }
+        });
+    }
 }

@@ -1,18 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.VectorGraphics;
 
 public class AVGParameter
 {
-    [JsonProperty("name")]
-    public APLValue<string> Name { get; set; }
+    [JsonPropertyName("name")] public APLValue<string> Name { get; set; }
 
-    [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Description { get; set; }
+    [JsonPropertyName("description")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Description { get; set; }
 
-    [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<AVGParameterType> Type { get; set; }
+    [JsonPropertyName("type")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AVGParameterType>? Type { get; set; }
 
-    [JsonProperty("default",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Default { get; set; }
+    [JsonPropertyName("default")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Default { get; set; }
 }

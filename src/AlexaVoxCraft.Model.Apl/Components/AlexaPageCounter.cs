@@ -1,21 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaPageCounter:APLComponent
+public class AlexaPageCounter : APLComponent, IJsonSerializable<AlexaPageCounter>
 {
-    [JsonProperty("type")] public override string Type => nameof(AlexaPageCounter);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaPageCounter);
 
-    [JsonProperty("currentPageComponentId",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> CurrentPageComponentId { get; set; }
+    [JsonPropertyName("currentPageComponentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? CurrentPageComponentId { get; set; }
 
-    [JsonProperty("currentPage",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> CurrentPage { get; set; }
+    [JsonPropertyName("currentPage")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? CurrentPage { get; set; }
 
-    [JsonProperty("theme",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> Theme { get; set; }
+    [JsonPropertyName("theme")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? Theme { get; set; }
 
-    [JsonProperty("totalPages",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> TotalPages { get; set; }
+    [JsonPropertyName("totalPages")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? TotalPages { get; set; }
 
+    public new static void RegisterTypeInfo<T>() where T : AlexaPageCounter
+    {
+        APLComponent.RegisterTypeInfo<T>();
+    }
 }

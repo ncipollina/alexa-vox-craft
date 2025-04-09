@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Commands;
 
 public class SetFocus : APLCommand
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(SetFocus);
+    [JsonPropertyName("type")] public override string Type => nameof(SetFocus);
 
-    [JsonProperty("componentId", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("componentId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string> ComponentId { get; set; }
 }
