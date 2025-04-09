@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
+        <PackageReadmeFile>../../README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +18,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="../../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>

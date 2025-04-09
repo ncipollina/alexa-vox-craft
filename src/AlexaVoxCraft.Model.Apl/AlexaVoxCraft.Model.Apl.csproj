@@ -6,6 +6,7 @@
     <Description>Small helper library to allow Alexa.NET skills to work with APL</Description>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>../../README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,8 @@
   <ItemGroup>
     <Folder Include="Helper\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>

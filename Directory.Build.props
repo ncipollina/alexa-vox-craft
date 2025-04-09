@@ -3,8 +3,6 @@
         <VersionPrefix>0.3.0-beta</VersionPrefix>
         <!-- SPDX license identifier for Apache 2.0 -->
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <!-- Readme file to show on NuGet.org -->
-        <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <!-- Other useful metadata -->
         <RepositoryUrl>https://github.com/ncipollina/alexa-vox-craft</RepositoryUrl>
@@ -13,8 +11,4 @@
         <PackageProjectUrl>https://github.com/ncipollina/alexa-vox-craft</PackageProjectUrl>
     </PropertyGroup>
 
-    <ItemGroup>
-        <!-- Ensure README is included in the package -->
-        <None Include="README.md" Pack="true" PackagePath="" />
-    </ItemGroup>
 </Project>
