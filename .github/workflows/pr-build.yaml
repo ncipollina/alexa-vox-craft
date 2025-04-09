@@ -7,7 +7,7 @@ on:
 permissions: write-all
 jobs:
   build:
-    uses: ncipollina/devops-templates/.github/workflows/pr-build.yaml@v2.1
+    uses: ncipollina/devops-templates/.github/workflows/pr-build.yaml@v3.0
     with:
       solution: AlexaVoxCraft.sln
       hasTests: true
