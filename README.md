@@ -13,6 +13,11 @@
 - **Alexa**: Represents the integration with Amazon Alexa, the voice service powering devices like Amazon Echo.
 - **VoxCraft**: Signifies the focus on voice-driven interactions, leveraging the VoxCraft framework.
 
+> 📦 **Credits:**
+>
+> - The core Alexa skill models (`AlexaVoxCraft.Model`) are based on the excellent work in [timheuer/alexa-skills-dotnet](https://github.com/timheuer/alexa-skills-dotnet).
+> - APL support (`AlexaVoxCraft.Model.Apl`) is based on [stoiveyp/Alexa.NET.APL](https://github.com/stoiveyp/Alexa.NET.APL).
+
 ---
 
 ## 🏎️ Packages
