@@ -88,6 +88,5 @@ Global
 		{7879F742-49FA-48B5-88B9-875008E71F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7879F742-49FA-48B5-88B9-875008E71F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7879F742-49FA-48B5-88B9-875008E71F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7879F742-49FA-48B5-88B9-875008E71F9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
