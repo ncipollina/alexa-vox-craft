@@ -1,4 +1,4 @@
-# 🗣️ Alexa Vox Craft
+# 🔣 Alexa Vox Craft
 
 **Alexa Vox Craft** is a modular, opinionated library for building Alexa skills in C# using .NET. It leverages `System.Text.Json`, MediatR patterns, and extensible components for building and maintaining robust Alexa skills with support for:
 
@@ -30,8 +30,11 @@
 
 ### 1. Install Required Packages
 
+Install only the packages you need! If you're not using MediatR or APL features, you can omit those dependencies.
+
 ```bash
 dotnet add package AlexaVoxCraft.Model
+# Optional:
 dotnet add package AlexaVoxCraft.MediatR.Lambda
 ```
 
@@ -66,13 +69,13 @@ public sealed class YourAlexaSkillFunction : AlexaSkillFunction
 
 ### 4. Handle Requests with MediatR
 
+Handlers in AlexaVoxCraft are expected to implement `IRequestHandler<T>` and optionally implement `ICanHandle` to provide routing logic.
+
 ```csharp
 public sealed class LaunchRequestHandler : IRequestHandler<LaunchRequest>
 {
-        public override Task<bool> CanHandle(IHandlerInput handlerInput, CancellationToken cancellationToken = default)
-    {
-        return Task.FromResult(handlerInput.RequestEnvelope.Request is LaunchRequest);
-    }
+    public bool CanHandle(IHandlerInput handlerInput) =>
+        handlerInput.RequestEnvelope.Request is LaunchRequest;
 
     public async Task<SkillResponse> Handle(IHandlerInput input, CancellationToken cancellationToken = default)
     {
@@ -103,18 +106,42 @@ Sample projects show how to load Alexa requests from JSON and assert deserialize
 
 ---
 
+## ⚠️ Error Handling
+
+To intercept and respond to exceptions in your MediatR pipeline, implement the `IExceptionHandler` interface:
+
+```csharp
+public sealed class MyExceptionHandler : IExceptionHandler
+{
+    public Task<bool> CanHandle(IHandlerInput handlerInput, Exception ex, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(true); // Catch all
+    }
+
+    public Task<SkillResponse> Handle(IHandlerInput handlerInput, Exception ex, CancellationToken cancellationToken = default)
+    {
+        var response = handlerInput.ResponseBuilder.Speak("Something went wrong. Please try again.");
+        return response.GetResponse(cancellationToken);
+    }
+}
+```
+
+No manual registration is required. Exception handlers are picked up automatically via `AddSkillMediator(...)`.
+
+---
+
 ## 🛁 Sample Projects
 
-| Sample Project          | Description                                        |
-|-------------------------|----------------------------------------------------|
-| `Sample.Skill.Function` | A minimal Alexa skill using this library           |
-| `Sample.Apl.Function`   | A sample APL skill to demonstrate working with APL |
+| Sample Project                                              | Description                                        |
+|-------------------------------------------------------------|----------------------------------------------------|
+| [`Sample.Skill.Function`](samples/Sample.Skill.Function)   | A minimal Alexa skill using this library           |
+| [`Sample.Apl.Function`](samples/Sample.Apl.Function)       | A sample APL skill to demonstrate working with APL |
 
 Each sample demonstrates MediatR integration, serialization support, custom directives, and Lambda bootstrapping.
 
 ---
 
-## 🧭 Roadmap
+## 🤭 Roadmap
 
 - ✅ Full widget lifecycle support
 - ✅ Advanced directive handling
@@ -129,13 +156,6 @@ PRs are welcome! Please submit issues and ideas to help make this toolkit even b
 
 ---
 
-## 📜 License
-
-MIT
-
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -146,7 +166,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ncipollina"><img src="https://avatars.githubusercontent.com/u/1405469?v=4?s=100" width="100px;" alt="Nick Cipollina"/><br /><sub><b>Nick Cipollina</b></sub></a><br /><a href="#content-ncipollina" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ncipollina"><img src="https://avatars.githubusercontent.com/u/1405469?v=4?s=100" width="100px;" alt="Nick Cipollina"/><br /><sub><b>Nick Cipollina</b></sub></a><br /><a href="#content-ncipollina" title="Content">🔓</a></td>
     </tr>
   </tbody>
 </table>
@@ -157,3 +177,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+---
+
+## 📜 License
+
+MIT
