@@ -1,16 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
 using AlexaVoxCraft.MediatR.DI;
 using AlexaVoxCraft.MediatR.Lambda;
 using AlexaVoxCraft.MediatR.Lambda.Extensions;
-using AlexaVoxCraft.Model.Request;
+using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Response;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Sample.Skill.Function;
+namespace Sample.Apl.Function;
 
-[ExcludeFromCodeCoverage]
-public class Function : AlexaSkillFunction<SkillRequest, SkillResponse>
+public class Function : AlexaSkillFunction<APLSkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {
@@ -20,7 +18,7 @@ public class Function : AlexaSkillFunction<SkillRequest, SkillResponse>
                     .ReadFrom.Services(services)
                     .Enrich.FromLogContext();
             })
-            .UseHandler<LambdaHandler, SkillRequest, SkillResponse>()
+            .UseHandler<LambdaHandler, APLSkillRequest, SkillResponse>()
             .ConfigureServices((context, services) =>
             {
                 services.AddSkillMediator(context.Configuration,

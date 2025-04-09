@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AlexaVoxCraft.MediatR.Lambda;
 
-public abstract class AlexaSkillFunction
+public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : SkillRequest where TResponse : SkillResponse
 {
     private IServiceProvider _serviceProvider = null!;
     
@@ -51,18 +51,18 @@ public abstract class AlexaSkillFunction
         _serviceProvider = host.Services;
     }
 
-    protected void CreateContext(SkillRequest request)
+    protected void CreateContext(TRequest request)
     {
         var factory = _serviceProvider.GetRequiredService<ISkillContextFactory>();
         factory.Create(request);
     }
     
-    public virtual async Task<SkillResponse> FunctionHandlerAsync(SkillRequest request, ILambdaContext lambdaContext)
+    public virtual async Task<TResponse> FunctionHandlerAsync(TRequest request, ILambdaContext lambdaContext)
     {
         using var serviceScope = _serviceProvider.CreateScope();
         var provider = serviceScope.ServiceProvider;
         CreateContext(request);
-        var handlerAsync = provider.GetRequiredService<HandlerDelegate<SkillRequest, SkillResponse>>();
+        var handlerAsync = provider.GetRequiredService<HandlerDelegate<TRequest, TResponse>>();
 
         return await handlerAsync(request, lambdaContext);
     }

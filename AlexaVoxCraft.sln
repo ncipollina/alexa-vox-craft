@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model.Apl", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlexaVoxCraft.Model.Apl.Tests", "test\AlexaVoxCraft.Model.Apl.Tests\AlexaVoxCraft.Model.Apl.Tests.csproj", "{EF036596-6667-4979-AE3A-18D63A354F45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Apl.Function", "samples\Sample.Apl.Function\Sample.Apl.Function.csproj", "{7879F742-49FA-48B5-88B9-875008E71F9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,7 @@ Global
 		{F55FF113-034C-4479-BCD2-6817D4D1FB48} = {C2B189AA-0578-45AF-9E85-C77A5DB87DF8}
 		{8A9C259D-5C9C-4D85-9D57-BDBFBE42A0DB} = {085EBC44-290A-4CD7-80FA-DDB0D62DF3B1}
 		{EF036596-6667-4979-AE3A-18D63A354F45} = {C2B189AA-0578-45AF-9E85-C77A5DB87DF8}
+		{7879F742-49FA-48B5-88B9-875008E71F9B} = {7756AA98-6912-4579-AB67-979A9FD0EC05}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CF7334AB-47AA-4CEE-8D3B-A79142D7E0D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,5 +85,9 @@ Global
 		{EF036596-6667-4979-AE3A-18D63A354F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF036596-6667-4979-AE3A-18D63A354F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF036596-6667-4979-AE3A-18D63A354F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7879F742-49FA-48B5-88B9-875008E71F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7879F742-49FA-48B5-88B9-875008E71F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7879F742-49FA-48B5-88B9-875008E71F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7879F742-49FA-48B5-88B9-875008E71F9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
