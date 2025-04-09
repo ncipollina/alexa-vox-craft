@@ -1,13 +1,31 @@
-### AlexaVoxCraft.Model
+# AlexaVoxCraft.Model
 
-The `AlexaVoxCraft.Model` package contains objects that represent the request and response objects to interface with Alexa custom skills. These models were forked from the models defined in [this repository](https://github.com/timheuer/alexa-skills-dotnet), but have been converted to use System.Text.Json for serialization.
+This package provides the core Alexa request and response models, fully compatible with `System.Text.Json`. It includes support for:
 
-## Getting Started
+- Skill request types (LaunchRequest, IntentRequest, etc.)
+- Session, context, device, and user metadata
+- Response building utilities
 
-Follow these steps to start crafting voice experiences with AlexaVoxCraft:
+## ✅ Features
 
-1. **Installation**: Install the `AlexaVoxCraft.Model` package from NuGet.
-   ```bash
-   dotnet add package AlexaVoxCraft.Model
-2. **Development**: Create your Alexa skill logic using the `AlexaVoxCraft.Model` package for request and response objects.
-4. **Enjoy**: Interact with your skill using Amazon Alexa devices and explore the possibilities of voice-driven applications!
+- Strongly typed model structure for Alexa interactions
+- Clean serialization without Newtonsoft.Json
+- Designed for use in AWS Lambda or any C# host
+
+## 🚀 Getting Started
+
+Install the package:
+
+```bash
+dotnet add package AlexaVoxCraft.Model
+```
+
+Deserialize Alexa requests:
+
+```csharp
+var request = JsonSerializer.Deserialize<SkillRequest>(json, AlexaJsonOptions.DefaultOptions);
+```
+
+## 📄 License
+
+Apache-2.0
