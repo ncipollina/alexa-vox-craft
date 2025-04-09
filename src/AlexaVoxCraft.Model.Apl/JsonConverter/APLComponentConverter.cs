@@ -46,6 +46,8 @@ public class APLComponentConverter :BasePolymorphicConverter<APLComponent>
         [nameof(AlexaPhoto)] = typeof(AlexaPhoto),
         [nameof(AlexaTextWrapping)] = typeof(AlexaTextWrapping),
         [nameof(AlexaFooter)] = typeof(AlexaFooter),
+        [nameof(AlexaHeader)] = typeof(AlexaHeader),
+        [nameof(AlexaImage)] = typeof(AlexaImage),
     };
     protected override IDictionary<string, Type> DerivedTypes => AplComponentLookup;
     protected override JsonElement TransformJson(JsonElement original)

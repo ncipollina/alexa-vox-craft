@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class DataStoreErrorContent
 {
-    [JsonProperty("deviceId")]
+    [JsonPropertyName("deviceId")]
     public string DeviceId { get; set; }
 }

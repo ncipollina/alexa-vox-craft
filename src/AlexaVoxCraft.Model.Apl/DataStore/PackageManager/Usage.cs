@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 
 public class Usage
 {
-    [JsonProperty("instanceId",NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("instanceId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string InstanceId { get; set; }
 
-    [JsonProperty("location")]
-    public string Location { get; set; }
+    [JsonPropertyName("location")] public string Location { get; set; }
 }

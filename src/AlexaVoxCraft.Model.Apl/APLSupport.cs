@@ -121,5 +121,7 @@ public static class APLSupport
         AVGPath.RegisterTypeInfo<AVGPath>();
         AVGGroup.RegisterTypeInfo<AVGGroup>();
         AVGText.RegisterTypeInfo<AVGText>();
+        AlexaHeader.RegisterTypeInfo<AlexaHeader>();
+        AlexaImage.RegisterTypeInfo<AlexaImage>();
     }
 }

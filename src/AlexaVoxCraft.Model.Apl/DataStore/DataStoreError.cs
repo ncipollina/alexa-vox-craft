@@ -1,11 +1,11 @@
-﻿using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using AlexaVoxCraft.Model.Apl.JsonConverter;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 [JsonConverter(typeof(DataStoreErrorConverter))]
-public class DataStoreError
+public abstract class DataStoreError
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public string Type { get; set; }
 }

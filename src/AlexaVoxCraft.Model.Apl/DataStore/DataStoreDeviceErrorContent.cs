@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore;
 
 public class DataStoreDeviceErrorContent : DataStoreErrorContent
 {
-    [JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("commands")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IList<DataStoreCommand> Commands { get; set; }
 }

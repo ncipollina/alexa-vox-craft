@@ -3,17 +3,25 @@ using AlexaVoxCraft.Model.Apl.DataStore;
 using AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 using AlexaVoxCraft.Model.Request.Type;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Alexa.NET.APL.Tests;
 
 public class RequestTests
 {
+    private readonly ITestOutputHelper _output;
+
+    public RequestTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void LoadIndexListData()
     {
         var req = Utility.ExampleFileContent<Request>("LoadIndexListDataRequest.json");
         var loadIndex = Assert.IsType<LoadIndexListDataRequest>(req);
-        Assert.True(Utility.CompareJson(loadIndex, "LoadIndexListDataRequest.json", null));
+        Assert.True(Utility.CompareJson(loadIndex, "LoadIndexListDataRequest.json", _output));
     }
 
     [Fact]

@@ -1,46 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 using AlexaVoxCraft.Model.Apl.JsonConverter;
-using Newtonsoft.Json;
+using AlexaVoxCraft.Model.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.Components;
 
-public class AlexaImage:APLComponent
+public class AlexaImage : APLComponent, IJsonSerializable<AlexaImage>
 {
-    [JsonProperty("type")]
-    public override string Type => nameof(AlexaImage);
+    [JsonPropertyName("type")] public override string Type => nameof(AlexaImage);
 
-    [JsonProperty("imageAlignment",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<AlexaImageAlignment?> ImageAlignment { get; set; }
+    [JsonPropertyName("imageAlignment")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAlignment?>? ImageAlignment { get; set; }
 
-    [JsonProperty("imageAspectRatio",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<AlexaImageAspectRatio?> ImageAspectRatio { get; set; }
+    [JsonPropertyName("imageAspectRatio")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<AlexaImageAspectRatio?>? ImageAspectRatio { get; set; }
 
-    [JsonProperty("imageBlurredBackground",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageBlurredBackground { get; set; }
+    [JsonPropertyName("imageBlurredBackground")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageBlurredBackground { get; set; }
 
-    [JsonProperty("imageHeight",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue ImageHeight { get; set; }
+    [JsonPropertyName("imageHeight")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? ImageHeight { get; set; }
 
-    [JsonProperty("imageWidth",NullValueHandling = NullValueHandling.Ignore)]
-    public APLDimensionValue ImageWidth { get; set; }
+    [JsonPropertyName("imageWidth")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLDimensionValue? ImageWidth { get; set; }
 
-    [JsonProperty("imageRoundedCorner",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageRoundedCorner { get; set; }
+    [JsonPropertyName("imageRoundedCorner")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageRoundedCorner { get; set; }
 
-    [JsonProperty("imageScale",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<Scale?> Scale { get; set; }
+    [JsonPropertyName("imageScale")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<Scale?>? Scale { get; set; }
 
-    [JsonProperty("imageSource",NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<string> ImageSource { get; set; }
+    [JsonPropertyName("imageSource")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<string>? ImageSource { get; set; }
 
-    [JsonProperty("imageShadow", NullValueHandling = NullValueHandling.Ignore)]
-    public APLValue<bool?> ImageShadow { get; set; }
+    [JsonPropertyName("imageShadow")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? ImageShadow { get; set; }
 
-    [JsonProperty("onLoad", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnLoad { get; set; }
+    [JsonPropertyName("onLoad")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnLoad { get; set; }
 
-    [JsonProperty("onFail", NullValueHandling = NullValueHandling.Ignore),
-     JsonConverter(typeof(APLCommandListConverter), true)]
-    public APLValue<IList<APLCommand>> OnFail { get; set; }
+    [JsonPropertyName("onFail")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<IList<APLCommand>>? OnFail { get; set; }
+
+    public new static void RegisterTypeInfo<T>() where T : AlexaImage
+    {
+        APLComponent.RegisterTypeInfo<T>();
+        AlexaJsonOptions.RegisterTypeModifier<T>(info =>
+        {
+            var onLoadProp = info.Properties.FirstOrDefault(p => p.Name == "onLoad");
+            if (onLoadProp is not null)
+            {
+                onLoadProp.CustomConverter = new APLCommandListConverter(true);
+            }
+
+            var onFailProp = info.Properties.FirstOrDefault(p => p.Name == "onFail");
+            if (onFailProp is not null)
+            {
+                onFailProp.CustomConverter = new APLCommandListConverter(true);
+            }
+        });
+    }
 }

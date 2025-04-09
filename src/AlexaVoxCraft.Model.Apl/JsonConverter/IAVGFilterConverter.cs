@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using AlexaVoxCraft.Model.Apl.VectorGraphics.Filters;
 using AlexaVoxCraft.Model.Response.Converters;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AlexaVoxCraft.Model.Apl.JsonConverter;
 

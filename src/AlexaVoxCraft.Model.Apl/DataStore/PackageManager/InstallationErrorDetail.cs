@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlexaVoxCraft.Model.Apl.DataStore.PackageManager;
 
 public class InstallationErrorDetail
 {
-    [JsonProperty("type")]
-    public string Type { get; set; }
+    [JsonPropertyName("type")] public string Type { get; set; }
 
-    [JsonProperty("content",NullValueHandling = NullValueHandling.Ignore)]
-    public JObject Content { get; set; }
+    [JsonPropertyName("content")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public JsonElement? Content { get; set; }
 }
