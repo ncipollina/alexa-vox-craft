@@ -1,15 +1,16 @@
 ﻿using AlexaVoxCraft.MediatR;
 using AlexaVoxCraft.MediatR.Lambda.Abstractions;
 using AlexaVoxCraft.MediatR.Lambda.Extensions;
+using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Request;
 using AlexaVoxCraft.Model.Request.Type;
 using AlexaVoxCraft.Model.Response;
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.Logging;
 
-namespace Sample.Skill.Function;
+namespace Sample.Apl.Function;
 
-public class LambdaHandler : ILambdaHandler<SkillRequest, SkillResponse>
+public class LambdaHandler : ILambdaHandler<APLSkillRequest, SkillResponse>
 {
     private readonly ISkillMediator _mediator;
     private readonly ILogger<LambdaHandler> _logger;
@@ -20,7 +21,7 @@ public class LambdaHandler : ILambdaHandler<SkillRequest, SkillResponse>
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<SkillResponse> HandleAsync(SkillRequest request, ILambdaContext context)
+    public async Task<SkillResponse> HandleAsync(APLSkillRequest request, ILambdaContext context)
     {
         _logger.Debug("Received request of type {RequestType}", propertyValue: request.Request.GetType().Name);
         if (request.Request is IntentRequest intent)

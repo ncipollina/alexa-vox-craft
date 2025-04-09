@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AWSProjectType>Lambda</AWSProjectType>
+        <AssemblyName>bootstrap</AssemblyName>
+        <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <!-- 
+            Enable trimming to reduce package size of self contained publish which can reduce cold starts. Trimming alters
+            the .NET assemblies put in the deployment package. Additional runtime testing is required to make sure trimming
+            does not have any unattended consequences.
+        
+        <PublishTrimmed>true</PublishTrimmed>
+        -->
+        <!-- Generate ready to run images during publishing to improve cold start time. -->
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <LangVersion>default</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\AlexaVoxCraft.MediatR.Lambda\AlexaVoxCraft.MediatR.Lambda.csproj" />
+        <ProjectReference Include="..\..\src\AlexaVoxCraft.Model.Apl\AlexaVoxCraft.Model.Apl.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" />
+        <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="appsettings.json" />
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>

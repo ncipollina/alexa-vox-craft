@@ -1,58 +1,137 @@
-# AlexaVoxCraft
+# 🗣️ Alexa Vox Craft
 
-## Package Version
+**Alexa Vox Craft** is a modular, opinionated library for building Alexa skills in C# using .NET. It leverages `System.Text.Json`, MediatR patterns, and extensible components for building and maintaining robust Alexa skills with support for:
 
-| Package                      | Build Status                                                                                                                                       | Version                                                                                                                                                | Downloads                                                                                                                                            |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AlexaVoxCraft.MediatR        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)        | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.MediatR.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
-| AlexaVoxCraft.MediatR.Lambda | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)        | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.MediatR.Lambda.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) |
-| AlexaVoxCraft.Model          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)        | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.Model.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
-| AlexaVoxCraft.Model.Apl      | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)        | [![NuGet](https://img.shields.io/nuget/v/AlexaVoxCraft.Model.Apl.svg?color=orange)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl/)           | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl/)           |
-
-## Introduction
-
-AlexaVoxCraft is a .NET library for crafting interactive voice experiences with Amazon Alexa using the VoxCraft framework. This repository provides tools and utilities to develop, deploy, and manage Alexa skills in .NET applications.
+- ✅ Clean separation of concerns using MediatR
+- ✅ JSON (de)serialization with full control via `System.Text.Json`
+- ✅ APL (Alexa Presentation Language) model support and utilities
+- ✅ Custom converters for object, enum, and polymorphic types
+- ✅ Lambda-ready with logging, tracing, and testability in mind
 
 ### What does "AlexaVoxCraft" mean?
 
 - **Alexa**: Represents the integration with Amazon Alexa, the voice service powering devices like Amazon Echo.
 - **VoxCraft**: Signifies the focus on voice-driven interactions, leveraging the VoxCraft framework.
 
-## Packages
+---
 
-### AlexaVoxCraft.Lambda.AspNetCoreServer
+## 🏎️ Packages
 
-The `AlexaVoxCraft.Lambda.AspNetCoreServer` package contains the code to run the skill in an AWS Lambda function with all of the ASP.NET hosting capabilities, including dependency injection, middleware, and the ability to process an Alexa skill request. All you have to provide are your request handlers.
+| Package                          | Build Status                                                                                                                                                                  | NuGet                                                                                                                                       | GitHub | Downloads                                                                                                                                            |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **AlexaVoxCraft.Model**          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model)                   | [📁 Source](src/AlexaVoxCraft.Model) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
+| **AlexaVoxCraft.Model.Apl**      | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl)           | [📁 Source](src/AlexaVoxCraft.Model.Apl) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl/)           |
+| **AlexaVoxCraft.MediatR.Lambda** | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda) | [📁 Source](src/AlexaVoxCraft.MediatR.Lambda) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) |
+| **AlexaVoxCraft.MediatR**        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR)               | [📁 Source](src/AlexaVoxCraft.MediatR.Lambda) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
 
-### AlexaVoxCraft.Model
+---
 
-The `AlexaVoxCraft.Model` package contains objects that represent the request and response objects to interface with Alexa custom skills. These models are based on the models defined in [this repository](https://github.com/timheuer/alexa-skills-dotnet), but have been converted to use System.Text.Json for serialization.
+## 🚀 Getting Started
 
-## Features
+### 1. Install Required Packages
 
-- **Voice Skill Development**: Build interactive voice skills for Amazon Alexa using .NET and VoxCraft.
-- **Integration with Amazon Lambda**: Deploy and host your Alexa skills seamlessly with Amazon Lambda hosting using the `AlexaVoxCraft.Lambda.AspNetCoreServer` package.
-- **JSON Serialization with System.Text.Json**: Utilize System.Text.Json for efficient JSON serialization, ensuring compatibility and performance.
+```bash
+dotnet add package AlexaVoxCraft.Model
+dotnet add package AlexaVoxCraft.MediatR.Lambda
+```
 
-## Getting Started
+### 2. Create a Lambda Entry Point
 
-Follow these steps to start crafting voice experiences with AlexaVoxCraft:
+```csharp
+await LambdaHostExtensions.RunAlexaSkill<YourAlexaSkillFunction>();
+```
 
-1. **Installation**: Install the `AlexaVoxCraft.Lambda.AspNetCoreServer` and `AlexaVoxCraft.Model` packages from NuGet.
-   ```bash
-   dotnet add package AlexaVoxCraft.Lambda.AspNetCoreServer
-   dotnet add package AlexaVoxCraft.Model
-2. **Development**: Create your Alexa skill logic using the `AlexaVoxCraft.Model` package for request and response objects, and use the `AlexaVoxCraft.Lambda.AspNetCoreServer` package to run the skill in an AWS Lambda function.
-3. **Deployment**: Deploy your Alexa skill to Amazon Lambda using the `Amazon.Lambda.AspNetCoreServer` package.
-4. **Enjoy**: Interact with your skill using Amazon Alexa devices and explore the possibilities of voice-driven applications!
+### 3. Create Your Function Class
 
-## Contribution
+```csharp
+public sealed class YourAlexaSkillFunction : AlexaSkillFunction
+{
+    protected override void Init(IHostBuilder builder)
+    {
+        builder.UseSerilog((context, services, configuration) =>
+            {
+                configuration.ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services)
+                    .Enrich.FromLogContext();
+            })
+            .UseHandler<LambdaHandler, SkillRequest, SkillResponse>()
+            .ConfigureServices((context, services) =>
+            {
+                services.AddSkillMediator(context.Configuration,
+                    cfg => { cfg.RegisterServicesFromAssemblyContaining<Program>(); });
+            });
+    }
+}
+```
 
-Contributions are welcome! Feel free to submit issues, feature requests, or pull requests to help improve AlexaVoxCraft.
+### 4. Handle Requests with MediatR
 
-## License
+```csharp
+public sealed class LaunchRequestHandler : IRequestHandler<LaunchRequest>
+{
+        public override Task<bool> CanHandle(IHandlerInput handlerInput, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(handlerInput.RequestEnvelope.Request is LaunchRequest);
+    }
 
-This project is licensed under the [Apache License 2.0](LICENSE).
+    public async Task<SkillResponse> Handle(IHandlerInput input, CancellationToken cancellationToken = default)
+    {
+        return await input.ResponseBuilder.Speak("Hello world!").WithShouldEndSession(true)
+            .GetResponse(cancellationToken);
+    }
+}
+```
+
+---
+
+## 🧪 Unit Testing
+
+Sample projects show how to load Alexa requests from JSON and assert deserialized structure. Tests include validation of:
+
+- Correct parsing of SkillRequest types
+- APL component deserialization
+- Proper usage of custom converters
+
+---
+
+## 🛠 Utilities and Helpers
+
+- `EnumHelper`: Convert to/from `[EnumMember]`-decorated enums
+- `ObjectConverter`: Deserialize polymorphic object values
+- `BasePolymorphicConverter<T>`: Handle APL and directive subtypes
+- `AlexaLambdaSerializer`: Custom `ILambdaSerializer` with logging support
+
+---
+
+## 🛁 Sample Projects
+
+| Sample Project          | Description                                        |
+|-------------------------|----------------------------------------------------|
+| `Sample.Skill.Function` | A minimal Alexa skill using this library           |
+| `Sample.Apl.Function`   | A sample APL skill to demonstrate working with APL |
+
+Each sample demonstrates MediatR integration, serialization support, custom directives, and Lambda bootstrapping.
+
+---
+
+## 🧭 Roadmap
+
+- ✅ Full widget lifecycle support
+- ✅ Advanced directive handling
+- ⚖️ OpenTelemetry & logging enrichment
+- 🔄 Documentation site
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome! Please submit issues and ideas to help make this toolkit even better.
+
+---
+
+## 📜 License
+
+MIT
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
