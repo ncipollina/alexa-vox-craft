@@ -65,7 +65,10 @@ public class AlexaGridList : ResponsiveTemplate, IJsonSerializable<AlexaGridList
 
     [JsonPropertyName("speechItems")][JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public APLValue<string>? SpeechItems { get; set; }
-
+    
+    [JsonPropertyName("hideOrdinal")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public APLValue<bool?>? HideOrdinal { get; set; }
     public new static void RegisterTypeInfo<T>() where T : AlexaGridList
     {
         ResponsiveTemplate.RegisterTypeInfo<T>();
