@@ -1,11 +1,12 @@
 using System.Reflection;
+using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
-[assembly: Xunit.TestFramework("AlexaVoxCraft.Model.Apl.Tests.GlobalTestFramework", "AlexaVoxCraft.Model.Apl.Tests")]
+[assembly: TestFramework("AlexaVoxCraft.Model.Apl.Tests.GlobalTestFramework", "AlexaVoxCraft.Model.Apl.Tests")]
 
 namespace AlexaVoxCraft.Model.Apl.Tests;
 
-public class GlobalTestFramework : ITestFramework
+public class GlobalTestFramework : LongLivedMarshalByRefObject, ITestFramework
 {
     private readonly XunitTestFramework _framework;
 
