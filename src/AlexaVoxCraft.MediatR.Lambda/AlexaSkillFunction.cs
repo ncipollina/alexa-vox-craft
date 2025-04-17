@@ -13,10 +13,11 @@ using Serilog;
 
 namespace AlexaVoxCraft.MediatR.Lambda;
 
-public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : SkillRequest where TResponse : SkillResponse
+public abstract class AlexaSkillFunction<TRequest, TResponse>
+    where TRequest : SkillRequest where TResponse : SkillResponse
 {
     private IServiceProvider _serviceProvider = null!;
-    
+
     public IServiceProvider ServiceProvider => _serviceProvider;
 
     protected AlexaSkillFunction()
@@ -30,6 +31,12 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
         {
             logging.AddJsonConsole();
             logging.AddDebug();
+        }).UseSerilog((context, services, configuration) =>
+        {
+            configuration.ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Destructure.With(new SystemTextDestructuringPolicy())
+                .Enrich.FromLogContext();
         });
         Init(builder);
         return builder;
@@ -37,13 +44,6 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
 
     protected virtual void Init(IHostBuilder builder)
     {
-        builder.UseSerilog((context, services, configuration) =>
-        {
-            configuration.ReadFrom.Configuration(context.Configuration)
-                .ReadFrom.Services(services)
-                .Destructure.With(new SystemTextDestructuringPolicy())
-                .Enrich.FromLogContext();
-        });
     }
 
     protected void Start()
@@ -56,7 +56,7 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
             services.AddSingleton<ILambdaSerializer, AlexaLambdaSerializer>();
         });
         var host = builder.Build();
-        
+
         host.Start();
         _serviceProvider = host.Services;
     }
@@ -66,7 +66,7 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
         var factory = _serviceProvider.GetRequiredService<ISkillContextFactory>();
         factory.Create(request);
     }
-    
+
     public virtual async Task<TResponse> FunctionHandlerAsync(TRequest request, ILambdaContext lambdaContext)
     {
         using var serviceScope = _serviceProvider.CreateScope();
@@ -76,5 +76,4 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
 
         return await handlerAsync(request, lambdaContext);
     }
-
 }
