@@ -1,3 +1,4 @@
+using AlexaVoxCraft.MediatR.Lambda.Serialization;
 using AlexaVoxCraft.Model.Request;
 using AlexaVoxCraft.Model.Response;
 using Amazon.Lambda.Core;
@@ -23,6 +24,7 @@ public static class LambdaHostExtensions
                 .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
                 .WriteTo.Console(new CompactJsonFormatter())
+                .Destructure.With(new SystemTextDestructuringPolicy())
                 .CreateBootstrapLogger();
 
             Log.Information("🚀 Starting Lambda Host");

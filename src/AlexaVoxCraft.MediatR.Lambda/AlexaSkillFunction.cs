@@ -9,6 +9,7 @@ using Amazon.Lambda.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace AlexaVoxCraft.MediatR.Lambda;
 
@@ -33,8 +34,17 @@ public abstract class AlexaSkillFunction<TRequest, TResponse> where TRequest : S
         Init(builder);
         return builder;
     }
-    
-    protected virtual void Init(IHostBuilder builder){ }
+
+    protected virtual void Init(IHostBuilder builder)
+    {
+        builder.UseSerilog((context, services, configuration) =>
+        {
+            configuration.ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Destructure.With(new SystemTextDestructuringPolicy())
+                .Enrich.FromLogContext();
+        });
+    }
 
     protected void Start()
     {
