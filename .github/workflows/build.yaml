@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+      - beta
+      - release/*
+    tags:
+      - v*
 permissions: write-all
 jobs:
   build:
-    uses: ncipollina/devops-templates/.github/workflows/package-build.yaml@v3.0
+    uses: ncipollina/devops-templates/.github/workflows/package-build.yaml@v3.1
     with:
       dotnet-version: "8.0.x"
     secrets: inherit
