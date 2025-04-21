@@ -14,12 +14,7 @@ public class Function : AlexaSkillFunction<SkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {
-        builder.UseSerilog((context, services, configuration) =>
-            {
-                configuration.ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services)
-                    .Enrich.FromLogContext();
-            })
+        builder
             .UseHandler<LambdaHandler, SkillRequest, SkillResponse>()
             .ConfigureServices((context, services) =>
             {

@@ -56,12 +56,7 @@ public sealed class YourAlexaSkillFunction : AlexaSkillFunction<SkillRequest, Sk
 {
     protected override void Init(IHostBuilder builder)
     {
-        builder.UseSerilog((context, services, configuration) =>
-            {
-                configuration.ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services)
-                    .Enrich.FromLogContext();
-            })
+        builder
             .UseHandler<LambdaHandler, SkillRequest, SkillResponse>()
             .ConfigureServices((context, services) =>
             {
@@ -89,6 +84,38 @@ public sealed class LaunchRequestHandler : IRequestHandler<LaunchRequest>
     }
 }
 ```
+---
+
+# 📋 Logging & Diagnostics
+
+AlexaVoxCraft uses [Serilog](https://serilog.net/) for structured logging by default. You can configure logging output by adding the following to your `appsettings.json`:
+
+```json
+"Serilog": {
+  "Using": [ "Serilog.Sinks.Console" ],
+  "WriteTo": [
+    {
+      "Name": "Console",
+      "Args": {
+        "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact"
+      }
+    }
+  ],
+  "MinimumLevel": {
+    "Default": "Information",
+    "Override": {
+      "Microsoft": "Warning",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+```
+
+> ℹ️ **Debugging Tip:** To enable logging of raw Alexa skill requests and responses during development, add the following line under `Override`. This is not recommended for production environments.
+>
+> ```json
+> "AlexaVoxCraft.MediatR.Lambda.Serialization": "Debug"
+> ```
 
 ---
 

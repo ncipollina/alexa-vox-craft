@@ -1,0 +1,23 @@
+AlexaVoxCraft
+
+This product includes software developed by Nick Cipollina and contributors.
+
+Portions of this project are based on the following third-party libraries:
+
+---
+
+Alexa.NET.APL  
+https://github.com/stoiveyp/Alexa.NET.APL  
+Licensed under the MIT License.  
+Copyright © 2018 Stephen Toub
+
+---
+
+alexa-skills-dotnet  
+https://github.com/timheuer/alexa-skills-dotnet  
+Licensed under the MIT License.  
+Copyright © 2006-2019 Tim Heuer
+
+---
+
+Copies of the original licenses are available in the licenses/ directory.
