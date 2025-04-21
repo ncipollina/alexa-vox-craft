@@ -12,12 +12,7 @@ public class Function : AlexaSkillFunction<APLSkillRequest, SkillResponse>
 {
     protected override void Init(IHostBuilder builder)
     {
-        builder.UseSerilog((context, services, configuration) =>
-            {
-                configuration.ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services)
-                    .Enrich.FromLogContext();
-            })
+        builder
             .UseHandler<LambdaHandler, APLSkillRequest, SkillResponse>()
             .ConfigureServices((context, services) =>
             {
