@@ -216,6 +216,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 MIT
 
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/ncipollina/alexa-vox-craft.svg)](https://starchart.cc/ncipollina/alexa-vox-craft)
