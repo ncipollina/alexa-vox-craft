@@ -13,5 +13,7 @@ jobs:
   build:
     uses: ncipollina/devops-templates/.github/workflows/package-build.yaml@v3.2
     with:
-      dotnet-version: "8.0.x"
+      dotnet-version: |
+        8.0.x
+        9.0.x
     secrets: inherit
