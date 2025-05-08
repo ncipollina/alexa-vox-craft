@@ -11,6 +11,6 @@ jobs:
     with:
       solution: AlexaVoxCraft.sln
       hasTests: true
-      dotnetVersion: '["8.0.x"]'
+      dotnetVersion: '["8.0.x", "9.0.x"]'
       runCdk: false
     secrets: inherit
