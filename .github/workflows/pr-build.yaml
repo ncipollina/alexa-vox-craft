@@ -7,10 +7,10 @@ on:
 permissions: write-all
 jobs:
   build:
-    uses: ncipollina/devops-templates/.github/workflows/pr-build.yaml@v3.2
+    uses: ncipollina/devops-templates/.github/workflows/pr-build.yaml@feature/matrix
     with:
       solution: AlexaVoxCraft.sln
       hasTests: true
-      dotnetVersion: "8.0.x"
+      dotnetVersion: '["8.0.x"]'
       runCdk: false
     secrets: inherit
