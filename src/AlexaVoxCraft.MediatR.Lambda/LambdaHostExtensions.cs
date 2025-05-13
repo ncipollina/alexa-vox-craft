@@ -1,4 +1,5 @@
 using AlexaVoxCraft.Logging.Serialization;
+using AlexaVoxCraft.MediatR.Lambda.Serialization;
 using AlexaVoxCraft.Model.Request;
 using AlexaVoxCraft.Model.Response;
 using Amazon.Lambda.Core;
