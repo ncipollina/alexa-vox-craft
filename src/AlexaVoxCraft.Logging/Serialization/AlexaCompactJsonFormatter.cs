@@ -43,6 +43,7 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
             var rewrittenJson = Encoding.UTF8.GetString(rewrittenBuffer.ToArray());
         
             output.Write(rewrittenJson);
+            output.WriteLine();
         }
         catch (Exception e)
         {

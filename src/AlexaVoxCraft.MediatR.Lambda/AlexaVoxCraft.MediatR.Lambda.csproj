@@ -20,7 +20,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AlexaVoxCraft.Logging\AlexaVoxCraft.Logging.csproj" />
-        <ProjectReference Include="..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj"/>
+        <ProjectReference Include="..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj" />
     </ItemGroup>
 
 </Project>
