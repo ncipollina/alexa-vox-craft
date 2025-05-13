@@ -5,7 +5,7 @@ using Amazon.Lambda.Core;
 using Microsoft.Extensions.Logging;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace AlexaVoxCraft.Logging.Serialization;
+namespace AlexaVoxCraft.MediatR.Lambda.Serialization;
 
 public sealed class AlexaLambdaSerializer : ILambdaSerializer
 {

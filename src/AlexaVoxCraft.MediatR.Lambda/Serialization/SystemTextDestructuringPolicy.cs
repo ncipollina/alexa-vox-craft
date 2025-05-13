@@ -5,7 +5,7 @@ using AlexaVoxCraft.Model.Serialization;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace AlexaVoxCraft.Logging.Serialization;
+namespace AlexaVoxCraft.MediatR.Lambda.Serialization;
 
 public class SystemTextDestructuringPolicy : IDestructuringPolicy
 {
