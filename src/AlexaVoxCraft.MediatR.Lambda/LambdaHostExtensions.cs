@@ -23,7 +23,7 @@ public static class LambdaHostExtensions
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
-                .WriteTo.Console(new CompactJsonFormatter())
+                .WriteTo.Console(new AlexaCompactJsonFormatter())
                 .Destructure.With(new SystemTextDestructuringPolicy())
                 .CreateBootstrapLogger();
 
