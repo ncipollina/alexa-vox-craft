@@ -1,130 +1,133 @@
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Json;
+using System.Globalization;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Compact;
+using Serilog.Formatting.Json;
+using Serilog.Parsing;
 
 namespace AlexaVoxCraft.Logging.Serialization;
 
+/// <summary>
+/// A high-performance Serilog formatter that emits structured JSON logs
+/// using field names compatible with AWS CloudWatch Logs.
+/// <para>
+/// This formatter is a customized variant of <see cref="CompactJsonFormatter"/> 
+/// that avoids reserved field names like <c>@l</c>, <c>@t</c>, etc. to support
+/// CloudWatch metric filters and tooling that cannot parse escaped metadata keys.
+/// </para>
+/// <para>
+/// Output is single-line JSON, optimized for ingestion and filtering.
+/// </para>
+/// </summary>
 public sealed class AlexaCompactJsonFormatter : ITextFormatter
 {
-    private readonly ITextFormatter _inner;
+    readonly JsonValueFormatter _valueFormatter;
 
-    public AlexaCompactJsonFormatter(ITextFormatter? inner = null)
+    /// <summary>
+    /// Constructs an instance of <see cref="AlexaCompactJsonFormatter"/>, optionally
+    /// providing a custom value formatter.
+    /// </summary>
+    /// <param name="valueFormatter">
+    /// A formatter for <see cref="LogEventPropertyValue"/>s, or null to use the default.
+    /// </param>
+    public AlexaCompactJsonFormatter(JsonValueFormatter? valueFormatter = null)
     {
-        _inner = inner ?? new CompactJsonFormatter();
+        _valueFormatter = valueFormatter ?? new JsonValueFormatter(typeTagName: "$type");
     }
 
+    /// <summary>
+    /// Format the log event into the output. Subsequent events will be newline-delimited.
+    /// </summary>
+    /// <param name="logEvent">The event to format.</param>
+    /// <param name="output">The output.</param>
     public void Format(LogEvent logEvent, TextWriter output)
     {
-        try
-        {
-            // Render original compact JSON into a byte buffer
-            using var renderBuffer = new MemoryStream();
-            using var renderWriter = new StreamWriter(renderBuffer, new UTF8Encoding(false), leaveOpen: true);
-            _inner.Format(logEvent, renderWriter);
-            renderWriter.Flush();
-
-            var originalBytes = renderBuffer.ToArray();
-            var reader = new Utf8JsonReader(originalBytes, isFinalBlock: true, new JsonReaderState());
-
-            // Rewrite field names into a second buffer
-            using var rewrittenBuffer = new MemoryStream();
-            using var jsonWriter = new Utf8JsonWriter(rewrittenBuffer, new JsonWriterOptions
-            {
-                Indented = false,
-                SkipValidation = true,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
-
-            RewriteKeys(ref reader, jsonWriter);
-            jsonWriter.Flush();
-
-            // Write the transformed UTF-8 bytes as string to the sink's TextWriter
-            var rewrittenJson = Encoding.UTF8.GetString(rewrittenBuffer.ToArray());
-        
-            output.Write(rewrittenJson);
-            output.WriteLine();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        FormatEvent(logEvent, output, _valueFormatter);
+        output.WriteLine();
     }
 
-    private void RewriteKeys(ref Utf8JsonReader reader, Utf8JsonWriter writer)
+    /// <summary>
+    /// Format the log event into the output.
+    /// </summary>
+    /// <param name="logEvent">The event to format.</param>
+    /// <param name="output">The output.</param>
+    /// <param name="valueFormatter">A value formatter for <see cref="LogEventPropertyValue"/>s on the event.</param>
+    public static void FormatEvent(LogEvent logEvent, TextWriter output, JsonValueFormatter valueFormatter)
     {
-        while (reader.Read())
+        if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
+        if (output == null) throw new ArgumentNullException(nameof(output));
+        if (valueFormatter == null) throw new ArgumentNullException(nameof(valueFormatter));
+
+        output.Write("{\"_t\":\"");
+        output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
+        output.Write("\",\"_mt\":");
+        JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Text, output);
+
+        var tokensWithFormat = logEvent.MessageTemplate.Tokens
+            .OfType<PropertyToken>()
+            .Where(pt => pt.Format != null);
+
+        // Better not to allocate an array in the 99.9% of cases where this is false
+        // ReSharper disable once PossibleMultipleEnumeration
+        if (tokensWithFormat.Any())
         {
-            switch (reader.TokenType)
+            output.Write(",\"_r\":[");
+            var delim = "";
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var r in tokensWithFormat)
             {
-                case JsonTokenType.StartObject:
-                    writer.WriteStartObject();
-                    break;
-
-                case JsonTokenType.EndObject:
-                    writer.WriteEndObject();
-                    break;
-
-                case JsonTokenType.StartArray:
-                    writer.WriteStartArray();
-                    break;
-
-                case JsonTokenType.EndArray:
-                    writer.WriteEndArray();
-                    break;
-
-                case JsonTokenType.PropertyName:
-                    var propertyName = reader.GetString();
-                    if (propertyName.StartsWith("@"))
-                        propertyName = "_" + propertyName[1..];
-
-                    writer.WritePropertyName(propertyName);
-                    break;
-
-                default:
-                    writer.WriteTokenValue(reader);
-                    break;
+                output.Write(delim);
+                delim = ",";
+                var space = new StringWriter();
+                r.Render(logEvent.Properties, space, CultureInfo.InvariantCulture);
+                JsonValueFormatter.WriteQuotedJsonString(space.ToString(), output);
             }
-        }
-    }
-}
 
-// Extension to reduce duplication for values
-internal static class Utf8JsonWriterExtensions
-{
-    public static void WriteTokenValue(this Utf8JsonWriter writer, Utf8JsonReader reader)
-    {
-        switch (reader.TokenType)
-        {
-            case JsonTokenType.String:
-                writer.WriteStringValue(reader.GetString());
-                break;
-            case JsonTokenType.Number:
-                if (reader.TryGetInt64(out var l))
-                    writer.WriteNumberValue(l);
-                else
-                    writer.WriteNumberValue(reader.GetDouble());
-                break;
-            case JsonTokenType.True:
-            case JsonTokenType.False:
-                writer.WriteBooleanValue(reader.GetBoolean());
-                break;
-            case JsonTokenType.Null:
-                writer.WriteNullValue();
-                break;
-            case JsonTokenType.None:
-            case JsonTokenType.StartObject:
-            case JsonTokenType.EndObject:
-            case JsonTokenType.StartArray:
-            case JsonTokenType.EndArray:
-            case JsonTokenType.PropertyName:
-            case JsonTokenType.Comment:
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported token: {reader.TokenType}");
+            output.Write(']');
         }
+
+        if (logEvent.Level != LogEventLevel.Information)
+        {
+            output.Write(",\"_l\":\"");
+            output.Write(logEvent.Level);
+            output.Write('\"');
+        }
+
+        if (logEvent.Exception != null)
+        {
+            output.Write(",\"_x\":");
+            JsonValueFormatter.WriteQuotedJsonString(logEvent.Exception.ToString(), output);
+        }
+
+        if (logEvent.TraceId != null)
+        {
+            output.Write(",\"_tr\":\"");
+            output.Write(logEvent.TraceId.Value.ToHexString());
+            output.Write('\"');
+        }
+
+        if (logEvent.SpanId != null)
+        {
+            output.Write(",\"_sp\":\"");
+            output.Write(logEvent.SpanId.Value.ToHexString());
+            output.Write('\"');
+        }
+
+        foreach (var property in logEvent.Properties)
+        {
+            var name = property.Key;
+            if (name.Length > 0 && name[0] == '@')
+            {
+                // Escape first '@' by converting to '_'
+                name = '_' + name[1..];
+            }
+
+            output.Write(',');
+            JsonValueFormatter.WriteQuotedJsonString(name, output);
+            output.Write(':');
+            valueFormatter.Format(property.Value, output);
+        }
+
+        output.Write('}');
     }
 }
