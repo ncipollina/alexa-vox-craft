@@ -1,5 +1,4 @@
-﻿using Alexa.NET.APL.Tests;
-using AlexaVoxCraft.Model.Apl.VectorGraphics;
+﻿using AlexaVoxCraft.Model.Apl.VectorGraphics;
 using Xunit;
 
 namespace AlexaVoxCraft.Model.Apl.Tests;

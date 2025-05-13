@@ -20,4 +20,11 @@ Copyright © 2006-2019 Tim Heuer
 
 ---
 
+serilog-formatting-compact  
+https://github.com/serilog/serilog-formatting-compact  
+Licensed under the Apache License 2.0.  
+Copyright © Serilog Contributors
+
+---
+
 Copies of the original licenses are available in the licenses/ directory.

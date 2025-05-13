@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using AlexaVoxCraft.Model;
-using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Apl.Commands;
 using AlexaVoxCraft.Model.Apl.Components;
 using AlexaVoxCraft.Model.Apl.DataSources;
@@ -13,7 +11,7 @@ using Xunit;
 using Xunit.Abstractions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace Alexa.NET.APL.Tests;
+namespace AlexaVoxCraft.Model.Apl.Tests;
 
 public class ComponentTests
 {

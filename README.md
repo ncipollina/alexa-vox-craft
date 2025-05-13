@@ -22,12 +22,13 @@
 
 ## 🏎️ Packages
 
-| Package                          | Build Status                                                                                                                                                                  | NuGet                                                                                                                                       | GitHub | Downloads                                                                                                                                            |
-|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **AlexaVoxCraft.Model**          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model)                   | [📁 Source](src/AlexaVoxCraft.Model) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
-| **AlexaVoxCraft.Model.Apl**      | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl)           | [📁 Source](src/AlexaVoxCraft.Model.Apl) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl/)           |
+| Package                          | Build Status                                                                                                                                                                  | NuGet                                                                                                                                       | GitHub                                       | Downloads                                                                                                                                            |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **AlexaVoxCraft.Model**          | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model)                   | [📁 Source](src/AlexaVoxCraft.Model)         | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model/)                   |
+| **AlexaVoxCraft.Model.Apl**      | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl)           | [📁 Source](src/AlexaVoxCraft.Model.Apl)     | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Model.Apl.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Model.Apl/)           |
 | **AlexaVoxCraft.MediatR.Lambda** | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda) | [📁 Source](src/AlexaVoxCraft.MediatR.Lambda) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.Lambda.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR.Lambda/) |
-| **AlexaVoxCraft.MediatR**        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR)               | [📁 Source](src/AlexaVoxCraft.MediatR.Lambda) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
+| **AlexaVoxCraft.MediatR**        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR)               | [📁 Source](src/AlexaVoxCraft.MediatR) | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.MediatR.svg)](https://www.nuget.org/packages/AlexaVoxCraft.MediatR/)               |
+| **AlexaVoxCraft.Logging**        | [![Build](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml/badge.svg)](https://github.com/ncipollina/alexa-vox-craft/actions/workflows/build.yaml)  | [![NuGet](https://img.shields.io/nuget/vpre/AlexaVoxCraft.Logging.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Logging)               | [📁 Source](src/AlexaVoxCraft.Logging)       | [![NuGet Downloads](https://img.shields.io/nuget/dt/AlexaVoxCraft.Logging.svg)](https://www.nuget.org/packages/AlexaVoxCraft.Logging/)               |
 
 ---
 
@@ -97,7 +98,7 @@ AlexaVoxCraft uses [Serilog](https://serilog.net/) for structured logging by def
     {
       "Name": "Console",
       "Args": {
-        "formatter": "Serilog.Formatting.Compact.CompactJsonFormatter, Serilog.Formatting.Compact"
+      "formatter": "AlexaVoxCraft.Logging.Serialization.AlexaCompactJsonFormatter, AlexaVoxCraft.Logging"
       }
     }
   ],
@@ -116,7 +117,12 @@ AlexaVoxCraft uses [Serilog](https://serilog.net/) for structured logging by def
 > ```json
 > "AlexaVoxCraft.MediatR.Lambda.Serialization": "Debug"
 > ```
+### 🧾 Formatter Attribution
 
+> 🔧 The `AlexaCompactJsonFormatter` included in this library is adapted from [`Serilog.Formatting.Compact.CompactJsonFormatter`](https://github.com/serilog/serilog-formatting-compact).  
+> This customized formatter renames reserved field names (e.g., `@t`, `@l`, `@m`) to AWS-safe equivalents (`_t`, `_l`, `_m`) to improve compatibility with CloudWatch Logs and metric filters.
+>
+> Original work © [Serilog Contributors](https://github.com/serilog/serilog-formatting-compact), licensed under the [MIT License](https://github.com/serilog/serilog-formatting-compact/blob/dev/LICENSE).
 ---
 
 ## 🧪 Unit Testing

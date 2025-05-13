@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using AlexaVoxCraft.Model.Apl;
 using AlexaVoxCraft.Model.Serialization;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Alexa.NET.APL.Tests;
+namespace AlexaVoxCraft.Model.Apl.Tests;
 
 public static class Utility
 {

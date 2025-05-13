@@ -1,5 +1,4 @@
 using System.Linq;
-using Alexa.NET.APL.Tests;
 using AlexaVoxCraft.Model.Request;
 using Xunit;
 
