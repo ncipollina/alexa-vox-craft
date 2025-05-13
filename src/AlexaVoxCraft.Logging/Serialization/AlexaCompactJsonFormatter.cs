@@ -19,8 +19,6 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
     {
         try
         {
-            Console.WriteLine("[Formatter] Format() called");
-        
             // Render original compact JSON into a byte buffer
             using var renderBuffer = new MemoryStream();
             using var renderWriter = new StreamWriter(renderBuffer, new UTF8Encoding(false), leaveOpen: true);
@@ -28,9 +26,6 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
             renderWriter.Flush();
 
             var originalBytes = renderBuffer.ToArray();
-            var originalJson = Encoding.UTF8.GetString(originalBytes);
-            Console.WriteLine("[Formatter] Inner JSON:");
-            Console.WriteLine(originalJson);
             var reader = new Utf8JsonReader(originalBytes, isFinalBlock: true, new JsonReaderState());
 
             // Rewrite field names into a second buffer
@@ -46,8 +41,6 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
 
             // Write the transformed UTF-8 bytes as string to the sink's TextWriter
             var rewrittenJson = Encoding.UTF8.GetString(rewrittenBuffer.ToArray());
-            Console.WriteLine("[Formatter] Rewritten JSON:");
-            Console.WriteLine(rewrittenJson);
         
             output.Write(rewrittenJson);
         }
