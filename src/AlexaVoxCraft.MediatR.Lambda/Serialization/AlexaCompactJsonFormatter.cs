@@ -8,34 +8,54 @@ namespace AlexaVoxCraft.MediatR.Lambda.Serialization;
 
 public sealed class AlexaCompactJsonFormatter : ITextFormatter
 {
-    private static readonly CompactJsonFormatter Inner = new();
+    private readonly ITextFormatter _inner;
+
+    public AlexaCompactJsonFormatter(ITextFormatter? inner = null)
+    {
+        _inner = inner ?? new CompactJsonFormatter();
+    }
 
     public void Format(LogEvent logEvent, TextWriter output)
     {
-        // Step 1: Render to raw UTF-8 JSON
-        using var stream = new MemoryStream();
-        using var intermediateWriter = new StreamWriter(stream, Encoding.UTF8, leaveOpen: true);
-        Inner.Format(logEvent, intermediateWriter);
-        intermediateWriter.Flush();
-
-        // Step 2: Parse and rewrite using Utf8JsonReader
-        stream.Position = 0;
-        var reader = new Utf8JsonReader(stream.ToArray(), isFinalBlock: true, new JsonReaderState());
-
-        using var rewrittenStream = new MemoryStream();
-        using var jsonWriter = new Utf8JsonWriter(rewrittenStream, new JsonWriterOptions
+        try
         {
-            Indented = false,
-            SkipValidation = true
-        });
+            Console.WriteLine("[Formatter] Format() called");
+        
+            // Render original compact JSON into a byte buffer
+            using var renderBuffer = new MemoryStream();
+            using var renderWriter = new StreamWriter(renderBuffer, new UTF8Encoding(false), leaveOpen: true);
+            _inner.Format(logEvent, renderWriter);
+            renderWriter.Flush();
 
-        RewriteKeys(ref reader, jsonWriter);
-        jsonWriter.Flush();
+            var originalBytes = renderBuffer.ToArray();
+            var originalJson = Encoding.UTF8.GetString(originalBytes);
+            Console.WriteLine("[Formatter] Inner JSON:");
+            Console.WriteLine(originalJson);
+            var reader = new Utf8JsonReader(originalBytes, isFinalBlock: true, new JsonReaderState());
 
-        // Step 3: Write the rewritten result to the original TextWriter
-        rewrittenStream.Position = 0;
-        using var finalReader = new StreamReader(rewrittenStream, Encoding.UTF8);
-        output.Write(finalReader.ReadToEnd());
+            // Rewrite field names into a second buffer
+            using var rewrittenBuffer = new MemoryStream();
+            using var jsonWriter = new Utf8JsonWriter(rewrittenBuffer, new JsonWriterOptions
+            {
+                Indented = false,
+                SkipValidation = true
+            });
+
+            RewriteKeys(ref reader, jsonWriter);
+            jsonWriter.Flush();
+
+            // Write the transformed UTF-8 bytes as string to the sink's TextWriter
+            var rewrittenJson = Encoding.UTF8.GetString(rewrittenBuffer.ToArray());
+            Console.WriteLine("[Formatter] Rewritten JSON:");
+            Console.WriteLine(rewrittenJson);
+        
+            output.Write(rewrittenJson);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private void RewriteKeys(ref Utf8JsonReader reader, Utf8JsonWriter writer)
@@ -62,16 +82,10 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
 
                 case JsonTokenType.PropertyName:
                     var propertyName = reader.GetString();
-                    if (propertyName is { } name && name.StartsWith("@"))
-                    {
-                        name = "_" + name[1..];
-                    }
-                    else
-                    {
-                        name = propertyName;
-                    }
+                    if (propertyName.StartsWith("@"))
+                        propertyName = "_" + propertyName[1..];
 
-                    writer.WritePropertyName(name);
+                    writer.WritePropertyName(propertyName);
                     break;
 
                 default:
