@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Serilog.Events;
 using Serilog.Formatting;
@@ -33,7 +34,8 @@ public sealed class AlexaCompactJsonFormatter : ITextFormatter
             using var jsonWriter = new Utf8JsonWriter(rewrittenBuffer, new JsonWriterOptions
             {
                 Indented = false,
-                SkipValidation = true
+                SkipValidation = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
             RewriteKeys(ref reader, jsonWriter);
