@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Amazon.Lambda.Core" Version="2.5.1"/>
         <PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.13.0"/>
         <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.4"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4"/>
@@ -20,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\AlexaVoxCraft.Logging\AlexaVoxCraft.Logging.csproj" />
         <ProjectReference Include="..\AlexaVoxCraft.MediatR\AlexaVoxCraft.MediatR.csproj"/>
     </ItemGroup>
 

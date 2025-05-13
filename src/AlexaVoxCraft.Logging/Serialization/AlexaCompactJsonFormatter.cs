@@ -4,7 +4,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Compact;
 
-namespace AlexaVoxCraft.MediatR.Lambda.Serialization;
+namespace AlexaVoxCraft.Logging.Serialization;
 
 public sealed class AlexaCompactJsonFormatter : ITextFormatter
 {

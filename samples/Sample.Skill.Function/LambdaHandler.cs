@@ -1,4 +1,5 @@
-﻿using AlexaVoxCraft.MediatR;
+﻿using AlexaVoxCraft.Logging.Extensions;
+using AlexaVoxCraft.MediatR;
 using AlexaVoxCraft.MediatR.Lambda.Abstractions;
 using AlexaVoxCraft.MediatR.Lambda.Extensions;
 using AlexaVoxCraft.Model.Request;

@@ -1,11 +1,11 @@
 using System.Text.Json;
-using AlexaVoxCraft.MediatR.Lambda.Extensions;
+using AlexaVoxCraft.Logging.Extensions;
 using AlexaVoxCraft.Model.Serialization;
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.Logging;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace AlexaVoxCraft.MediatR.Lambda.Serialization;
+namespace AlexaVoxCraft.Logging.Serialization;
 
 public sealed class AlexaLambdaSerializer : ILambdaSerializer
 {

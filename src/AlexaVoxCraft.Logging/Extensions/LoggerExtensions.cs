@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace AlexaVoxCraft.MediatR.Lambda.Extensions;
+namespace AlexaVoxCraft.Logging.Extensions;
 
 public static class LoggerExtensions
 {

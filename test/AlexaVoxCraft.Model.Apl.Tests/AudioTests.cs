@@ -1,5 +1,4 @@
-﻿using Alexa.NET.APL.Tests;
-using AlexaVoxCraft.Model.Apl.Audio;
+﻿using AlexaVoxCraft.Model.Apl.Audio;
 using Xunit;
 using Xunit.Abstractions;
 
