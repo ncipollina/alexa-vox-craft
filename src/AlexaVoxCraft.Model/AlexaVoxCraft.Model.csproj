@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -11,7 +11,7 @@
         <None Include="docs\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="9.0.4"/>
+        <PackageReference Include="System.Text.Json" Version="9.0.5"/>
     </ItemGroup>
 
 </Project>
