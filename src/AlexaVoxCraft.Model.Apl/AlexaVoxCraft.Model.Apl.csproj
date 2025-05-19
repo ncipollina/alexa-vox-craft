@@ -6,10 +6,18 @@
     <Description>Small helper library to allow Alexa.NET skills to work with APL</Description>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    
+    <PackageId>AlexaVoxCraft.Model.Apl</PackageId>
+    <Title>AlexaVoxCraft.Model.Apl</Title>
+    <Description>Strongly-typed Alexa Presentation Language (APL) model support for rendering rich UI in multimodal Alexa skills.</Description>
+    <PackageTags>alexa;apl;presentation;model;visuals;multimodal;voxcraft</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docs\README.md" Pack="true" PackagePath="\"/>
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="False" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="False" />
   </ItemGroup>
 
   <ItemGroup>
