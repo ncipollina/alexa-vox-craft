@@ -5,13 +5,21 @@
         <Nullable>enable</Nullable>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <LangVersion>default</LangVersion>
+
+        <PackageId>AlexaVoxCraft.Model</PackageId>
+        <Title>AlexaVoxCraft.Model</Title>
+        <Description>Base model definitions for Alexa skill requests, responses, session state, and directives.</Description>
+        <PackageTags>alexa;model;request;response;directive;voxcraft;skills</PackageTags>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="docs\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="False" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="False" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="9.0.4"/>
+        <PackageReference Include="System.Text.Json" Version="9.0.5" />
     </ItemGroup>
 
 </Project>
